@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NexusPay - User Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#e9ddff",
+                    "inverse-on-surface": "#ecf1ff",
+                    "on-surface": "#111c2d",
+                    "surface-container-low": "#f0f3ff",
+                    "on-primary-fixed-variant": "#004c6e",
+                    "surface-container-high": "#dee8ff",
+                    "on-surface-variant": "#3e4850",
+                    "on-background": "#111c2d",
+                    "outline": "#6e7881",
+                    "surface-variant": "#d8e3fb",
+                    "tertiary": "#6d3bd7",
+                    "surface-bright": "#f9f9ff",
+                    "primary-fixed": "#c9e6ff",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#23005c",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#89ceff",
+                    "surface": "#f9f9ff",
+                    "secondary-fixed": "#ffdbca",
+                    "surface-container-highest": "#d8e3fb",
+                    "on-tertiary-fixed-variant": "#5516be",
+                    "on-secondary-fixed": "#341100",
+                    "surface-tint": "#006591",
+                    "secondary-container": "#fd761a",
+                    "on-error-container": "#93000a",
+                    "secondary": "#9d4300",
+                    "primary-container": "#0ea5e9",
+                    "primary": "#006591",
+                    "on-primary-container": "#003751",
+                    "on-secondary-container": "#5c2400",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#89ceff",
+                    "tertiary-container": "#a986ff",
+                    "background": "#f9f9ff",
+                    "inverse-surface": "#263143",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#d0bcff",
+                    "on-tertiary-container": "#3e0097",
+                    "on-secondary-fixed-variant": "#783200",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#ffb690",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#cfdaf2",
+                    "outline-variant": "#bec8d2",
+                    "on-primary-fixed": "#001e2f",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#e7eeff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "base": "8px",
+                    "margin-desktop": "40px",
+                    "container-max": "1280px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "caption": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-md": [
+                            "Sora"
+                    ],
+                    "body-md": [
+                            "Hanken Grotesk"
+                    ],
+                    "body-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-lg": [
+                            "Sora"
+                    ],
+                    "headline-lg-mobile": [
+                            "Sora"
+                    ],
+                    "label-md": [
+                            "Hanken Grotesk"
+                    ],
+                    "display-lg": [
+                            "Sora"
+                    ]
+            },
+            "fontSize": {
+                    "caption": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .form-input-styled {
+            @apply w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-on-surface font-body-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .form-input-styled:focus {
+            box-shadow: 0 0 8px rgba(14, 165, 233, 0.3), inset 0 1px 2px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md antialiased">
+<!-- TopNavBar (Intent: Settings/Profile - None match perfectly, but it's a global nav) -->
+<nav class="bg-white/70 backdrop-blur-xl border-b border-white/40 shadow-sm sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-20">
+<a class="font-display-lg text-display-lg font-extrabold text-primary tracking-tight" href="#">NexusPay</a>
+<div class="hidden md:flex space-x-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 font-label-md text-label-md" href="#">Explore</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 font-label-md text-label-md" href="#">Top-Up</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 font-label-md text-label-md" href="#">Promotions</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 font-label-md text-label-md" href="#">Support</a>
+</div>
+<div class="flex items-center space-x-4">
+<!-- User is logged in for settings, showing profile instead of sign in/up -->
+<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform" style="font-size: 28px;">account_circle</span>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow px-margin-mobile md:px-margin-desktop py-12">
+<div class="max-w-3xl mx-auto space-y-12">
+<!-- Page Header -->
+<div class="text-center md:text-left">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Account Settings</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Manage your gaming profile and preferences.</p>
+</div>
+<!-- Profile Overview Card -->
+<section class="glass-card rounded-xl p-8 shadow-sm flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary-fixed rounded-full blur-3xl opacity-30 pointer-events-none"></div>
+<div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-md flex-shrink-0 relative group cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A high-quality, professional avatar portrait of a modern gamer. Bright, clean lighting, optimistic mood. The background is a soft, light-mode gradient of subtle blues and whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMWTAZgAruBsTV67OQVBFyWTyVtXmoJ_sDeg4kiqggfzVDZk238vXF42QSecHO_3hTVA8d4x0T1dNEunQ1X6uluMtsxZhoVM1IPeUitS36fBh9U5ABiZ_0-RixayiVVZV3Jk8Wck-LLYP4D9BSArwIcH5n0Ge7Sg0rGGhKziOKNQ93DI-ODEftiP8ZCZ-lSi-zIGqQuIJzqNIQEH4vnsCaWessfaSKNmoZDbAxRJQguQzbjCJ-xgtM3MOm6v-73CgqSHdUrfagyCQs"/>
+<div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white">photo_camera</span>
+</div>
+</div>
+<div class="flex-grow text-center md:text-left">
+<h2 class="font-headline-md text-headline-md text-on-surface">Alex "Nexus" Chen</h2>
+<p class="font-body-md text-body-md text-outline mt-1">alex.chen@example.com</p>
+<div class="mt-4 flex flex-wrap gap-2 justify-center md:justify-start">
+<span class="bg-surface-container-high text-on-surface px-3 py-1 rounded-full font-caption text-caption flex items-center gap-1">
+<span class="material-symbols-outlined" style="font-size: 14px;">verified</span> Pro Member
+                        </span>
+</div>
+</div>
+</section>
+<!-- Personal Information -->
+<section class="glass-card rounded-xl p-8 shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span> Personal Details
+                </h3>
+<form class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Display Name</label>
+<input class="form-input-styled" placeholder="Enter your display name" type="text" value="AlexNexus"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Email Address</label>
+<input class="form-input-styled" placeholder="Enter your email" type="email" value="alex.chen@example.com"/>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Bio</label>
+<textarea class="form-input-styled h-24 resize-none" placeholder="A brief description of your gaming style..."></textarea>
+</div>
+<div class="flex justify-end">
+<button class="bg-gradient-to-r from-primary to-primary-container text-white px-6 py-2.5 rounded-lg font-label-md text-label-md shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200" type="button">
+                            Save Changes
+                        </button>
+</div>
+</form>
+</section>
+<!-- Linked Accounts -->
+<section class="glass-card rounded-xl p-8 shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container">link</span> Linked Game IDs
+                </h3>
+<div class="space-y-4">
+<!-- Riot ID -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low border border-surface-variant rounded-lg">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-[#eb0029] rounded-md flex items-center justify-center text-white font-bold">R</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Riot ID</p>
+<p class="font-caption text-caption text-outline">Nexus#NA1</p>
+</div>
+</div>
+<button class="text-error font-label-md text-label-md hover:underline">Unlink</button>
+</div>
+<!-- MLBB ID -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low border border-surface-variant rounded-lg">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-[#f9a826] rounded-md flex items-center justify-center text-white font-bold">M</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Mobile Legends</p>
+<p class="font-caption text-caption text-outline">Not Linked</p>
+</div>
+</div>
+<button class="text-primary font-label-md text-label-md hover:underline">Connect</button>
+</div>
+</div>
+</section>
+<!-- Security & Passwords -->
+<section class="glass-card rounded-xl p-8 shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface">lock</span> Security
+                </h3>
+<form class="space-y-6">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Current Password</label>
+<input class="form-input-styled" placeholder="••••••••" type="password"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">New Password</label>
+<input class="form-input-styled" placeholder="••••••••" type="password"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Confirm New Password</label>
+<input class="form-input-styled" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="bg-surface-container-high text-on-surface border border-outline-variant px-6 py-2.5 rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-colors duration-200" type="button">
+                            Update Password
+                        </button>
+</div>
+</form>
+</section>
+<!-- Notifications -->
+<section class="glass-card rounded-xl p-8 shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">notifications</span> Notification Preferences
+                </h3>
+<div class="space-y-4">
+<label class="flex items-center justify-between p-4 hover:bg-surface-container-low rounded-lg cursor-pointer transition-colors">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Transaction Receipts</p>
+<p class="font-caption text-caption text-outline">Email confirmations for successful purchases.</p>
+</div>
+<input checked="" class="form-checkbox h-5 w-5 text-primary rounded border-outline-variant focus:ring-primary-container" type="checkbox"/>
+</label>
+<div class="h-px bg-surface-variant w-full"></div>
+<label class="flex items-center justify-between p-4 hover:bg-surface-container-low rounded-lg cursor-pointer transition-colors">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Promotional Offers</p>
+<p class="font-caption text-caption text-outline">Updates on sales and new game integrations.</p>
+</div>
+<input class="form-checkbox h-5 w-5 text-primary rounded border-outline-variant focus:ring-primary-container" type="checkbox"/>
+</label>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-12 max-w-container-max mx-auto gap-gutter">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">
+                NexusPay
+            </div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Refund Policy</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Contact Support</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">About Us</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Partners</a>
+</div>
+<div class="font-caption text-caption text-on-surface-variant text-center md:text-right w-full md:w-auto mt-6 md:mt-0">
+                © 2024 NexusPay. All rights reserved. High-performance gaming transactions.
+            </div>
+</div>
+</footer>
+</body></html>

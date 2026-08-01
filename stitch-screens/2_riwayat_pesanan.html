@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#c9e6ff",
+                        "inverse-surface": "#263143",
+                        "inverse-on-surface": "#ecf1ff",
+                        "secondary-fixed": "#ffdbca",
+                        "secondary-container": "#fd761a",
+                        "surface-dim": "#cfdaf2",
+                        "surface": "#f9f9ff",
+                        "on-tertiary-container": "#3e0097",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#dee8ff",
+                        "tertiary-container": "#a986ff",
+                        "on-primary-container": "#003751",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#d0bcff",
+                        "on-tertiary-fixed": "#23005c",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#111c2d",
+                        "on-secondary-container": "#5c2400",
+                        "secondary-fixed-dim": "#ffb690",
+                        "secondary": "#9d4300",
+                        "primary-container": "#0ea5e9",
+                        "on-secondary-fixed": "#341100",
+                        "surface-variant": "#d8e3fb",
+                        "on-primary-fixed": "#001e2f",
+                        "tertiary-fixed": "#e9ddff",
+                        "outline-variant": "#bec8d2",
+                        "error": "#ba1a1a",
+                        "on-background": "#111c2d",
+                        "surface-container-highest": "#d8e3fb",
+                        "primary": "#006591",
+                        "background": "#f9f9ff",
+                        "tertiary": "#6d3bd7",
+                        "surface-tint": "#006591",
+                        "on-secondary-fixed-variant": "#783200",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5516be",
+                        "surface-container-low": "#f0f3ff",
+                        "outline": "#6e7881",
+                        "surface-bright": "#f9f9ff",
+                        "on-surface-variant": "#3e4850",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#89ceff",
+                        "inverse-primary": "#89ceff",
+                        "surface-container": "#e7eeff",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "base": "8px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Sora"],
+                        "headline-md": ["Sora"],
+                        "headline-lg-mobile": ["Sora"],
+                        "label-md": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Sora"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "caption": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                },
+            }
+        }
+    }catch(_e){}</script></head><body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface/70 backdrop-blur-xl dark:bg-surface-container-low/70 border-b border-white/40 shadow-sm flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop w-full max-w-container-max mx-auto z-50 sticky top-0">
+<div class="flex items-center gap-8">
+<a class="font-display-lg text-headline-lg font-extrabold text-primary tracking-tight" href="#">NexusPay</a>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary-container transition-colors duration-200" href="#">Beranda</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary-container transition-colors duration-200" href="#">Promosi</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary-container transition-colors duration-200" href="#">Berita</a>
+<a class="text-primary font-label-md text-label-md font-bold border-b-2 border-primary pb-1 hover:text-primary-container transition-colors duration-200" href="#">Riwayat Pesanan</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center gap-2 font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors duration-200">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<div class="hidden md:flex items-center gap-2 border-l border-outline-variant pl-4">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors duration-200" href="#">Login</a>
+<a class="bg-primary text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-200 shadow-sm hover:scale-102 active:scale-98 transition-transform" href="#">Register</a>
+</div>
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Riwayat Pesanan</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Kelola dan pantau semua transaksi top-up game Anda.</p>
+</div>
+<div class="flex gap-2">
+<button class="glass-panel px-4 py-2 rounded-lg flex items-center gap-2 font-label-md text-label-md text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                    Filter
+                </button>
+<div class="relative">
+<input class="bg-surface-container-lowest border border-outline-variant rounded-lg pl-10 pr-4 py-2 font-body-md text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 w-full md:w-64" placeholder="Cari pesanan..." type="text">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">search</span>
+</div>
+</div>
+</div>
+<!-- Transaction List -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<!-- Table Header -->
+<div class="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-outline-variant bg-surface/50 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+<div class="col-span-4">Game &amp; Detail</div>
+<div class="col-span-2">Nominal</div>
+<div class="col-span-2">Tanggal</div>
+<div class="col-span-2">Status</div>
+<div class="col-span-2 text-right">Aksi</div>
+</div>
+<!-- Transaction Items -->
+<div class="flex flex-col">
+<!-- Success Item -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 border-b border-outline-variant items-center hover:bg-surface-container/30 transition-colors">
+<div class="col-span-1 md:col-span-4 flex items-center gap-4">
+<img class="w-12 h-12 rounded-lg object-cover bg-surface-container-highest" data-alt="High resolution icon for a popular mobile MOBA game featuring bold colors and stylized fantasy character elements in a modern, clean light mode setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnNM6xe_KZYe_GDVNY_Mk-Lkk2JbBz0iSbKrIQ21T-Pty5Zb5ubFKWGIHXeyOBRCB7bVMgqQvOlPI-TyWBWL_EgYG9W-lTDPcCGTgw1nzFZrMhqmMuj_lyHxC4rtVo-aovN7iFHJFK94Q5JasRJ-sQvhgLsRNwNfEAmxBcymCtQQ9mSw8-UWjyi7yVcN97NU5A2Vg0ujk6Y5kmtwW1J0Hl9UrYEq5JEwvCobLiRlwfQ7vFo_DbGilSvj0N4rD1_mciEzH5-XZwGN6L">
+<div>
+<div class="font-headline-md text-[16px] font-bold text-on-surface">Mobile Legends: Bang Bang</div>
+<div class="font-caption text-caption text-on-surface-variant">ID: 12345678 (1234)</div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-2 font-body-md text-body-md font-bold text-on-surface">
+                        Rp 150.000 <span class="font-caption text-caption text-on-surface-variant font-normal block">706 Diamonds</span>
+</div>
+<div class="col-span-1 md:col-span-2 font-body-md text-body-md text-on-surface-variant">
+                        24 Okt 2024
+                    </div>
+<div class="col-span-1 md:col-span-2 flex items-center">
+<span class="bg-tertiary-container/20 text-tertiary px-3 py-1 rounded-full font-label-md text-[12px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                            Berhasil
+                        </span>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-end">
+<button class="text-primary hover:text-primary-container font-label-md text-label-md flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span class="md:hidden">Invoice</span>
+</button>
+</div>
+</div>
+<!-- Pending Item -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 border-b border-outline-variant items-center hover:bg-surface-container/30 transition-colors">
+<div class="col-span-1 md:col-span-4 flex items-center gap-4">
+<img class="w-12 h-12 rounded-lg object-cover bg-surface-container-highest" data-alt="High resolution icon for a popular tactical shooter game featuring a stylized V logo in bold red and white colors, set in a clean light mode environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_7Y0MAZtYizHjqv-CDJpZl4mULZRBCOpyTWcwK106LdebWCwc0MDHcg4dla76-TiEFcfLwsA9BeXywLIAsa3eJY1I-HUu-k0mRto1Dnt5ILSH895O5kAXJBxLwRFPIArj6bw-HWnf0jFCe4jrHPijyyK1QeEZmUHZFeBWLqRgME9GadUl2FKs7OCLtrPNBMxwZ6j9vIVvyBLYR4dde8i3IrAyGwEf41GG2q7hOM5TL2zlpBlY6HZcKx_erLh_AlqJV8qI8Tn4qQf1">
+<div>
+<div class="font-headline-md text-[16px] font-bold text-on-surface">Valorant</div>
+<div class="font-caption text-caption text-on-surface-variant">Riot ID: Player#EUW</div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-2 font-body-md text-body-md font-bold text-on-surface">
+                        Rp 300.000 <span class="font-caption text-caption text-on-surface-variant font-normal block">2500 VP</span>
+</div>
+<div class="col-span-1 md:col-span-2 font-body-md text-body-md text-on-surface-variant">
+                        23 Okt 2024
+                    </div>
+<div class="col-span-1 md:col-span-2 flex items-center">
+<span class="bg-secondary-container/20 text-secondary px-3 py-1 rounded-full font-label-md text-[12px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            Pending
+                        </span>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-end">
+<button class="text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px]">help</span>
+<span class="md:hidden">Bantuan</span>
+</button>
+</div>
+</div>
+</div>
+<div class="p-4 flex justify-center border-t border-outline-variant">
+<button class="font-label-md text-label-md text-primary hover:text-primary-container transition-colors">Muat Lebih Banyak</button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline py-12">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop w-full max-w-container-max mx-auto">
+<div class="font-display-lg text-headline-md font-bold text-on-surface dark:text-inverse-on-surface mb-4 md:mb-0">
+                NexusPay
+            </div>
+<div class="flex gap-6 mb-4 md:mb-0">
+<a class="font-body-md text-body-md font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-secondary-container transition-all opacity-80 hover:opacity-100" href="#">Terms</a>
+<a class="font-body-md text-body-md font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-secondary-container transition-all opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="font-body-md text-body-md font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-secondary-container transition-all opacity-80 hover:opacity-100" href="#">Support</a>
+</div>
+<div class="font-body-md text-body-md text-on-surface-variant">
+                © 2024 NexusPay. Premium Gaming Solutions.
+            </div>
+</div>
+</footer>
+</body></html>

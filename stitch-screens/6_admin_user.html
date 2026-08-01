@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NexusPay - Admin User Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e9ddff",
+                        "inverse-on-surface": "#ecf1ff",
+                        "on-surface": "#111c2d",
+                        "surface-container-low": "#f0f3ff",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "surface-container-high": "#dee8ff",
+                        "on-surface-variant": "#3e4850",
+                        "on-background": "#111c2d",
+                        "outline": "#6e7881",
+                        "surface-variant": "#d8e3fb",
+                        "tertiary": "#6d3bd7",
+                        "surface-bright": "#f9f9ff",
+                        "primary-fixed": "#c9e6ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#23005c",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#89ceff",
+                        "surface": "#f9f9ff",
+                        "secondary-fixed": "#ffdbca",
+                        "surface-container-highest": "#d8e3fb",
+                        "on-tertiary-fixed-variant": "#5516be",
+                        "on-secondary-fixed": "#341100",
+                        "surface-tint": "#006591",
+                        "secondary-container": "#fd761a",
+                        "on-error-container": "#93000a",
+                        "secondary": "#9d4300",
+                        "primary-container": "#0ea5e9",
+                        "primary": "#006591",
+                        "on-primary-container": "#003751",
+                        "on-secondary-container": "#5c2400",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#89ceff",
+                        "tertiary-container": "#a986ff",
+                        "background": "#f9f9ff",
+                        "inverse-surface": "#263143",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#d0bcff",
+                        "on-tertiary-container": "#3e0097",
+                        "on-secondary-fixed-variant": "#783200",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#cfdaf2",
+                        "outline-variant": "#bec8d2",
+                        "on-primary-fixed": "#001e2f",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#e7eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin-desktop": "40px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "caption": ["Hanken Grotesk"],
+                        "headline-md": ["Sora"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Sora"],
+                        "headline-lg-mobile": ["Sora"],
+                        "label-md": ["Hanken Grotesk"],
+                        "display-lg": ["Sora"]
+                    },
+                    "fontSize": {
+                        "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 6px -1px rgba(0, 101, 145, 0.05), 0 2px 4px -1px rgba(0, 101, 145, 0.03);
+        }
+        .zebra-row:nth-child(even) {
+            background-color: theme('colors.surface-container-lowest');
+        }
+        .zebra-row:nth-child(odd) {
+            background-color: theme('colors.surface-container-low');
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-white/70 backdrop-blur-xl border-b border-white/40 shadow-sm sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
+<!-- Brand -->
+<a class="font-display-lg text-display-lg font-extrabold text-primary tracking-tight" href="#">
+                NexusPay
+            </a>
+<!-- Web Nav -->
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-label-md text-label-md text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="#">Dashboard</a>
+<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1" href="#">Users</a>
+<a class="font-label-md text-label-md text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="#">Transactions</a>
+<a class="font-label-md text-label-md text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="#">Settings</a>
+</div>
+<!-- Actions -->
+<div class="hidden md:flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-full py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none font-body-md text-body-md text-on-surface w-64 placeholder:text-outline-variant transition-all" placeholder="Search..." type="text"/>
+</div>
+<button class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 hover:border-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+<img alt="Admin Profile" class="w-full h-full object-cover" data-alt="A small circular avatar of an administrator with short dark hair, wearing glasses and a crisp white shirt, set against a bright, airy background in a light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpsb_YF4tMCjqSrYbJYHW9HyuP1WpavdHbAwR3BQDzaj8dCA5_WEDHdD4Dh3r7J34mBLHTQLPo8pOugxh1JEHAAFgHLcpbiGH68297wkel0FoeWTAvjNd2tRdm5xI0w6M0Fa-gzMrCs7P1VprNvtl03QjHUw-x390FCs-b2W_DxWpr910nA0li3zKlqbidrVTj9C8snWTliHaIXl8AOR85r87yj9XRqbyXcntcWpw4fTYaXJVkwLegq5jLz8yDSRl_vSyKargQ1dD4"/>
+</button>
+</div>
+<!-- Mobile Menu Toggle (Decorative) -->
+<button class="md:hidden text-on-surface p-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto py-12 flex flex-col gap-8">
+<!-- Page Header -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">User Management</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Review and manage registered user accounts.</p>
+</div>
+<!-- Filters/Actions -->
+<div class="flex gap-4 items-center">
+<button class="glass-panel px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-primary flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">filter_list</span>
+                    Filter
+                </button>
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-6 py-2 rounded-lg font-label-md text-label-md shadow-[0_4px_14px_0_rgba(0,101,145,0.39)] hover:scale-[1.02] hover:shadow-[0_6px_20px_rgba(0,101,145,0.23)] transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">person_add</span>
+                    Add User
+                </button>
+</div>
+</header>
+<!-- Stats Overview Bento -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="glass-panel rounded-xl p-6 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-md text-label-md">Total Users</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-on-surface">14,209</div>
+<div class="font-caption text-caption text-secondary flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">trending_up</span>
+                    +12% this month
+                </div>
+</div>
+<div class="glass-panel rounded-xl p-6 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-label-md text-label-md">Active Buyers</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-on-surface">8,432</div>
+<div class="font-caption text-caption text-outline mt-1">
+                    Users with &gt;1 transaction
+                </div>
+</div>
+<div class="glass-panel rounded-xl p-6 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-label-md text-label-md">Restricted Accounts</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-on-surface">124</div>
+<div class="font-caption text-caption text-outline mt-1">
+                    Requires review
+                </div>
+</div>
+</section>
+<!-- Users Table -->
+<section class="glass-panel rounded-xl overflow-hidden flex flex-col">
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead>
+<tr class="bg-surface-container-high border-b border-outline-variant">
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">User</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Spent</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Join Date</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface">
+<!-- Row 1 -->
+<tr class="zebra-row border-b border-outline-variant/30 hover:bg-surface-variant/50 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-4">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A portrait of a young professional gamer with short spiky hair and neon accent lighting, wearing a stylish esports jersey, bright light mode background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkFuSzlZLKQ7c4HhpPmPmJIhGeP8F6NVuw8nSmJxP9OJPxWxta9t09T2q9ImNsuYlCTfz-j5csy6KiTIDDWdgywoWgOFx9MazEy0yvtAGWunooPv_oXYpJfngM9htzlt0MseZvMu4yiNUgVqmmNPXRssJa5lOpRJ9hcn-yEI6mKOzjSQIeMS9-H9Jpqal9wxeS5NZ0vIIUNpRXiiyuQygxhRXhvnLGDmQ7wAijJ42W0_B4P2bZ7DjV22pR63W4AVDQQoO5uqz3VuYg"/>
+<div>
+<div class="font-semibold text-on-surface">AlexChen_99</div>
+<div class="font-caption text-caption text-on-surface-variant">alex.chen@example.com</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-full bg-primary-fixed text-on-primary-fixed text-[12px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    Active
+                                </span>
+</td>
+<td class="py-4 px-6 font-medium text-secondary-container">
+                                $1,245.50
+                            </td>
+<td class="py-4 px-6 text-on-surface-variant">
+                                Oct 12, 2023
+                            </td>
+<td class="py-4 px-6 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary bg-white rounded-lg border border-outline-variant hover:border-primary transition-colors tooltip-trigger" title="View Details">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">visibility</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error bg-white rounded-lg border border-outline-variant hover:border-error transition-colors tooltip-trigger" title="Restrict Account">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="zebra-row border-b border-outline-variant/30 hover:bg-surface-variant/50 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-bold text-lg border border-outline-variant">S</div>
+<div>
+<div class="font-semibold text-on-surface">SarahViper</div>
+<div class="font-caption text-caption text-on-surface-variant">s.viper@example.com</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-full bg-primary-fixed text-on-primary-fixed text-[12px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    Active
+                                </span>
+</td>
+<td class="py-4 px-6 font-medium text-secondary-container">
+                                $890.00
+                            </td>
+<td class="py-4 px-6 text-on-surface-variant">
+                                Nov 05, 2023
+                            </td>
+<td class="py-4 px-6 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary bg-white rounded-lg border border-outline-variant hover:border-primary transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">visibility</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error bg-white rounded-lg border border-outline-variant hover:border-error transition-colors" title="Restrict Account">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="zebra-row border-b border-outline-variant/30 hover:bg-surface-variant/50 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-4">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A casual portrait of a male user wearing a headset, smiling slightly, well-lit studio environment, light aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOQD0TmfhL-gTJ3PvmxVKnQcWElEX6BXw6LmXlNHn-sCe3hFGWCQ2GdgAftSYiyD75HFjZkoSM-b3WIY8Sfkk1haBs8bgnmz5P3WSatkwNCBAYMdE35deK-V7OioR4ve7sC6LBFD3xd0k9pYxJGzNaprNIJHEejeYyRdIX--gqXYMI7F2DfXK79kD1t3A_fxeYlNhY7yAkIFJzvgDLejQx6a_I082dFE0scq4SBy6a2Cp1Gxr8xe_3gd9xjkjBBmoD7-63qqMsRl0f"/>
+<div>
+<div class="font-semibold text-on-surface">xX_NoobSlayer_Xx</div>
+<div class="font-caption text-caption text-on-surface-variant">noobslayer@example.com</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-full bg-error-container text-on-error-container text-[12px] font-semibold border border-error/20">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                                    Restricted
+                                </span>
+</td>
+<td class="py-4 px-6 font-medium text-secondary-container">
+                                $12.50
+                            </td>
+<td class="py-4 px-6 text-on-surface-variant">
+                                Jan 15, 2024
+                            </td>
+<td class="py-4 px-6 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary bg-white rounded-lg border border-outline-variant hover:border-primary transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">visibility</span>
+</button>
+<button class="p-2 text-error hover:text-on-error hover:bg-error bg-error-container rounded-lg border border-error/30 transition-colors" title="Unrestrict Account">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">lock_open</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+<div class="font-caption text-caption text-on-surface-variant">
+                    Showing 1 to 3 of 14,209 results
+                </div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg border border-outline-variant text-outline hover:bg-surface-variant transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">chevron_left</span>
+</button>
+<button class="p-2 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-12 max-w-container-max mx-auto gap-gutter">
+<div class="flex flex-col gap-4">
+<span class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">
+                    NexusPay
+                </span>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    © 2024 NexusPay. All rights reserved. High-performance gaming transactions.
+                </p>
+</div>
+<div class="flex flex-wrap gap-4 font-label-md text-label-md">
+<a class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Refund Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Contact Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">About Us</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Partners</a>
+</div>
+</div>
+</footer>
+</body></html>

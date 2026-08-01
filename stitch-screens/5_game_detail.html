@@ -1,0 +1,375 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#c9e6ff",
+                      "inverse-surface": "#263143",
+                      "inverse-on-surface": "#ecf1ff",
+                      "secondary-fixed": "#ffdbca",
+                      "secondary-container": "#fd761a",
+                      "surface-dim": "#cfdaf2",
+                      "surface": "#f9f9ff",
+                      "on-tertiary-container": "#3e0097",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "surface-container-high": "#dee8ff",
+                      "tertiary-container": "#a986ff",
+                      "on-primary-container": "#003751",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#d0bcff",
+                      "on-tertiary-fixed": "#23005c",
+                      "on-secondary": "#ffffff",
+                      "on-surface": "#111c2d",
+                      "on-secondary-container": "#5c2400",
+                      "secondary-fixed-dim": "#ffb690",
+                      "secondary": "#9d4300",
+                      "primary-container": "#0ea5e9",
+                      "on-secondary-fixed": "#341100",
+                      "surface-variant": "#d8e3fb",
+                      "on-primary-fixed": "#001e2f",
+                      "tertiary-fixed": "#e9ddff",
+                      "outline-variant": "#bec8d2",
+                      "error": "#ba1a1a",
+                      "on-background": "#111c2d",
+                      "surface-container-highest": "#d8e3fb",
+                      "primary": "#006591",
+                      "background": "#f9f9ff",
+                      "tertiary": "#6d3bd7",
+                      "surface-tint": "#006591",
+                      "on-secondary-fixed-variant": "#783200",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed-variant": "#5516be",
+                      "surface-container-low": "#f0f3ff",
+                      "outline": "#6e7881",
+                      "surface-bright": "#f9f9ff",
+                      "on-surface-variant": "#3e4850",
+                      "on-error": "#ffffff",
+                      "primary-fixed-dim": "#89ceff",
+                      "inverse-primary": "#89ceff",
+                      "surface-container": "#e7eeff",
+                      "on-primary-fixed-variant": "#004c6e",
+                      "on-tertiary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "40px",
+                      "gutter": "24px",
+                      "margin-mobile": "16px",
+                      "base": "8px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Sora"
+                      ],
+                      "headline-md": [
+                              "Sora"
+                      ],
+                      "headline-lg-mobile": [
+                              "Sora"
+                      ],
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Sora"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "caption": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      }catch(_e){}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script></head><body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<nav class="bg-surface/70 backdrop-blur-xl dark:bg-surface-container-low/70 border-b border-white/40 shadow-sm flex justify-between items-center h-20 px-margin-desktop w-full max-w-container-max mx-auto z-50 sticky top-0 hidden md:flex">
+<div class="flex items-center gap-8">
+<a class="font-display-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim tracking-tight" href="#">NexusPay</a>
+<div class="flex gap-6 items-center pt-2">
+<a class="text-primary hover:text-primary-container transition-colors duration-200 font-label-md text-label-md" href="#">Beranda</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors duration-200 font-label-md text-label-md" href="#">Promosi</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors duration-200 font-label-md text-label-md" href="#">Berita</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container rounded-full border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary-container/50 transition-all font-body-md text-body-md outline-none w-64" placeholder="Search games..." type="text">
+</div>
+<button class="font-label-md text-label-md text-on-surface hover:text-primary transition-colors">Login</button>
+<button class="font-label-md text-label-md bg-primary text-on-primary px-6 py-2 rounded-full hover:scale-102 active:scale-98 transition-transform shadow-sm">Register</button>
+</div>
+</nav>
+<!-- Mobile Top App Bar (Simplified for responsive) -->
+<nav class="bg-surface/70 backdrop-blur-xl border-b border-white/40 shadow-sm flex justify-between items-center h-16 px-margin-mobile w-full z-50 sticky top-0 md:hidden">
+<a class="font-display-lg text-headline-lg-mobile font-extrabold text-primary tracking-tight" href="#">NexusPay</a>
+<button class="text-on-surface">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</nav>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 md:py-12 space-y-16">
+<!-- Hero Section -->
+<section class="gsap-hero relative rounded-2xl overflow-hidden h-[400px] md:h-[500px] flex items-end pb-8 px-6 md:px-12 ambient-shadow-primary glass-panel">
+<div class="absolute inset-0 z-0">
+<div class="bg-cover bg-center w-full h-full opacity-80 mix-blend-overlay" data-alt="A dynamic, high-fidelity digital illustration of epic fantasy warriors in a luminous arena. The lighting is bright and energetic with glowing blue and vibrant purple accents on a mostly white and light-blue background, representing a high-octane competitive esports environment. The mood is heroic and pristine." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAJoUT9tE3dJAveh440KIfZ1_bHHngFGQsH3eo_IoF2ZrZXsKsCPZDcEg1GTJ0VFn0KnTi3ERJQfUmsDYukJIOEi3BLjPnlfXGeqKmaIUyJcZFR_83KLPQxSJj-rvqTqY9-w2Cwv4vUEzFEpUA-InCPgcJR0jl7BzVXUSPRBTxNC52m6TqtWCnJXUg-jZ3iwLXj5IgRwni7l7fWpl-PJdutSXSUfPWNKiVJOv3O4KQOvAh5c2GnBI8bqgxQg_bl4UIsBlAhJm_UXElm')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/50 to-transparent"></div>
+</div>
+<div class="relative z-10 w-full max-w-3xl">
+<div class="flex items-center gap-3 mb-4">
+<span class="bg-tertiary text-on-tertiary font-label-md text-label-md px-3 py-1 rounded-full uppercase tracking-wider text-xs">MOBA</span>
+<span class="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-3 py-1 rounded-full uppercase tracking-wider text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="bolt">bolt</span>
+                         Instant Delivery
+                     </span>
+</div>
+<h1 class="font-display-lg text-display-lg md:text-[56px] text-on-surface mb-4">Mobile Legends</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                     Top up Mobile Legends Diamonds fast and cheap! Simply enter your User ID and Zone ID, select the value of Diamonds you wish to purchase, complete the payment, and the Diamonds will be added immediately to your MLBB account.
+                 </p>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Input Forms -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Step 1: User Info -->
+<section class="gsap-step glass-panel rounded-xl p-6 md:p-8 ambient-shadow-primary">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-md text-headline-md">1</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Enter Account Details</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant block">User ID</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg px-4 py-3 font-body-md text-body-md outline-none transition-all shadow-sm" placeholder="e.g. 12345678" type="text">
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant block">Zone ID</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg px-4 py-3 font-body-md text-body-md outline-none transition-all shadow-sm" placeholder="e.g. (1234)" type="text">
+</div>
+</div>
+<p class="font-caption text-caption text-outline mt-3 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="help">help</span>
+                        To find your User ID, click on your avatar in the top left corner of the main game screen.
+                    </p>
+</section>
+<!-- Step 2: Select Top Up -->
+<section class="gsap-step glass-panel rounded-xl p-6 md:p-8 ambient-shadow-primary">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-md text-headline-md">2</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Select Recharge Amount</h2>
+</div>
+<!-- Tabs/Filter -->
+<div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md whitespace-nowrap">Diamonds</button>
+<button class="px-4 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">Starlight Member</button>
+<button class="px-4 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">Twilight Pass</button>
+</div>
+<!-- Denomination Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+<!-- Item 1 -->
+<div class="relative group cursor-pointer">
+<input checked="" class="peer hidden" id="den-1" name="denomination" type="radio">
+<label class="block w-full h-full bg-surface-container-lowest border border-outline-variant rounded-xl p-4 peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary transition-all hover:border-primary/50 relative overflow-hidden" for="den-1">
+<div class="absolute inset-0 bg-primary/5 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+<div class="flex flex-col items-center justify-center gap-2 relative z-10">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="diamond" data-weight="fill">diamond</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">5</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase">Diamonds</span>
+</div>
+</label>
+</div>
+<!-- Item 2 -->
+<div class="relative group cursor-pointer">
+<input class="peer hidden" id="den-2" name="denomination" type="radio">
+<label class="block w-full h-full bg-surface-container-lowest border border-outline-variant rounded-xl p-4 peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary transition-all hover:border-primary/50 relative overflow-hidden" for="den-2">
+<div class="absolute top-0 right-0 bg-secondary-container text-on-secondary-container text-[10px] font-bold px-2 py-1 rounded-bl-lg z-20">+1 Bonus</div>
+<div class="absolute inset-0 bg-primary/5 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+<div class="flex flex-col items-center justify-center gap-2 relative z-10">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="diamond" data-weight="fill">diamond</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">11</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase">Diamonds</span>
+</div>
+</label>
+</div>
+<!-- Item 3 -->
+<div class="relative group cursor-pointer">
+<input class="peer hidden" id="den-3" name="denomination" type="radio">
+<label class="block w-full h-full bg-surface-container-lowest border border-outline-variant rounded-xl p-4 peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary transition-all hover:border-primary/50 relative overflow-hidden" for="den-3">
+<div class="absolute top-0 right-0 bg-secondary-container text-on-secondary-container text-[10px] font-bold px-2 py-1 rounded-bl-lg z-20">+2 Bonus</div>
+<div class="absolute inset-0 bg-primary/5 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+<div class="flex flex-col items-center justify-center gap-2 relative z-10">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="diamond" data-weight="fill">diamond</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">17</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase">Diamonds</span>
+</div>
+</label>
+</div>
+<!-- Item 4 -->
+<div class="relative group cursor-pointer">
+<input class="peer hidden" id="den-4" name="denomination" type="radio">
+<label class="block w-full h-full bg-surface-container-lowest border border-outline-variant rounded-xl p-4 peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary transition-all hover:border-primary/50 relative overflow-hidden" for="den-4">
+<div class="absolute inset-0 bg-primary/5 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+<div class="flex flex-col items-center justify-center gap-2 relative z-10">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="diamond" data-weight="fill">diamond</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">25</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase">Diamonds</span>
+</div>
+</label>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Summary & Payment -->
+<div class="lg:col-span-4 space-y-8">
+<section class="gsap-summary glass-panel rounded-xl p-6 md:p-8 ambient-shadow-secondary sticky top-28">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-outline-variant pb-4">Order Summary</h3>
+<div class="space-y-4 mb-6">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Item</span>
+<span class="font-label-md text-label-md text-on-surface">5 Diamonds</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Price</span>
+<span class="font-label-md text-label-md text-on-surface">Rp 1.500</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Admin Fee</span>
+<span class="font-label-md text-label-md text-on-surface">Rp 0</span>
+</div>
+</div>
+<div class="border-t border-outline-variant pt-4 mb-8">
+<div class="flex justify-between items-end">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Total</span>
+<span class="font-headline-md text-headline-md text-secondary-container">Rp 1.500</span>
+</div>
+</div>
+<button class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline-lg-mobile text-[18px] rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+                        Buy Now
+                    </button>
+<div class="mt-4 flex items-center justify-center gap-2 text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px]" data-icon="verified_user">verified_user</span>
+                         Secure Payment Guaranteed
+                    </div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline flex flex-col md:flex-row justify-between items-center px-margin-desktop w-full max-w-container-max mx-auto py-12 mt-12">
+<div class="font-display-lg text-headline-md font-bold text-on-surface dark:text-inverse-on-surface mb-6 md:mb-0">
+            © 2024 NexusPay. Premium Gaming Solutions.
+        </div>
+<div class="flex gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary-container transition-all opacity-80 hover:opacity-100 font-body-md text-body-md font-label-md text-label-md" href="#">Terms</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary-container transition-all opacity-80 hover:opacity-100 font-body-md text-body-md font-label-md text-label-md" href="#">Privacy</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary-container transition-all opacity-80 hover:opacity-100 font-body-md text-body-md font-label-md text-label-md" href="#">Support</a>
+</div>
+</footer>
+<script>
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Entrance
+        gsap.from(".gsap-hero", {
+            y: 40,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+            delay: 0.1
+        });
+
+        // Steps staggered entrance
+        gsap.from(".gsap-step", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "power2.out",
+            delay: 0.3
+        });
+
+        // Summary sticky card entrance
+        gsap.from(".gsap-summary", {
+            x: 30,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: 0.6
+        });
+    </script>
+</body></html>

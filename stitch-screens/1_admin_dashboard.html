@@ -1,0 +1,477 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#f0f3ff",
+                      "on-secondary-fixed-variant": "#783200",
+                      "on-primary": "#ffffff",
+                      "outline": "#6e7881",
+                      "background": "#f9f9ff",
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#f9f9ff",
+                      "tertiary-fixed-dim": "#d0bcff",
+                      "tertiary-container": "#a986ff",
+                      "on-primary-container": "#003751",
+                      "primary-container": "#0ea5e9",
+                      "surface-tint": "#006591",
+                      "on-primary-fixed-variant": "#004c6e",
+                      "on-secondary-fixed": "#341100",
+                      "error": "#ba1a1a",
+                      "secondary": "#9d4300",
+                      "on-surface": "#111c2d",
+                      "surface-container": "#e7eeff",
+                      "surface-container-high": "#dee8ff",
+                      "on-secondary-container": "#5c2400",
+                      "on-tertiary-container": "#3e0097",
+                      "secondary-fixed": "#ffdbca",
+                      "on-primary-fixed": "#001e2f",
+                      "on-tertiary-fixed-variant": "#5516be",
+                      "surface-container-highest": "#d8e3fb",
+                      "surface-dim": "#cfdaf2",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed": "#e9ddff",
+                      "inverse-on-surface": "#ecf1ff",
+                      "primary-fixed-dim": "#89ceff",
+                      "outline-variant": "#bec8d2",
+                      "primary": "#006591",
+                      "on-surface-variant": "#3e4850",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#d8e3fb",
+                      "surface": "#f9f9ff",
+                      "primary-fixed": "#c9e6ff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed": "#23005c",
+                      "secondary-fixed-dim": "#ffb690",
+                      "on-error": "#ffffff",
+                      "inverse-surface": "#263143",
+                      "inverse-primary": "#89ceff",
+                      "secondary-container": "#fd761a",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#6d3bd7",
+                      "on-background": "#111c2d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "40px",
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "container-max": "1280px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Sora"
+                      ],
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-md": [
+                              "Sora"
+                      ],
+                      "display-lg": [
+                              "Sora"
+                      ],
+                      "headline-lg": [
+                              "Sora"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "caption": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      }catch(_e){}</script></head><body class="font-body-md text-body-md antialiased overflow-x-hidden flex h-screen w-screen flex-row">
+<!-- Navbar / Header -->
+<!-- Main Content Area -->
+<aside class="fixed left-0 top-0 h-screen w-64 glass-panel border-r border-outline-variant/30 z-50 flex flex-col p-6 overflow-y-auto">
+<div class="flex items-center gap-3 mb-10 shrink-0">
+<div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">rocket_launch</span>
+</div>
+<div>
+<h1 class="font-headline-lg-mobile text-[20px] font-black text-primary tracking-tighter leading-none">NexusPay</h1>
+<p class="font-caption text-[11px] text-on-surface-variant uppercase tracking-wider">Admin</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-label-md">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">sports_esports</span>
+<span class="text-label-md">Game Management</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-label-md">User Management</span>
+</a>
+<div class="pt-4 pb-1 px-4">
+<p class="font-caption text-[11px] text-on-surface-variant uppercase tracking-wider font-bold">Content Management</p>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">article</span>
+<span class="text-label-md">Manage News</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="text-label-md">Manage Promotions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all mt-2" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/20 flex flex-col gap-2 shrink-0">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-label-md">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-error hover:bg-error/10 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-label-md">Logout</span>
+</a>
+</div>
+</aside><main class="flex-1 flex flex-col min-h-screen transition-all duration-300 bg-background relative overflow-y-auto ml-64">
+<!-- Dashboard Content -->
+<div class="p-6 md:p-margin-desktop max-w-container-max mx-auto w-full flex flex-col gap-8 pb-24 mt-4">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Overview</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Real-time metrics for NexusPay ecosystem.</p>
+</div>
+<div class="flex flex-wrap items-center gap-4">
+<button class="bg-primary bg-gradient-to-r from-primary to-[#0080b8] text-on-primary font-label-md text-label-md px-5 py-2.5 rounded-xl shadow-md shadow-primary/20 hover:scale-[1.02] transition-transform flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+    New Campaign
+</button>
+<div class="flex items-center gap-2 bg-surface-container-low rounded-lg p-1 border border-outline-variant/30">
+<button class="px-4 py-1.5 rounded-md bg-white shadow-sm font-label-md text-label-md text-primary">Today</button>
+<button class="px-4 py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:bg-surface-container/50 transition-colors">7D</button>
+<button class="px-4 py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:bg-surface-container/50 transition-colors">30D</button>
+</div>
+</div>
+</div>
+<!-- Analytics Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-primary-container/20 rounded-full blur-2xl group-hover:bg-primary-container/30 transition-colors"></div>
+<div class="flex justify-between items-start z-10">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="payments">payments</span>
+</div>
+<span class="font-label-md text-label-md text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                            +12.5%
+                        </span>
+</div>
+<div class="z-10">
+<p class="font-caption text-caption text-on-surface-variant uppercase tracking-wider mb-1">Total Revenue</p>
+<h3 class="font-display-lg text-[32px] md:text-[40px] text-on-surface font-extrabold tracking-tight">$124k</h3>
+</div>
+<!-- Faux Sparkline -->
+<div class="h-10 w-full flex items-end gap-1 mt-2 z-10 opacity-70">
+<div class="w-full bg-primary/20 h-[20%] rounded-t-sm"></div>
+<div class="w-full bg-primary/30 h-[40%] rounded-t-sm"></div>
+<div class="w-full bg-primary/20 h-[30%] rounded-t-sm"></div>
+<div class="w-full bg-primary/40 h-[60%] rounded-t-sm"></div>
+<div class="w-full bg-primary/50 h-[50%] rounded-t-sm"></div>
+<div class="w-full bg-primary/40 h-[70%] rounded-t-sm"></div>
+<div class="w-full bg-primary/70 h-[90%] rounded-t-sm"></div>
+<div class="w-full bg-primary h-[100%] rounded-t-sm"></div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-tertiary-container/20 rounded-full blur-2xl group-hover:bg-tertiary-container/30 transition-colors"></div>
+<div class="flex justify-between items-start z-10">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="group">group</span>
+</div>
+<span class="font-label-md text-label-md text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                            +5.2%
+                        </span>
+</div>
+<div class="z-10">
+<p class="font-caption text-caption text-on-surface-variant uppercase tracking-wider mb-1">Daily Users</p>
+<h3 class="font-display-lg text-[32px] md:text-[40px] text-on-surface font-extrabold tracking-tight">12.5k</h3>
+</div>
+<!-- Faux Sparkline -->
+<div class="h-10 w-full flex items-end gap-1 mt-2 z-10 opacity-70">
+<div class="w-full bg-tertiary/30 h-[30%] rounded-t-sm"></div>
+<div class="w-full bg-tertiary/40 h-[50%] rounded-t-sm"></div>
+<div class="w-full bg-tertiary/30 h-[40%] rounded-t-sm"></div>
+<div class="w-full bg-tertiary/50 h-[70%] rounded-t-sm"></div>
+<div class="w-full bg-tertiary/40 h-[60%] rounded-t-sm"></div>
+<div class="w-full bg-tertiary/60 h-[80%] rounded-t-sm"></div>
+<div class="w-full bg-tertiary/70 h-[90%] rounded-t-sm"></div>
+<div class="w-full bg-tertiary h-[100%] rounded-t-sm"></div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-secondary-container/20 rounded-full blur-2xl group-hover:bg-secondary-container/30 transition-colors"></div>
+<div class="flex justify-between items-start z-10">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="task_alt">task_alt</span>
+</div>
+<span class="font-label-md text-label-md text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                            +0.1%
+                        </span>
+</div>
+<div class="z-10">
+<p class="font-caption text-caption text-on-surface-variant uppercase tracking-wider mb-1">Success Rate</p>
+<h3 class="font-display-lg text-[32px] md:text-[40px] text-on-surface font-extrabold tracking-tight">99.2%</h3>
+</div>
+<!-- Faux Sparkline -->
+<div class="h-10 w-full flex items-end gap-1 mt-2 z-10 opacity-70">
+<div class="w-full bg-secondary/80 h-[95%] rounded-t-sm"></div>
+<div class="w-full bg-secondary/90 h-[98%] rounded-t-sm"></div>
+<div class="w-full bg-secondary/80 h-[96%] rounded-t-sm"></div>
+<div class="w-full bg-secondary/90 h-[99%] rounded-t-sm"></div>
+<div class="w-full bg-secondary/80 h-[97%] rounded-t-sm"></div>
+<div class="w-full bg-secondary/90 h-[98%] rounded-t-sm"></div>
+<div class="w-full bg-secondary/80 h-[99%] rounded-t-sm"></div>
+<div class="w-full bg-secondary h-[100%] rounded-t-sm"></div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-error-container/20 rounded-full blur-2xl group-hover:bg-error-container/30 transition-colors"></div>
+<div class="flex justify-between items-start z-10">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-error" data-icon="pending_actions">pending_actions</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant bg-surface-container-high px-2 py-1 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_flat">trending_flat</span>
+                            0%
+                        </span>
+</div>
+<div class="z-10">
+<p class="font-caption text-caption text-on-surface-variant uppercase tracking-wider mb-1">Pending Orders</p>
+<h3 class="font-display-lg text-[32px] md:text-[40px] text-on-surface font-extrabold tracking-tight">14</h3>
+</div>
+<!-- Faux Sparkline -->
+<div class="h-10 w-full flex items-end gap-1 mt-2 z-10 opacity-70">
+<div class="w-full bg-error/20 h-[10%] rounded-t-sm"></div>
+<div class="w-full bg-error/10 h-[5%] rounded-t-sm"></div>
+<div class="w-full bg-error/30 h-[15%] rounded-t-sm"></div>
+<div class="w-full bg-error/20 h-[10%] rounded-t-sm"></div>
+<div class="w-full bg-error/40 h-[20%] rounded-t-sm"></div>
+<div class="w-full bg-error/30 h-[15%] rounded-t-sm"></div>
+<div class="w-full bg-error/50 h-[25%] rounded-t-sm"></div>
+<div class="w-full bg-error/80 h-[40%] rounded-t-sm"></div>
+</div>
+</div>
+</div>
+<!-- Recent Transactions Table -->
+<div class="glass-card rounded-2xl flex flex-col overflow-hidden mt-4">
+<div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-lowest/50">
+<h3 class="font-headline-md text-headline-md-mobile md:text-headline-md text-on-surface">Recent Transactions</h3>
+<button class="font-label-md text-label-md text-primary hover:text-primary-container transition-colors flex items-center gap-1">
+                        View All <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="py-4 px-6 font-caption text-caption text-on-surface-variant uppercase tracking-wider">Order ID</th>
+<th class="py-4 px-6 font-caption text-caption text-on-surface-variant uppercase tracking-wider">Game</th>
+<th class="py-4 px-6 font-caption text-caption text-on-surface-variant uppercase tracking-wider">Player ID</th>
+<th class="py-4 px-6 font-caption text-caption text-on-surface-variant uppercase tracking-wider text-right">Amount</th>
+<th class="py-4 px-6 font-caption text-caption text-on-surface-variant uppercase tracking-wider text-center">Status</th>
+<th class="py-4 px-6 font-caption text-caption text-on-surface-variant uppercase tracking-wider text-right">Date</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 bg-surface-container-lowest/30">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface">#NX-98231</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-md bg-[#1a1a2e] flex items-center justify-center shrink-0 border border-outline-variant/30">
+<span class="material-symbols-outlined text-white text-sm" data-icon="sports_esports">sports_esports</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-on-surface whitespace-nowrap">Valorant Points</span>
+</div>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant">Riot#4921</td>
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface text-right">$49.99</td>
+<td class="py-4 px-6 text-center">
+<span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 uppercase tracking-wide">Success</span>
+</td>
+<td class="py-4 px-6 font-caption text-caption text-on-surface-variant text-right whitespace-nowrap">2 mins ago</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors bg-surface-container-low/20">
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface">#NX-98230</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-md bg-[#0a192f] flex items-center justify-center shrink-0 border border-outline-variant/30">
+<span class="material-symbols-outlined text-white text-sm" data-icon="videogame_asset">videogame_asset</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-on-surface whitespace-nowrap">Steam Wallet</span>
+</div>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant">STEAM_0:1:123</td>
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface text-right">$100.00</td>
+<td class="py-4 px-6 text-center">
+<span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200 uppercase tracking-wide">Pending</span>
+</td>
+<td class="py-4 px-6 font-caption text-caption text-on-surface-variant text-right whitespace-nowrap">15 mins ago</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface">#NX-98229</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-md bg-[#2d1b2e] flex items-center justify-center shrink-0 border border-outline-variant/30">
+<span class="material-symbols-outlined text-white text-sm" data-icon="paid">paid</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-on-surface whitespace-nowrap">Genshin Genesis</span>
+</div>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant">UID: 801234567</td>
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface text-right">$99.99</td>
+<td class="py-4 px-6 text-center">
+<span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 uppercase tracking-wide">Success</span>
+</td>
+<td class="py-4 px-6 font-caption text-caption text-on-surface-variant text-right whitespace-nowrap">1 hour ago</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-lowest transition-colors bg-surface-container-low/20">
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface">#NX-98228</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-md bg-[#1a2f1a] flex items-center justify-center shrink-0 border border-outline-variant/30">
+<span class="material-symbols-outlined text-white text-sm" data-icon="military_tech">military_tech</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-on-surface whitespace-nowrap">Robux Pack</span>
+</div>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant">PlayerOne23</td>
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface text-right">$9.99</td>
+<td class="py-4 px-6 text-center">
+<span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800 border border-red-200 uppercase tracking-wide">Failed</span>
+</td>
+<td class="py-4 px-6 font-caption text-caption text-on-surface-variant text-right whitespace-nowrap">3 hours ago</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface">#NX-98227</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-md bg-[#1a1a2e] flex items-center justify-center shrink-0 border border-outline-variant/30">
+<span class="material-symbols-outlined text-white text-sm" data-icon="sports_esports">sports_esports</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-on-surface whitespace-nowrap">Valorant Points</span>
+</div>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant">JettM4in</td>
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface text-right">$19.99</td>
+<td class="py-4 px-6 text-center">
+<span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 uppercase tracking-wide">Success</span>
+</td>
+<td class="py-4 px-6 font-caption text-caption text-on-surface-variant text-right whitespace-nowrap">4 hours ago</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple mobile menu toggle script
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        let menuOpen = false;
+
+        if(mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                // Toggle mobile menu logic here if needed
+                console.log('Mobile menu clicked');
+            });
+        }
+    </script>
+</body></html>

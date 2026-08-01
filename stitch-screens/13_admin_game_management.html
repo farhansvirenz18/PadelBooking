@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin - Game Management | NexusPay</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e9ddff",
+                        "inverse-on-surface": "#ecf1ff",
+                        "on-surface": "#111c2d",
+                        "surface-container-low": "#f0f3ff",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "surface-container-high": "#dee8ff",
+                        "on-surface-variant": "#3e4850",
+                        "on-background": "#111c2d",
+                        "outline": "#6e7881",
+                        "surface-variant": "#d8e3fb",
+                        "tertiary": "#6d3bd7",
+                        "surface-bright": "#f9f9ff",
+                        "primary-fixed": "#c9e6ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#23005c",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#89ceff",
+                        "surface": "#f9f9ff",
+                        "secondary-fixed": "#ffdbca",
+                        "surface-container-highest": "#d8e3fb",
+                        "on-tertiary-fixed-variant": "#5516be",
+                        "on-secondary-fixed": "#341100",
+                        "surface-tint": "#006591",
+                        "secondary-container": "#fd761a",
+                        "on-error-container": "#93000a",
+                        "secondary": "#9d4300",
+                        "primary-container": "#0ea5e9",
+                        "primary": "#006591",
+                        "on-primary-container": "#003751",
+                        "on-secondary-container": "#5c2400",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#89ceff",
+                        "tertiary-container": "#a986ff",
+                        "background": "#f9f9ff",
+                        "inverse-surface": "#263143",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#d0bcff",
+                        "on-tertiary-container": "#3e0097",
+                        "on-secondary-fixed-variant": "#783200",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#cfdaf2",
+                        "outline-variant": "#bec8d2",
+                        "on-primary-fixed": "#001e2f",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#e7eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin-desktop": "40px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "caption": ["Hanken Grotesk"],
+                        "headline-md": ["Sora"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Sora"],
+                        "headline-lg-mobile": ["Sora"],
+                        "label-md": ["Hanken Grotesk"],
+                        "display-lg": ["Sora"]
+                    },
+                    "fontSize": {
+                        "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #0ea5e9, #006591);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row antialiased">
+<!-- TopNavBar (Mobile Only) -->
+<header class="md:hidden flex justify-between items-center w-full px-margin-mobile py-4 bg-white/70 backdrop-blur-xl border-b border-white/40 shadow-sm sticky top-0 z-50">
+<div class="font-display-lg text-headline-lg-mobile font-extrabold text-primary tracking-tight">NexusPay</div>
+<button class="text-on-surface-variant p-2 rounded-lg bg-surface-container-low border border-outline-variant/30 glass-panel">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</header>
+<!-- SideNav (Desktop) -->
+<aside class="hidden md:flex flex-col w-64 bg-surface-container-lowest border-r border-outline-variant h-screen sticky top-0 z-40 shrink-0">
+<div class="p-margin-desktop pb-gutter flex items-center justify-center border-b border-outline-variant/50">
+<div class="font-display-lg text-headline-lg font-extrabold text-primary tracking-tight">NexusPay Admin</div>
+</div>
+<nav class="flex-1 py-gutter px-4 flex flex-col gap-2 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-bold" href="#">
+<span class="material-symbols-outlined text-[20px] font-bold" data-icon="sports_esports">sports_esports</span>
+                Game Management
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+                Transactions
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="group">group</span>
+                Users
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="p-4 border-t border-outline-variant/50">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-error hover:bg-error-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- Top App Bar (Desktop Contextual) -->
+<div class="hidden md:flex items-center justify-between px-margin-desktop py-6 border-b border-outline-variant/30 bg-surface-container-lowest sticky top-0 z-30">
+<h1 class="font-headline-md text-headline-md text-on-surface">Game Management</h1>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 rounded-full border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none font-body-md text-body-md transition-shadow" placeholder="Search games..." type="text"/>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-variant border border-outline-variant/50 overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A clean, modern avatar illustration of a user in a minimalist digital style. The avatar features a generic tech-savvy character profile set against a bright, solid electric blue background. High-quality vector-like illustration, crisp edges, bright light mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdl6Ix5Q0gGJtpR4GSUYqyxgQMpYmAhldPP1-XiHvtkgHFuUTqphW0seiNU1_hBINRbXyUMjiGqtbcWXolgzV069oGkZT0b6k_oVZDkE3Pv_ols1S2f1xSl87izg9Ot-qS1JTQC8yze1qda9r6_jXz_KkM2Npu-7vxGU2A7XGVwktFddGz_7dBVQyjPY6aejBq3PSKtJuhhU71k7U15gFnmNzPB51JfDCzkpZPPt4CXRCUAAG4vw14auX-105KuW644zl7JFuyakhl"/>
+</div>
+</div>
+</div>
+<!-- Canvas -->
+<div class="flex-1 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full">
+<!-- Page Header & Actions -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-gutter">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface md:hidden mb-1">Game Management</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage supported titles, denominations, and active status.</p>
+</div>
+<button class="btn-gradient text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg shadow-sm hover:shadow-md hover:scale-[1.02] transition-all flex items-center justify-center gap-2 whitespace-nowrap self-start md:self-auto">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    Add New Game
+                </button>
+</div>
+<!-- Game Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+<!-- Card 1 -->
+<div class="glass-panel rounded-xl p-4 flex flex-col group relative overflow-hidden transition-all hover:shadow-[0_4px_24px_-4px_rgba(0,101,145,0.15)] hover:border-primary-container/50">
+<div class="relative h-40 rounded-lg overflow-hidden mb-4 bg-surface-variant">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A dynamic, high-quality banner for a competitive 5v5 mobile MOBA game. The image features vibrant fantasy characters engaged in an intense battle sequence with magical visual effects, glowing energy bursts, and pristine, colorful graphics. The setting is a magical arena. The aesthetic is bright, high-octane gaming suitable for a premium microtransaction platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTCmlVMeSiyMhS21ed45J50ChzhzTplJ8QKqthFsqQ45EvVHQ81EvArnsTg2FOvVD333JOK8ahq_rkLaaZkK3E5EGBtNGio6LFq2rRslpz08BG_DWePwcUgiu1qkTVJttKdWDdwCg1dBMNUTayah7Bb_1au4oWK7TxN8TnulbPH0UnSCLsunyvX34sWmxHuXjcM5-eukejJweUTwJo2k4Wwwagamwu3GZYOGuMwwqZKc4u3VYkD3TC1d1TCKfBkNPWgJ_PPY8kCEHC"/>
+<div class="absolute top-2 left-2 px-2 py-1 bg-surface-container-lowest/90 backdrop-blur rounded text-[10px] font-bold text-primary flex items-center gap-1 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div> Active
+                        </div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline-md text-[18px] text-on-surface mb-1">Mobile Legends: Bang Bang</h3>
+<div class="flex items-center gap-2 text-on-surface-variant font-caption text-caption mb-4">
+<span class="material-symbols-outlined text-[14px]" data-icon="diamond">diamond</span>
+<span>24 Denominations</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-auto pt-4 border-t border-outline-variant/20">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-variant transition-colors font-label-md text-label-md text-center">Edit</button>
+<button class="w-10 h-10 rounded-lg bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant hover:text-error hover:border-error-container transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-panel rounded-xl p-4 flex flex-col group relative overflow-hidden transition-all hover:shadow-[0_4px_24px_-4px_rgba(0,101,145,0.15)] hover:border-primary-container/50">
+<div class="relative h-40 rounded-lg overflow-hidden mb-4 bg-surface-variant">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A sleek, high-fidelity promotional image for a tactical, competitive first-person shooter game. The scene features modern, stylized agents wielding futuristic weapons in a clean, bright, near-future urban environment. Vivid contrasting colors of crimson red, stark white, and deep cyan. The aesthetic is esports-ready, premium, and intense." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2uPyJpEr43TavfQYDak2bxzKWuSjNwvJ98p-J04gOaGJVYTMy0cGgnIOYGgaVFUHCAUMMAfzTh4jA9yk1FFK5zdrbYSmjBoxE0_ESwX-scqoxAy8qaiPIqfKLCDoy-XFXXo1Tyv8DMb34-tRvOPpfDEgkvHLLkXvCnnch_qVf5GhnFjd9ZKe7P7ESRoD87SoL7HZvibe4XRM-XB4V5BKGkUDbhrMh4q9QyTw6ipr1aDep_MVMrx9T1ENe0mv8eE8ZuLScb-DOxhwi"/>
+<div class="absolute top-2 left-2 px-2 py-1 bg-surface-container-lowest/90 backdrop-blur rounded text-[10px] font-bold text-primary flex items-center gap-1 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div> Active
+                        </div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline-md text-[18px] text-on-surface mb-1">Valorant</h3>
+<div class="flex items-center gap-2 text-on-surface-variant font-caption text-caption mb-4">
+<span class="material-symbols-outlined text-[14px]" data-icon="toll">toll</span>
+<span>12 Denominations</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-auto pt-4 border-t border-outline-variant/20">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-variant transition-colors font-label-md text-label-md text-center">Edit</button>
+<button class="w-10 h-10 rounded-lg bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant hover:text-error hover:border-error-container transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-panel rounded-xl p-4 flex flex-col group relative overflow-hidden transition-all hover:shadow-[0_4px_24px_-4px_rgba(0,101,145,0.15)] hover:border-primary-container/50">
+<div class="relative h-40 rounded-lg overflow-hidden mb-4 bg-surface-variant grayscale opacity-70">
+<img class="w-full h-full object-cover" data-alt="An expansive open-world fantasy adventure game banner. The scene features stunning anime-style cel-shaded graphics showing a vast, beautiful landscape with floating islands, glowing ruins, and clear blue skies. The lighting is ethereal and bright. High-quality digital art style, conveying exploration and magic in a light mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZmfJLdE7gAScL1lon2iResAsG2NpvSFvE3sWuaqT8xJV3LwMdeM6GKHK4Ik6Xe1dXutv2DpMRxp9EdJeV0xuB-9ENhtAZYaB2QX7fKr26B_KkIxjw45hrqlr6lw5qaI8-wzBBmhSMBWE1348P9ZKvArFu_w4adeCgA4K4DUNS5mH8RUAvAdHYmnoPxQKiFjafoUXoXe0k85z77og4CWIKX5d40GLGUqeUEFJyASvDG6SP_y709sjtwQYkyxI0B_Xbh3PnuryfhbuP"/>
+<div class="absolute top-2 left-2 px-2 py-1 bg-surface-container-lowest/90 backdrop-blur rounded text-[10px] font-bold text-outline flex items-center gap-1 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-outline"></div> Inactive
+                        </div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline-md text-[18px] text-on-surface mb-1">Genshin Impact</h3>
+<div class="flex items-center gap-2 text-on-surface-variant font-caption text-caption mb-4">
+<span class="material-symbols-outlined text-[14px]" data-icon="generating_tokens">generating_tokens</span>
+<span>18 Denominations</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-auto pt-4 border-t border-outline-variant/20">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-variant transition-colors font-label-md text-label-md text-center">Edit</button>
+<button class="w-10 h-10 rounded-lg bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant hover:text-error hover:border-error-container transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="glass-panel rounded-xl p-4 flex flex-col group relative overflow-hidden transition-all hover:shadow-[0_4px_24px_-4px_rgba(0,101,145,0.15)] hover:border-primary-container/50">
+<div class="relative h-40 rounded-lg overflow-hidden mb-4 bg-surface-variant flex items-center justify-center border-2 border-dashed border-outline-variant/50 cursor-pointer hover:border-primary transition-colors group">
+<div class="flex flex-col items-center text-outline-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[32px] mb-2" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-label-md">Add New Game</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

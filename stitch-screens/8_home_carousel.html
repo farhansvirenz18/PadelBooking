@@ -1,0 +1,505 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://kit.fontawesome.com/yourcode.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#3e0097",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#f0f3ff",
+                    "surface-container": "#e7eeff",
+                    "outline": "#6e7881",
+                    "inverse-primary": "#89ceff",
+                    "on-secondary-fixed": "#341100",
+                    "primary-fixed-dim": "#89ceff",
+                    "secondary-fixed-dim": "#ffb690",
+                    "on-secondary-fixed-variant": "#783200",
+                    "tertiary": "#6d3bd7",
+                    "inverse-on-surface": "#ecf1ff",
+                    "primary": "#006591",
+                    "on-tertiary-fixed": "#23005c",
+                    "surface-tint": "#006591",
+                    "tertiary-container": "#a986ff",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#3e4850",
+                    "on-secondary-container": "#5c2400",
+                    "surface": "#f9f9ff",
+                    "on-tertiary-fixed-variant": "#5516be",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#9d4300",
+                    "primary-container": "#0ea5e9",
+                    "on-surface": "#111c2d",
+                    "surface-dim": "#cfdaf2",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#004c6e",
+                    "secondary-fixed": "#ffdbca",
+                    "tertiary-fixed-dim": "#d0bcff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#fd761a",
+                    "on-primary-fixed": "#001e2f",
+                    "on-background": "#111c2d",
+                    "surface-bright": "#f9f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#bec8d2",
+                    "primary-fixed": "#c9e6ff",
+                    "surface-container-high": "#dee8ff",
+                    "inverse-surface": "#263143",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#e9ddff",
+                    "surface-variant": "#d8e3fb",
+                    "on-primary-container": "#003751",
+                    "surface-container-highest": "#d8e3fb",
+                    "background": "#f9f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "base": "8px",
+                    "margin-mobile": "16px",
+                    "container-max": "1280px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": [
+                            "Sora"
+                    ],
+                    "label-md": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-md": [
+                            "Sora"
+                    ],
+                    "display-lg": [
+                            "Sora"
+                    ],
+                    "headline-lg": [
+                            "Sora"
+                    ],
+                    "body-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "caption": [
+                            "Hanken Grotesk"
+                    ],
+                    "body-md": [
+                            "Hanken Grotesk"
+                    ]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "caption": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+        },
+        },
+      }
+    }catch(_e){}</script></head><body class="bg-background text-on-background min-h-screen flex flex-col antialiased relative">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-[100] bg-surface/70 backdrop-blur-xl border-b border-white/40 shadow-sm shadow-primary/5 transition-all duration-300" id="topNav">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 max-w-container-max mx-auto gap-4">
+<!-- Brand -->
+<a class="font-headline-md text-headline-md font-bold tracking-tighter text-primary shrink-0" href="#">
+                NexusPay
+            </a>
+<!-- Search Bar -->
+<div class="hidden md:flex flex-1 max-w-md mx-4 relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-white/50 border border-outline-variant/30 text-on-surface placeholder-on-surface-variant/70 rounded-full py-2 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all backdrop-blur-md font-body-md text-body-md" placeholder="Search games, vouchers..." type="text">
+</div>
+<!-- Desktop Links -->
+<div class="hidden md:flex items-center gap-8 shrink-0">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md hover:scale-105 transition-transform duration-200" href="#">Beranda</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md hover:scale-105 transition-transform duration-200" href="#">Promosi</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md hover:scale-105 transition-transform duration-200" href="#">Berita</a>
+</div>
+<!-- Actions -->
+<div class="hidden md:flex items-center gap-4 shrink-0">
+<button class="font-label-md text-label-md text-primary hover:scale-105 transition-transform duration-200 px-4 py-2">
+                    Sign In
+                </button>
+<button class="font-label-md text-label-md bg-gradient-to-r from-primary to-primary-container text-on-primary px-6 py-2 rounded-full shadow-lg shadow-primary/20 hover:scale-105 transition-transform duration-200">
+                    Sign Up
+                </button>
+</div>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-primary p-2 shrink-0">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow pt-20">
+<!-- Hero Section Carousel -->
+<section class="relative h-[600px] md:h-[700px] w-full overflow-hidden bg-black" id="hero-carousel">
+<!-- Slides Container -->
+<div class="relative w-full h-full">
+<!-- Slide 1 -->
+<div class="slide absolute inset-0 w-full h-full z-10">
+<img alt="Esports Tournament" class="absolute inset-0 w-full h-full object-cover opacity-70" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8yh8CaCp9Q7yULDEtlazLC5PgORJzdj4l3D8RMKVti5zBcTIi4cxgxhNPnGdB6QzbMQzwWkoquIm8NWQJsVVZ8g7-s0YZ8tPj-J3V4-uvOaVyy4IJAmVF0jxBUHCMrBbZTsh_nHkGrJ--RogSV-Lt5jmMqTbiU9PuYm5Ctzf-tCZJXZq_bCauW2s4ZGhJmGn7A-xMvFnBBc_uz7Tmmp_07huxwSNX2sbHB4VUn3XmjCyJkRQmpzImkNBlg_tQUscS-UriLgAoyzrG">
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
+<div class="absolute inset-0 flex items-center">
+<div class="max-w-container-max w-full mx-auto px-margin-mobile md:px-margin-desktop relative z-20">
+<div class="max-w-2xl slide-content">
+<span class="inline-block px-3 py-1 mb-4 rounded-full bg-primary/20 text-primary font-label-md text-caption border border-primary/30 backdrop-blur-md">New Season</span>
+<h2 class="font-display-lg text-display-lg text-on-background mb-4">Conquer the <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary-container">Battlefield</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">Top up your game credits instantly and get back to the action. Special discounts on premium passes.</p>
+<button class="font-label-md text-label-md bg-gradient-to-r from-primary to-primary-container text-on-primary px-8 py-4 rounded-full shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform duration-300 flex items-center justify-center gap-2 w-fit">
+                            Top Up Now
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Slide 2 -->
+<div class="slide absolute inset-0 w-full h-full z-0 opacity-0">
+<img alt="Racing Game" class="absolute inset-0 w-full h-full object-cover opacity-70" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJNth84DxdI6lw-e8CSgjPbm9DCjliXq9DlLy0LFvBN6N_jceNY1xDqLOe_C7NeJKTOGUJVqawDsld5iqC3EEywJ4F7ZAQTiO7lEpIrtHjQ2nmZ_nQ9y19b0gokpswYaWPy0rHIlfAPfP6RqGq-D7CMXdJeWTivFQbpIgSVUKSEoQL6tFXuIgr_aT-iya0S4ydCtz9Sun8xCwo0lNAZmhy4qpMjEiBf4tSX0nWOL9ENY9fdQfQV8TLrJvk992UJkEbpAz1fSDZuxab">
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
+<div class="absolute inset-0 flex items-center">
+<div class="max-w-container-max w-full mx-auto px-margin-mobile md:px-margin-desktop relative z-20">
+<div class="max-w-2xl slide-content">
+<span class="inline-block px-3 py-1 mb-4 rounded-full bg-secondary-container/20 text-secondary font-label-md text-caption border border-secondary/30 backdrop-blur-md">Weekend Promo</span>
+<h2 class="font-display-lg text-display-lg text-on-background mb-4">Need for <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary-container">Speed</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">Unlock exclusive vehicles and customize your ride. Instant delivery on all cosmetic packs.</p>
+<button class="font-label-md text-label-md bg-gradient-to-r from-secondary to-secondary-container text-white px-8 py-4 rounded-full shadow-xl shadow-secondary/30 hover:scale-[1.02] transition-transform duration-300 flex items-center justify-center gap-2 w-fit">
+                            Claim Offer
+                            <span class="material-symbols-outlined text-sm">local_offer</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Slide 3 -->
+<div class="slide absolute inset-0 w-full h-full z-0 opacity-0">
+<img alt="Fantasy Game" class="absolute inset-0 w-full h-full object-cover opacity-70" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx2ScEW7CDFo47u6owgovQy4IkO9Xcs0p9pypLl_PCow9eiFN2T0XF63CCUiQjgB735FMgQZqbug2DpJkvOv4BoBLN9vypD53Ij6URpjQWlOUYAlFA6JuPMZE11NQES0n4rZB73BG5uv-Nd7WPjj9wi4w6ma0hnplMN3sLF47fNTNE-d1S5t-oqt3OeMUctaxyEPqvKXN1k0qVJ8m6VYamuV4HpizfknEcy0Xi0i8qykv6-f0Ken3m9hNL-4xf_e9QftbqLfOkOPQU">
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
+<div class="absolute inset-0 flex items-center">
+<div class="max-w-container-max w-full mx-auto px-margin-mobile md:px-margin-desktop relative z-20">
+<div class="max-w-2xl slide-content">
+<span class="inline-block px-3 py-1 mb-4 rounded-full bg-tertiary/20 text-tertiary font-label-md text-caption border border-tertiary/30 backdrop-blur-md">Exclusive</span>
+<h2 class="font-display-lg text-display-lg text-on-background mb-4">Epic <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-tertiary to-primary">Adventures</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">Summon your favorite heroes with our discounted crystal bundles. Secure and trusted by millions.</p>
+<button class="font-label-md text-label-md bg-gradient-to-r from-tertiary to-tertiary-container text-white px-8 py-4 rounded-full shadow-xl shadow-tertiary/30 hover:scale-[1.02] transition-transform duration-300 flex items-center justify-center gap-2 w-fit">
+                            Explore Bundles
+                            <span class="material-symbols-outlined text-sm">explore</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Controls -->
+<div class="absolute bottom-8 left-0 right-0 z-30">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex items-center justify-between">
+<div class="flex items-center gap-3 carousel-dots">
+<button class="w-8 h-2 rounded-full bg-primary transition-all duration-300 dot active"></button>
+<button class="w-2 h-2 rounded-full bg-outline-variant/50 hover:bg-outline transition-all duration-300 dot"></button>
+<button class="w-2 h-2 rounded-full bg-outline-variant/50 hover:bg-outline transition-all duration-300 dot"></button>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-on-surface hover:text-primary hover:bg-white transition-colors duration-300 shadow-sm" id="prev-slide">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-on-surface hover:text-primary hover:bg-white transition-colors duration-300 shadow-sm" id="next-slide">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Game Grid Section -->
+<section class="py-24 bg-surface-container-lowest relative z-20">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Trending Games</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Top up your favorite titles in seconds.</p>
+</div>
+<a class="hidden sm:flex items-center gap-1 font-label-md text-label-md text-primary hover:underline" href="#">
+                        View All <span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+<!-- Game Card 1 -->
+<div class="game-card glass-panel rounded-xl overflow-hidden cursor-pointer group">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A highly detailed, vibrant splash art depicting a fierce fantasy arena battle from a mobile MOBA game. High-key lighting, bright energetic colors, clear modern digital painting style. The characters are mid-action, conveying speed and competition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz31MX0ycIMxoSyE_UdJyF70j1tuogdaQVP9lv5507OdmqSWfHDgkpLVaYgV1wbqAOeUpKbfMsmcn5Pk4A9FvfLqmpSSs_pFiF6PFLHLLHCnES7lCizd4NPv8cz7L2jkvfJB1m4kT4HyE6ZO-slkI3N2YLdzKsnHOxqHeii8XQWkArgUC3auNbFQnsUrHJtKebM6sDhVC04glPwSkEwRZRdOzPLSUoA4eGLJtBuzh-sGyK_OS7BJEK5epLPgWGXsrAHSGAmeZcm32m">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 translate-y-2 opacity-90 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+<h3 class="font-headline-md text-headline-md text-white">Mobile Legends</h3>
+</div>
+<div class="absolute top-3 right-3 bg-secondary-container text-white font-label-md text-caption px-2 py-1 rounded">Hot</div>
+</div>
+<div class="p-4 bg-white/50 backdrop-blur-md">
+<p class="font-body-md text-caption text-on-surface-variant">Diamonds &amp; Twilight Passes</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary">From $0.99</span>
+<span class="material-symbols-outlined text-primary bg-primary/10 rounded-full p-1">add</span>
+</div>
+</div>
+</div>
+<!-- Game Card 2 -->
+<div class="game-card glass-panel rounded-xl overflow-hidden cursor-pointer group">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A detailed digital illustration of a futuristic, tactical first-person shooter game character in dynamic lighting. The scene uses a bright, neon-infused color palette with pristine whites and sharp electric blues. The atmosphere is tense and competitive, typical of high-end esports." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBG_XO6IpFp_EadDhd-DfEqX9RU9i3M1bLsKwVSRJ3GYqfaan5FrQC-oAqtrkeU2jW4gf8pFUBPrF63JMLWPG8QlAnozVdieBaSrdzMY1RjP-Z5IJm8ONct3lDpkc3TAhWD-S8FsNRm3wmohUEfl5oSjVOaY2bTozW6zExp7XapFmg6vZLBhhr5pPmgpUyoL8y6HLtXVItB65SUgWiRyfgoRYRcIFKi5lu3XxmSjbv4rUxcEEp8Ru7HOMQp9TUgKQhkkx9glU1v2F9O">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 translate-y-2 opacity-90 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+<h3 class="font-headline-md text-headline-md text-white">Valorant</h3>
+</div>
+</div>
+<div class="p-4 bg-white/50 backdrop-blur-md">
+<p class="font-body-md text-caption text-on-surface-variant">Valorant Points (VP)</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary">From $4.99</span>
+<span class="material-symbols-outlined text-primary bg-primary/10 rounded-full p-1">add</span>
+</div>
+</div>
+</div>
+<!-- Game Card 3 -->
+<div class="game-card glass-panel rounded-xl overflow-hidden cursor-pointer group">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A vivid and expansive anime-style fantasy landscape featuring glowing magical elements and clear blue skies. The lighting is bright and cheerful, reflecting an open-world exploration adventure game. The colors are highly saturated, focusing on lush greens, bright blues, and radiant golds." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQNslIvdNVHxqzl42-APmStfu2f8ec-6JA5V0uImHe6JMF3iH_fWGTQKNe0TUBYtW9AK_wFuW1O_zmgXLpjuP7uzgZU_d5xM4lYQDa1IJEKiCXUHmaCbRijAhflKZ6Q8UpD-QzxJj1hjcJDLMLncik3NeQTSqY0c-rGYcodpceQsVkeDTwMxOTiBaJhyoBt8ZscCt7rMvhaJAHC0EeQx6DrV_v5mBzw8tZpTrVOsFXfRXhOZWaVmf0zzclEjXTa8ras_ESZDvheIQv">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 translate-y-2 opacity-90 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+<h3 class="font-headline-md text-headline-md text-white">Genshin Impact</h3>
+</div>
+</div>
+<div class="p-4 bg-white/50 backdrop-blur-md">
+<p class="font-body-md text-caption text-on-surface-variant">Genesis Crystals &amp; Welkin</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary">From $0.99</span>
+<span class="material-symbols-outlined text-primary bg-primary/10 rounded-full p-1">add</span>
+</div>
+</div>
+</div>
+<!-- Game Card 4 -->
+<div class="game-card glass-panel rounded-xl overflow-hidden cursor-pointer group">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Action-packed scene of a battle royale game featuring characters parachuting onto a vibrant, tropical island. The art style is stylized and colorful, with high contrast lighting typical of fast-paced mobile shooters. Clear skies and dynamic angles convey motion." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA6UNY5XMy_ktsO-yPTNmBLhoXLj-mVEREfKVTAAwBdWxXIm8FOBVV-UXA1sNeIL64mqA4YD4N2TYlCM7oGlkzynu2ug7JNr1vkUyWBJEKGlvTs0FjHD_TlNVuM7bdn7UY2vgRxIYkaZ1P6AQezuk5jCUNEaSumMj-cvjYeRsFKH-sjqbpQkmRy5FAYF7JoJl7dgvCcpCoGlnOV6cxdzU86Ge4jdrKPMOea-HK93i5TYb_OROEq3HzKBvKdKxnAy3I-Lu-6zoc1jb2">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 translate-y-2 opacity-90 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+<h3 class="font-headline-md text-headline-md text-white">Free Fire</h3>
+</div>
+<div class="absolute top-3 right-3 bg-secondary-container text-white font-label-md text-caption px-2 py-1 rounded">-20%</div>
+</div>
+<div class="p-4 bg-white/50 backdrop-blur-md">
+<p class="font-body-md text-caption text-on-surface-variant">Diamonds Top-Up</p>
+<div class="mt-3 flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary">From $0.99</span>
+<span class="material-symbols-outlined text-primary bg-primary/10 rounded-full p-1">add</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest w-full py-12 border-t border-outline-variant/20 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-6">
+<!-- Brand -->
+<div class="font-headline-md text-headline-md text-on-surface">
+                NexusPay
+            </div>
+<!-- Links -->
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary hover:underline transition-opacity duration-300" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary hover:underline transition-opacity duration-300" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary hover:underline transition-opacity duration-300" href="#">Partner Program</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary hover:underline transition-opacity duration-300" href="#">Refund Policy</a>
+</div>
+<!-- Copyright -->
+<div class="font-body-md text-body-md text-on-surface-variant text-center md:text-right">
+                © 2024 NexusPay Gaming. All rights reserved.
+            </div>
+</div>
+</footer>
+<!-- Interactive Scripts -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hero Carousel GSAP
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            let currentSlide = 0;
+            let isAnimating = false;
+
+            // Initial animation for the first slide
+            if(slides.length > 0) {
+                const firstContent = slides[0].querySelector('.slide-content');
+                gsap.fromTo(firstContent.children, 
+                    { y: 30, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out", delay: 0.2 }
+                );
+            }
+
+            function goToSlide(index) {
+                if (isAnimating || index === currentSlide) return;
+                isAnimating = true;
+
+                const current = slides[currentSlide];
+                const next = slides[index];
+
+                // Update dots
+                dots[currentSlide].classList.remove('w-8', 'bg-primary');
+                dots[currentSlide].classList.add('w-2', 'bg-outline-variant/50');
+                dots[index].classList.remove('w-2', 'bg-outline-variant/50');
+                dots[index].classList.add('w-8', 'bg-primary');
+
+                // Bring next to top
+                gsap.set(next, { zIndex: 5, opacity: 0 });
+                gsap.set(current, { zIndex: 4 });
+
+                // Animate elements inside next slide
+                const nextContent = next.querySelector('.slide-content');
+                gsap.fromTo(nextContent.children, 
+                    { y: 30, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out", delay: 0.2 }
+                );
+
+                // Fade in next slide
+                gsap.to(next, {
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        gsap.set(current, { opacity: 0, zIndex: 0 });
+                        gsap.set(next, { zIndex: 10 });
+                        currentSlide = index;
+                        isAnimating = false;
+                    }
+                });
+            }
+
+            if(document.getElementById('next-slide')) {
+                document.getElementById('next-slide').addEventListener('click', () => {
+                    let nextIndex = (currentSlide + 1) % slides.length;
+                    goToSlide(nextIndex);
+                });
+            }
+
+            if(document.getElementById('prev-slide')) {
+                document.getElementById('prev-slide').addEventListener('click', () => {
+                    let prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+                    goToSlide(prevIndex);
+                });
+            }
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                });
+            });
+
+            // Auto-play
+            let autoPlay = setInterval(() => {
+                if(slides.length > 0) {
+                    let nextIndex = (currentSlide + 1) % slides.length;
+                    goToSlide(nextIndex);
+                }
+            }, 5000);
+
+            const carouselElement = document.getElementById('hero-carousel');
+            if(carouselElement) {
+                carouselElement.addEventListener('mouseenter', () => clearInterval(autoPlay));
+                carouselElement.addEventListener('mouseleave', () => {
+                    autoPlay = setInterval(() => {
+                        let nextIndex = (currentSlide + 1) % slides.length;
+                        goToSlide(nextIndex);
+                    }, 5000);
+                });
+            }
+
+            // Game Cards Hover Animation using vanilla JS/CSS approach with GSAP
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, {
+                        scale: 1.02,
+                        boxShadow: "0 20px 40px -15px rgba(0, 101, 145, 0.2)",
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                });
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        scale: 1,
+                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                });
+            });
+            
+            // Top Nav Scroll Effect
+            const topNav = document.getElementById('topNav');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    topNav.classList.add('shadow-md');
+                } else {
+                    topNav.classList.remove('shadow-md');
+                }
+            });
+        });
+    </script>
+</body></html>

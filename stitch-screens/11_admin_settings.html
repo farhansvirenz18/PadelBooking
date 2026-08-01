@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NexusPay Admin - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e9ddff",
+                        "inverse-on-surface": "#ecf1ff",
+                        "on-surface": "#111c2d",
+                        "surface-container-low": "#f0f3ff",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "surface-container-high": "#dee8ff",
+                        "on-surface-variant": "#3e4850",
+                        "on-background": "#111c2d",
+                        "outline": "#6e7881",
+                        "surface-variant": "#d8e3fb",
+                        "tertiary": "#6d3bd7",
+                        "surface-bright": "#f9f9ff",
+                        "primary-fixed": "#c9e6ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#23005c",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#89ceff",
+                        "surface": "#f9f9ff",
+                        "secondary-fixed": "#ffdbca",
+                        "surface-container-highest": "#d8e3fb",
+                        "on-tertiary-fixed-variant": "#5516be",
+                        "on-secondary-fixed": "#341100",
+                        "surface-tint": "#006591",
+                        "secondary-container": "#fd761a",
+                        "on-error-container": "#93000a",
+                        "secondary": "#9d4300",
+                        "primary-container": "#0ea5e9",
+                        "primary": "#006591",
+                        "on-primary-container": "#003751",
+                        "on-secondary-container": "#5c2400",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#89ceff",
+                        "tertiary-container": "#a986ff",
+                        "background": "#f9f9ff",
+                        "inverse-surface": "#263143",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#d0bcff",
+                        "on-tertiary-container": "#3e0097",
+                        "on-secondary-fixed-variant": "#783200",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#cfdaf2",
+                        "outline-variant": "#bec8d2",
+                        "on-primary-fixed": "#001e2f",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#e7eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin-desktop": "40px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "caption": ["Hanken Grotesk"],
+                        "headline-md": ["Sora"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Sora"],
+                        "headline-lg-mobile": ["Sora"],
+                        "label-md": ["Hanken Grotesk"],
+                        "display-lg": ["Sora"]
+                    },
+                    "fontSize": {
+                        "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        /* Custom scrollbar for an airy feel */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: theme('colors.surface-variant'); border-radius: theme('borderRadius.full'); }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.outline-variant'); }
+        
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 24px -4px rgba(0, 101, 145, 0.05); /* Faint primary tint shadow */
+        }
+        
+        /* Input focus glows */
+        .input-glow:focus-within {
+            box-shadow: 0 0 8px rgba(14, 165, 233, 0.3); /* Electric Blue hint */
+            border-color: theme('colors.primary-container');
+        }
+
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: theme('colors.primary');
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: theme('colors.primary');
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- Top Navigation (Hidden on MD for typical Admin layouts, but JSON says docked top) -->
+<nav class="bg-white/70 backdrop-blur-xl border-b border-white/40 shadow-sm docked full-width top-0 z-50 fixed w-full h-20">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-full">
+<div class="flex items-center gap-gutter">
+<a class="font-display-lg text-display-lg font-extrabold text-primary dark:text-inverse-primary tracking-tight" href="#" style="font-size: 28px;">NexusPay</a>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<!-- Links mapped from JSON, though Settings isn't in JSON links, it's inferred for Admin -->
+<a class="text-on-surface-variant font-medium font-label-md text-label-md hover:text-primary transition-all duration-200" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-medium font-label-md text-label-md hover:text-primary transition-all duration-200" href="#">Users</a>
+<a class="text-on-surface-variant font-medium font-label-md text-label-md hover:text-primary transition-all duration-200" href="#">Transactions</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Settings</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-200">Admin Sign Out</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow pt-28 pb-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden lg:block lg:col-span-3">
+<div class="glass-panel rounded-xl p-6 sticky top-28">
+<h3 class="font-headline-md text-headline-md mb-6 text-on-surface">Configuration</h3>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-surface-container-high text-primary font-bold transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-md text-label-md">General Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">key</span>
+<span class="font-label-md text-label-md">API Keys</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">shield_person</span>
+<span class="font-label-md text-label-md">Security</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-label-md text-label-md">Email Templates</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Settings Content -->
+<section class="col-span-1 lg:col-span-9 flex flex-col gap-8">
+<!-- Header -->
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Platform Settings</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage global variables and operational modes for NexusPay.</p>
+</div>
+<!-- Global Configuration Form -->
+<form class="flex flex-col gap-8">
+<!-- System Status Panel (Glassmorphism Bento) -->
+<div class="glass-panel rounded-xl p-6 md:p-8">
+<h2 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">build_circle</span>
+                        Operational Mode
+                    </h2>
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg border border-outline-variant/30">
+<div>
+<p class="font-label-md text-label-md text-on-surface mb-1">Maintenance Mode</p>
+<p class="font-caption text-caption text-on-surface-variant">Disables public API access and shows a holding page. Internal Admin access remains active.</p>
+</div>
+<!-- Custom Toggle -->
+<div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-all right-6 border-surface-variant" id="maintenance_toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-surface-variant cursor-pointer transition-colors" for="maintenance_toggle"></label>
+</div>
+</div>
+</div>
+<!-- API & Integrations -->
+<div class="glass-panel rounded-xl p-6 md:p-8">
+<h2 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">api</span>
+                        Payment Gateway Integration
+                    </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface">Primary Gateway Secret Key</label>
+<div class="relative flex items-center input-glow rounded-lg border border-slate-200 bg-slate-50 transition-all overflow-hidden">
+<span class="material-symbols-outlined pl-3 text-outline">key</span>
+<input class="w-full bg-transparent border-none focus:ring-0 font-body-md text-body-md text-on-surface py-3 px-3" placeholder="sk_live_..." type="password" value="sk_live_1234567890abcdef"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface">Webhook Signing Secret</label>
+<div class="relative flex items-center input-glow rounded-lg border border-slate-200 bg-slate-50 transition-all overflow-hidden">
+<span class="material-symbols-outlined pl-3 text-outline">lock</span>
+<input class="w-full bg-transparent border-none focus:ring-0 font-body-md text-body-md text-on-surface py-3 px-3" placeholder="whsec_..." type="password" value="whsec_0987654321fedcba"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Communication -->
+<div class="glass-panel rounded-xl p-6 md:p-8">
+<h2 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">contact_support</span>
+                        Support Configuration
+                    </h2>
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-2 w-full md:w-1/2">
+<label class="font-label-md text-label-md text-on-surface">Global Support Email</label>
+<div class="relative flex items-center input-glow rounded-lg border border-slate-200 bg-slate-50 transition-all overflow-hidden">
+<span class="material-symbols-outlined pl-3 text-outline">mail</span>
+<input class="w-full bg-transparent border-none focus:ring-0 font-body-md text-body-md text-on-surface py-3 px-3" type="email" value="support@nexuspay.gg"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Admin Security Profile -->
+<div class="glass-panel rounded-xl p-6 md:p-8 relative overflow-hidden">
+<!-- Subtle background decoration -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary-fixed rounded-full blur-3xl opacity-30 pointer-events-none"></div>
+<h2 class="font-headline-md text-headline-md mb-6 flex items-center gap-2 relative z-10">
+<span class="material-symbols-outlined text-primary">admin_panel_settings</span>
+                        Admin Security Profile
+                    </h2>
+<div class="flex flex-col gap-6 relative z-10">
+<div class="flex items-center gap-4 p-4 rounded-lg bg-surface border border-outline-variant/30">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-headline-md">
+                                A
+                            </div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Admin Session Timeout</p>
+<p class="font-caption text-caption text-on-surface-variant">Automatically log out after inactivity.</p>
+</div>
+<div class="ml-auto">
+<select class="bg-slate-50 border border-slate-200 text-on-surface font-body-md rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
+<option>15 Minutes</option>
+<option selected="">30 Minutes</option>
+<option>1 Hour</option>
+</select>
+</div>
+</div>
+<div class="flex justify-end gap-4 mt-4">
+<button class="px-6 py-3 rounded-lg bg-white border border-outline-variant font-label-md text-label-md text-on-surface hover:bg-surface transition-colors shadow-sm" type="button">Cancel</button>
+<!-- Primary Button following style guide -->
+<button class="px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary font-label-md text-label-md shadow-md hover:scale-[1.02] transition-transform shadow-primary/20 hover:shadow-primary/40" type="submit">Save Configuration</button>
+</div>
+</div>
+</div>
+</form>
+</section>
+</main>
+<!-- Footer mapped from JSON -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-12 max-w-container-max mx-auto gap-gutter">
+<div class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">NexusPay</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Terms of Service</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Refund Policy</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Contact Support</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">About Us</a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors focus:ring-2 focus:ring-primary rounded" href="#">Partners</a>
+</div>
+<div class="font-caption text-caption text-on-surface-variant text-center md:text-right">
+                © 2024 NexusPay. All rights reserved. High-performance gaming transactions.
+            </div>
+</div>
+</footer>
+</body></html>
