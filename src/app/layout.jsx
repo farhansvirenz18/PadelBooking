@@ -9,7 +9,10 @@ const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-body', display: '
 export const metadata = {
   title: 'Aero Padel - Book Padel Courts Easily',
   description: 'Book padel courts, hire coaches, join tournaments, and shop for equipment.',
-  icons: { icon: '/favicon.ico' },
+  icons: {
+    icon: '/images/logopadel.png',
+    apple: '/images/logopadel.png',
+  },
 };
 
 export default function RootLayout({ children }) {
