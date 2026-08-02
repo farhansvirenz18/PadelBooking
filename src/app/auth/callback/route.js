@@ -4,6 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export async function GET(request) {
@@ -14,15 +15,19 @@ export async function GET(request) {
 
   if (code) {
     const cookieStore = await cookies();
-    const supabase = createServerClient(supabaseUrl, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         getAll() {
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, options);
-          });
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
+            });
+          } catch {
+            // setAll can be called from Server Component where set is not allowed
+          }
         },
       },
     });
@@ -68,13 +73,12 @@ export async function GET(request) {
           .eq('id', user.id)
           .single();
 
-        if (profile?.role === 'admin') {
-          return NextResponse.redirect(`${origin}/admin`);
-        }
+        const redirectPath = profile?.role === 'admin' ? '/admin' : safeNext;
+        return NextResponse.redirect(`${origin}${redirectPath}`);
       }
-
-      return NextResponse.redirect(`${origin}${safeNext}`);
     }
+
+    console.error('exchangeCodeForSession error:', error?.message);
   }
 
   return NextResponse.redirect(`${origin}/login?error=auth`);
