@@ -172,7 +172,7 @@ export default function CoachProfilePage() {
               {/* Photo */}
               <div className="relative h-80 rounded-3xl overflow-hidden">
                 <img
-                  src={coach.photo_url || 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=800&q=75'}
+                  src={coach.image_url || 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=800&q=75'}
                   alt={coach.name}
                   className="w-full h-full object-cover"
                 />

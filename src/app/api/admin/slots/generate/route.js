@@ -26,7 +26,7 @@ export async function POST(request) {
 
     const { data: court, error: courtError } = await supabaseServer
       .from('courts')
-      .select('id, name, base_price, peak_price')
+      .select('id, name, price_per_hour_offpeak, price_per_hour_peak')
       .eq('id', courtId)
       .single();
 
@@ -72,8 +72,7 @@ export async function POST(request) {
             date: dateStr,
             start_time: startTimeStr,
             end_time: endTimeStr,
-            price: court.base_price,
-            peak_price: court.peak_price || court.base_price,
+            price: isPeak ? (court.price_per_hour_peak || court.price_per_hour_offpeak) : court.price_per_hour_offpeak,
             is_peak: isPeak,
             status: 'available',
           });

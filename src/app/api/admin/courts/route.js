@@ -18,7 +18,7 @@ export async function GET(request) {
       .order('created_at', { ascending: false });
 
     if (!includeInactive) {
-      query = query.eq('is_active', true);
+      query = query.eq('status', 'active');
     }
 
     if (type) query = query.eq('type', type);
@@ -40,10 +40,10 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
-    const { name, type, location, description, base_price, peak_price, image_url, status, amenities } = body;
+    const { name, type, description, price_per_hour_offpeak, price_per_hour_peak, image_url, status, amenities } = body;
 
-    if (!name || !type || !base_price) {
-      return NextResponse.json({ error: 'name, type, and base_price are required' }, { status: 400 });
+    if (!name || !type || !price_per_hour_offpeak) {
+      return NextResponse.json({ error: 'name, type, and base price are required' }, { status: 400 });
     }
 
     const { data, error } = await supabaseServer
@@ -51,14 +51,12 @@ export async function POST(request) {
       .insert({
         name,
         type,
-        location: location || null,
         description: description || null,
-        base_price,
-        peak_price: peak_price || base_price,
+        price_per_hour_offpeak,
+        price_per_hour_peak: price_per_hour_peak || price_per_hour_offpeak,
         image_url: image_url || null,
         status: status || 'active',
         amenities: amenities || null,
-        is_active: true,
       })
       .select()
       .single();
@@ -84,7 +82,7 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
     }
 
-    const allowedFields = ['name', 'type', 'location', 'description', 'base_price', 'peak_price', 'image_url', 'status', 'amenities', 'is_active'];
+    const allowedFields = ['name', 'type', 'description', 'price_per_hour_offpeak', 'price_per_hour_peak', 'image_url', 'status', 'amenities'];
     const filtered = {};
     for (const key of allowedFields) {
       if (updateFields[key] !== undefined) {

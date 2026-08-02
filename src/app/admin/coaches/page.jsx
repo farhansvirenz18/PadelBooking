@@ -25,7 +25,8 @@ import ExportButton from "@/components/admin/ExportButton";
     specialties: [],
     certifications: "",
     hourly_rate: "",
-    image: null,
+    image_url: "",
+    imageFile: null,
     is_active: true,
   });
 
@@ -68,7 +69,8 @@ import ExportButton from "@/components/admin/ExportButton";
       specialties: [],
       certifications: "",
       hourly_rate: "",
-      image: null,
+      image_url: "",
+      imageFile: null,
       is_active: true,
     });
     setModalOpen(true);
@@ -82,7 +84,8 @@ import ExportButton from "@/components/admin/ExportButton";
       specialties: coach.specialties || [],
       certifications: coach.certifications || "",
       hourly_rate: coach.hourly_rate || "",
-      image: null,
+      image_url: coach.image_url || "",
+      imageFile: null,
       is_active: coach.is_active !== false,
     });
     setModalOpen(true);
@@ -100,12 +103,24 @@ import ExportButton from "@/components/admin/ExportButton";
   const handleSave = async () => {
     setSaving(true);
     try {
+      let imageUrl = form.image_url || "";
+
+      if (form.imageFile) {
+        const fd = new FormData();
+        fd.append("file", form.imageFile);
+        fd.append("bucket", "uploads");
+        const uploadRes = await adminFetch("/api/admin/upload", { method: "POST", body: fd });
+        const uploadData = await uploadRes.json();
+        if (uploadData.success) imageUrl = uploadData.url;
+      }
+
       const payload = {
         name: form.name,
         bio: form.bio,
         specialties: form.specialties,
         certifications: form.certifications,
         hourly_rate: Number(form.hourly_rate) || 0,
+        image_url: imageUrl || null,
         is_active: form.is_active,
       };
 
@@ -237,9 +252,9 @@ import ExportButton from "@/components/admin/ExportButton";
                 <div className="p-6">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="w-16 h-16 rounded-full bg-[#E8F5E9] flex items-center justify-center overflow-hidden flex-shrink-0">
-                      {coach.image_url || coach.image || coach.photo ? (
+                      {coach.image_url ? (
                         <img
-                          src={coach.image_url || coach.image || coach.photo}
+                          src={coach.image_url}
                           alt={getCoachName(coach)}
                           className="w-full h-full object-cover"
                         />
@@ -385,7 +400,7 @@ import ExportButton from "@/components/admin/ExportButton";
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
+                    onChange={(e) => setForm({ ...form, imageFile: e.target.files[0] })}
                     className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-[#E8F5E9] file:text-[#1B5E20] file:font-medium file:cursor-pointer"
                   />
                 </div>

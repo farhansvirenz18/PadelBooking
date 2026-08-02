@@ -3,7 +3,7 @@ import { supabaseServer } from '@/lib/supabaseServer';
 import { verifyAdmin, validateTable } from '@/lib/auth';
 
 const FIELD_ALLOWLISTS = {
-  courts: ['name', 'description', 'hourly_rate', 'surface_type', 'indoor', 'amenities', 'image_url', 'is_active'],
+  courts: ['name', 'description', 'type', 'price_per_hour_offpeak', 'price_per_hour_peak', 'amenities', 'image_url', 'status'],
   time_slots: ['court_id', 'date', 'start_time', 'end_time', 'is_available', 'price_override'],
   bookings: ['user_id', 'court_id', 'date', 'time', 'total_price', 'status', 'payment_status', 'notes'],
   membership_tiers: ['name', 'description', 'monthly_price', 'annual_price', 'perks', 'discount_percent', 'is_active'],

@@ -23,7 +23,8 @@ export default function ShopPage() {
     category_id: "",
     price: "",
     discount_price: "",
-    image: null,
+    image_url: "",
+    imageFile: null,
     brand: "",
     stock: "",
     is_active: true,
@@ -83,7 +84,8 @@ export default function ShopPage() {
       category_id: "",
       price: "",
       discount_price: "",
-      image: null,
+      image_url: "",
+      imageFile: null,
       brand: "",
       stock: "",
       is_active: true,
@@ -99,7 +101,8 @@ export default function ShopPage() {
       category_id: p.category_id || "",
       price: p.price || "",
       discount_price: p.discount_price || "",
-      image: null,
+      image_url: p.image_url || "",
+      imageFile: null,
       brand: p.brand || "",
       stock: p.stock ?? "",
       is_active: p.is_active !== false,
@@ -110,6 +113,17 @@ export default function ShopPage() {
   const handleSaveProduct = async () => {
     setSaving(true);
     try {
+      let imageUrl = productForm.image_url || "";
+
+      if (productForm.imageFile) {
+        const fd = new FormData();
+        fd.append("file", productForm.imageFile);
+        fd.append("bucket", "uploads");
+        const uploadRes = await adminFetch("/api/admin/upload", { method: "POST", body: fd });
+        const uploadData = await uploadRes.json();
+        if (uploadData.success) imageUrl = uploadData.url;
+      }
+
       const payload = {
         name: productForm.name,
         description: productForm.description,
@@ -118,6 +132,7 @@ export default function ShopPage() {
         stock: Number(productForm.stock) || 0,
         brand: productForm.brand || null,
         discount_price: Number(productForm.discount_price) || null,
+        image_url: imageUrl || null,
         is_active: productForm.is_active,
       };
 
@@ -384,8 +399,8 @@ export default function ShopPage() {
                   className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition"
                 >
                   <div className="aspect-square bg-gray-100 relative">
-                    {p.image ? (
-                      <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                    {p.image_url ? (
+                      <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <span className="material-symbols-rounded text-gray-300 text-5xl">image</span>
@@ -589,7 +604,7 @@ export default function ShopPage() {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setProductForm({ ...productForm, image: e.target.files[0] })}
+                  onChange={(e) => setProductForm({ ...productForm, imageFile: e.target.files[0] })}
                   className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-[#E8F5E9] file:text-[#1B5E20] file:font-medium file:cursor-pointer"
                 />
               </div>

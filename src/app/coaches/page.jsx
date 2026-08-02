@@ -164,7 +164,7 @@ export default function CoachesPage() {
                   {/* Photo */}
                   <div className="relative h-52 overflow-hidden">
                     <img
-                      src={coach.photo_url || 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&q=75'}
+                      src={coach.image_url || 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&q=75'}
                       alt={coach.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

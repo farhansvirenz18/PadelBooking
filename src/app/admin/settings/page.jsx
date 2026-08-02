@@ -54,7 +54,7 @@ export default function AdminSettings() {
     try {
       const fd = new FormData();
       fd.append('file', file);
-      fd.append('bucket', 'uploads');
+      fd.append('bucket', 'avatars');
       const res = await adminFetch('/api/admin/upload', { method: 'POST', body: fd });
       const json = await res.json();
       if (json.success) {

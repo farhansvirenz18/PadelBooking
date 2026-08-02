@@ -46,11 +46,11 @@ function CourtCard({ court, onEdit, onDelete }) {
         <div className="flex items-center gap-4 mb-4">
           <div>
             <p className="text-xs text-on-surface-variant">Base Price</p>
-            <p className="text-sm font-bold text-on-surface">Rp {Number(court.base_price || 0).toLocaleString('id-ID')}</p>
+            <p className="text-sm font-bold text-on-surface">Rp {Number(court.price_per_hour_offpeak || 0).toLocaleString('id-ID')}</p>
           </div>
           <div>
             <p className="text-xs text-on-surface-variant">Peak Price</p>
-            <p className="text-sm font-bold text-[#1B5E20]">Rp {Number(court.peak_price || court.base_price || 0).toLocaleString('id-ID')}</p>
+            <p className="text-sm font-bold text-[#1B5E20]">Rp {Number(court.price_per_hour_peak || court.price_per_hour_offpeak || 0).toLocaleString('id-ID')}</p>
           </div>
         </div>
         {court.amenities && court.amenities.length > 0 && (
@@ -79,7 +79,7 @@ function CourtCard({ court, onEdit, onDelete }) {
 
 function CourtModal({ open, onClose, onSave, court }) {
   const [form, setForm] = useState({
-    name: '', description: '', type: 'indoor', base_price: '', peak_price: '', image_url: '', amenities: [], status: 'active', location: '',
+    name: '', description: '', type: 'indoor', price_per_hour_offpeak: '', price_per_hour_peak: '', image_url: '', amenities: [], status: 'active',
   });
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -90,15 +90,14 @@ function CourtModal({ open, onClose, onSave, court }) {
         name: court.name || '',
         description: court.description || '',
         type: court.type || 'indoor',
-        base_price: court.base_price || '',
-        peak_price: court.peak_price || '',
+        price_per_hour_offpeak: court.price_per_hour_offpeak || '',
+        price_per_hour_peak: court.price_per_hour_peak || '',
         image_url: court.image_url || '',
         amenities: court.amenities || [],
         status: court.status || 'active',
-        location: court.location || '',
       });
     } else {
-      setForm({ name: '', description: '', type: 'indoor', base_price: '', peak_price: '', image_url: '', amenities: [], status: 'active', location: '' });
+      setForm({ name: '', description: '', type: 'indoor', price_per_hour_offpeak: '', price_per_hour_peak: '', image_url: '', amenities: [], status: 'active' });
     }
   }, [court, open]);
 
@@ -129,13 +128,13 @@ function CourtModal({ open, onClose, onSave, court }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.base_price) return;
+    if (!form.name || !form.price_per_hour_offpeak) return;
     setSaving(true);
     try {
       const payload = {
         ...form,
-        base_price: Number(form.base_price),
-        peak_price: Number(form.peak_price) || Number(form.base_price),
+        price_per_hour_offpeak: Number(form.price_per_hour_offpeak),
+        price_per_hour_peak: Number(form.price_per_hour_peak) || Number(form.price_per_hour_offpeak),
       };
       if (court?.id) {
         await adminFetch('/api/admin/courts', { method: 'PUT', body: JSON.stringify({ id: court.id, ...payload }) });
@@ -191,16 +190,12 @@ function CourtModal({ open, onClose, onSave, court }) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-on-surface mb-1.5">Base Price (Rp) *</label>
-              <input type="number" value={form.base_price} onChange={(e) => setForm({ ...form, base_price: e.target.value })} required min="0" className="w-full px-4 py-2.5 rounded-xl border border-outline-variant/50 bg-surface text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" placeholder="50000" />
+              <input type="number" value={form.price_per_hour_offpeak} onChange={(e) => setForm({ ...form, price_per_hour_offpeak: e.target.value })} required min="0" className="w-full px-4 py-2.5 rounded-xl border border-outline-variant/50 bg-surface text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" placeholder="50000" />
             </div>
             <div>
               <label className="block text-sm font-medium text-on-surface mb-1.5">Peak Price (Rp)</label>
-              <input type="number" value={form.peak_price} onChange={(e) => setForm({ ...form, peak_price: e.target.value })} min="0" className="w-full px-4 py-2.5 rounded-xl border border-outline-variant/50 bg-surface text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" placeholder="75000" />
+              <input type="number" value={form.price_per_hour_peak} onChange={(e) => setForm({ ...form, price_per_hour_peak: e.target.value })} min="0" className="w-full px-4 py-2.5 rounded-xl border border-outline-variant/50 bg-surface text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" placeholder="75000" />
             </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-on-surface mb-1.5">Location</label>
-            <input type="text" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-outline-variant/50 bg-surface text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" placeholder="Court location" />
           </div>
           <div>
             <label className="block text-sm font-medium text-on-surface mb-1.5">Image</label>
@@ -282,10 +277,9 @@ function DeleteModal({ open, onClose, onConfirm, court }) {
 const COURT_COLUMNS = [
   { header: 'Name', key: 'name', width: 20 },
   { header: 'Type', key: 'type', width: 12 },
-  { header: 'Base Price', key: 'base_price', width: 15 },
-  { header: 'Peak Price', key: 'peak_price', width: 15 },
+  { header: 'Base Price', key: 'price_per_hour_offpeak', width: 15 },
+  { header: 'Peak Price', key: 'price_per_hour_peak', width: 15 },
   { header: 'Status', key: 'status', width: 12 },
-  { header: 'Location', key: 'location', width: 18 },
 ];
 
 export default function AdminCourts() {
@@ -320,7 +314,7 @@ export default function AdminCourts() {
   const filtered = useMemo(() => {
     if (!search) return courts;
     const q = search.toLowerCase();
-    return courts.filter((c) => c.name?.toLowerCase().includes(q) || c.location?.toLowerCase().includes(q) || c.description?.toLowerCase().includes(q));
+    return courts.filter((c) => c.name?.toLowerCase().includes(q) || c.description?.toLowerCase().includes(q));
   }, [courts, search]);
 
   const handleSave = () => { setModalOpen(false); setEditCourt(null); fetchCourts(); };
