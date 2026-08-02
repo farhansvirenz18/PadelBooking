@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseServer';
 import { verifyAdmin, validateFile } from '@/lib/auth';
 
+const ALLOWED_BUCKETS = ['uploads', 'avatars', 'products', 'courts'];
+
 export async function POST(request) {
   const auth = await verifyAdmin(request);
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
@@ -10,6 +12,10 @@ export async function POST(request) {
     const formData = await request.formData();
     const file = formData.get('file');
     const bucket = formData.get('bucket') || 'uploads';
+
+    if (!ALLOWED_BUCKETS.includes(bucket)) {
+      return NextResponse.json({ error: 'Invalid bucket name' }, { status: 400 });
+    }
 
     const validation = validateFile(file);
     if (validation.error) return NextResponse.json({ error: validation.error }, { status: 400 });

@@ -31,20 +31,21 @@ export async function POST(request) {
       .eq('status', 'active')
       .single();
 
-    if (existing) {
-      if (existing.tier_id === tierId) {
-        return NextResponse.json({ error: 'Already subscribed to this tier' }, { status: 400 });
-      }
+    if (existing && existing.tier_id === tierId) {
+      return NextResponse.json({ error: 'Already subscribed to this tier' }, { status: 400 });
+    }
 
+    if (existing) {
       await supabaseServer
         .from('user_memberships')
         .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
-        .eq('id', existing.id);
+        .eq('id', existing.id)
+        .eq('status', 'active');
     }
 
     const startDate = new Date().toISOString();
     const endDate = new Date();
-    endDate.setMonth(endDate.getMonth() + (tier.duration_months || 1));
+    endDate.setMonth(endDate.getMonth() + 1);
 
     const { data: membership, error: memError } = await supabaseServer
       .from('user_memberships')
@@ -53,8 +54,8 @@ export async function POST(request) {
         tier_id: tierId,
         start_date: startDate,
         end_date: endDate.toISOString(),
-        status: 'pending',
-        payment_status: 'pending',
+        status: 'active',
+        payment_status: 'unpaid',
       })
       .select()
       .single();

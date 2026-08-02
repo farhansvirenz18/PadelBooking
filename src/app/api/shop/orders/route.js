@@ -33,24 +33,47 @@ export async function POST(request) {
       return NextResponse.json({ error: 'At least one item is required' }, { status: 400 });
     }
 
+    for (const item of items) {
+      if (!item.productId || !item.quantity || item.quantity < 1) {
+        return NextResponse.json({ error: 'Invalid item data' }, { status: 400 });
+      }
+    }
+
+    const decremented = [];
+    for (const item of items) {
+      const { data: success } = await supabaseServer.rpc('decrement_stock', {
+        p_product_id: item.productId,
+        p_quantity: item.quantity,
+      });
+      if (!success) {
+        for (const d of decremented) {
+          await supabaseServer.rpc('decrement_stock', {
+            p_product_id: d.productId,
+            p_quantity: -d.quantity,
+          });
+        }
+        const { data: product } = await supabaseServer
+          .from('shop_products')
+          .select('name, stock')
+          .eq('id', item.productId)
+          .single();
+        return NextResponse.json(
+          { error: `Insufficient stock for ${product?.name || 'product'}` },
+          { status: 400 }
+        );
+      }
+      decremented.push(item);
+    }
+
     let totalAmount = 0;
     const orderItems = [];
 
     for (const item of items) {
-      const { data: product, error: productError } = await supabaseServer
+      const { data: product } = await supabaseServer
         .from('shop_products')
-        .select('*')
+        .select('price, name')
         .eq('id', item.productId)
-        .eq('is_active', true)
         .single();
-
-      if (productError || !product) {
-        return NextResponse.json({ error: `Product ${item.productId} not found` }, { status: 404 });
-      }
-
-      if (product.stock < item.quantity) {
-        return NextResponse.json({ error: `Insufficient stock for ${product.name}` }, { status: 400 });
-      }
 
       const itemTotal = parseFloat(product.price) * item.quantity;
       totalAmount += itemTotal;
@@ -58,7 +81,7 @@ export async function POST(request) {
       orderItems.push({
         product_id: item.productId,
         quantity: item.quantity,
-        price: product.price,
+        unit_price: product.price,
       });
     }
 
@@ -66,11 +89,11 @@ export async function POST(request) {
       .from('shop_orders')
       .insert({
         user_id: auth.user.id,
-        total_amount: totalAmount,
+        total_price: totalAmount,
         shipping_address: shippingAddress || null,
         notes: notes || null,
         status: 'pending',
-        payment_status: 'pending',
+        payment_status: 'unpaid',
       })
       .select()
       .single();
@@ -87,25 +110,6 @@ export async function POST(request) {
       .insert(itemsToInsert);
 
     if (itemsError) throw itemsError;
-
-    for (const item of items) {
-      await supabaseServer.rpc('decrement_stock', {
-        product_id: item.productId,
-        quantity: item.quantity,
-      }).catch(() => {
-        return supabaseServer
-          .from('shop_products')
-          .select('stock')
-          .eq('id', item.productId)
-          .single()
-          .then(({ data }) => {
-            return supabaseServer
-              .from('shop_products')
-              .update({ stock: data.stock - item.quantity })
-              .eq('id', item.productId);
-          });
-      });
-    }
 
     return NextResponse.json({ success: true, data: order }, { status: 201 });
   } catch (error) {

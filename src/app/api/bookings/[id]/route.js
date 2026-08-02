@@ -11,7 +11,7 @@ export async function GET(request, { params }) {
 
     const { data: booking, error } = await supabaseServer
       .from('bookings')
-      .select('*, courts(name, type, location, image_url), time_slots(start_time, end_time, date, price, peak_price), users(first_name, last_name, email)')
+      .select('*, courts(name, type, image_url), time_slots(start_time, end_time, date, price), users(first_name, last_name, email)')
       .eq('id', id)
       .single();
 
@@ -75,10 +75,15 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Booking is already cancelled' }, { status: 400 });
     }
 
+    if (booking.payment_status === 'paid') {
+      return NextResponse.json({ error: 'Cannot cancel a paid booking. Please request a refund.' }, { status: 400 });
+    }
+
     const { error: cancelError } = await supabaseServer
       .from('bookings')
-      .update({ status: 'cancelled', payment_status: 'cancelled' })
-      .eq('id', id);
+      .update({ status: 'cancelled', payment_status: 'refunded' })
+      .eq('id', id)
+      .eq('status', 'pending');
 
     if (cancelError) throw cancelError;
 
@@ -86,7 +91,8 @@ export async function PUT(request, { params }) {
       await supabaseServer
         .from('time_slots')
         .update({ status: 'available' })
-        .eq('id', booking.time_slot_id);
+        .eq('id', booking.time_slot_id)
+        .eq('status', 'booked');
     }
 
     return NextResponse.json({ success: true, message: 'Booking cancelled' });

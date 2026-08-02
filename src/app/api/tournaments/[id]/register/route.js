@@ -20,18 +20,15 @@ export async function POST(request, { params }) {
       return NextResponse.json({ error: 'Tournament not found' }, { status: 404 });
     }
 
-    if (tournament.status !== 'upcoming' && tournament.status !== 'registration_open') {
+    if (tournament.status !== 'upcoming' && tournament.status !== 'registering') {
       return NextResponse.json({ error: 'Tournament registration is closed' }, { status: 400 });
     }
 
     if (tournament.max_participants) {
-      const { count } = await supabaseServer
-        .from('tournament_registrations')
-        .select('id', { count: 'exact', head: true })
-        .eq('tournament_id', id)
-        .eq('status', 'confirmed');
-
-      if (count >= tournament.max_participants) {
+      const { data: success } = await supabaseServer.rpc('increment_tournament_participants', {
+        p_tournament_id: id,
+      });
+      if (!success) {
         return NextResponse.json({ error: 'Tournament is full' }, { status: 400 });
       }
     }
@@ -44,6 +41,12 @@ export async function POST(request, { params }) {
       .single();
 
     if (existing) {
+      if (tournament.max_participants) {
+        await supabaseServer
+          .from('tournaments')
+          .update({ current_participants: tournament.current_participants })
+          .eq('id', id);
+      }
       return NextResponse.json({ error: 'Already registered for this tournament' }, { status: 400 });
     }
 
@@ -55,8 +58,8 @@ export async function POST(request, { params }) {
         team_name: teamName || null,
         partner_name: partnerName || null,
         notes: notes || null,
-        status: 'pending',
-        payment_status: 'pending',
+        status: 'registered',
+        payment_status: 'unpaid',
       })
       .select()
       .single();

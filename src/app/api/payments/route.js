@@ -24,17 +24,18 @@ function generateOrderId(type, id) {
     shop_order: 'SO',
     membership: 'MB',
   };
-  return `${prefix[type]}${Date.now()}${id.slice(0, 4).toUpperCase()}`;
+  const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
+  return `${prefix[type]}${Date.now()}${id.slice(0, 4).toUpperCase()}${rand}`;
 }
 
-async function lookupRecord(type, bookingId) {
+async function lookupRecord(type, recordId) {
   const table = TABLE_MAP[type];
   if (!table) return { error: 'Invalid payment type' };
 
   const { data, error } = await supabaseServer
     .from(table)
     .select('*')
-    .eq('id', bookingId)
+    .eq('id', recordId)
     .single();
 
   if (error || !data) return { error: 'Record not found' };
@@ -74,16 +75,20 @@ async function buildPayload(type, record) {
     amount = tournament?.entry_fee || 0;
     itemName = `Tournament Entry - ${tournament?.name || 'Tournament'}`;
   } else if (type === 'shop_order') {
-    amount = record.total_amount;
+    amount = record.total_price;
     itemName = `Shop Order #${record.id.slice(0, 8)}`;
   } else if (type === 'membership') {
     const { data: tier } = await supabaseServer
       .from('membership_tiers')
-      .select('name, price')
+      .select('name, monthly_price')
       .eq('id', record.tier_id)
       .single();
-    amount = tier?.price || 0;
+    amount = tier?.monthly_price || 0;
     itemName = `Membership - ${tier?.name || 'Tier'}`;
+  }
+
+  if (!amount || amount <= 0) {
+    return { error: 'Invalid payment amount' };
   }
 
   const { data: user } = await supabaseServer
@@ -142,8 +147,12 @@ export async function POST(request) {
 
     const { data: record, table } = lookup;
 
-    if (record.payment_status === 'confirmed') {
+    if (record.payment_status === 'paid') {
       return NextResponse.json({ error: 'Already paid' }, { status: 400 });
+    }
+
+    if (record.midtrans_order_id) {
+      return NextResponse.json({ error: 'Payment already initiated' }, { status: 400 });
     }
 
     if (auth.user.id !== record.user_id) {
@@ -176,7 +185,6 @@ export async function POST(request) {
     const midtransData = await midtransRes.json();
 
     if (!midtransRes.ok) {
-      console.error('Midtrans error:', midtransData);
       return NextResponse.json(
         { error: midtransData.error_messages?.[0] || 'Payment gateway error' },
         { status: 500 }
@@ -187,14 +195,13 @@ export async function POST(request) {
     const { error: updateError } = await supabaseServer
       .from(table)
       .update({
-        snap_token: midtransData.token,
+        midtrans_snap_token: midtransData.token,
         midtrans_order_id: orderId,
-        payment_status: 'pending',
+        payment_status: 'unpaid',
       })
       .eq('id', bookingId);
 
     if (updateError) {
-      console.error('Update error:', updateError);
       return NextResponse.json({ error: 'Failed to update record' }, { status: 500 });
     }
 

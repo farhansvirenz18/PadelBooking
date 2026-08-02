@@ -9,7 +9,7 @@ export async function GET(request) {
   try {
     const { data, error } = await supabaseServer
       .from('bookings')
-      .select('*, courts(name, type, location), time_slots(start_time, end_time, date, price, peak_price)')
+      .select('*, courts(name, type), time_slots(start_time, end_time, date, price)')
       .eq('user_id', auth.user.id)
       .order('created_at', { ascending: false });
 
@@ -27,7 +27,7 @@ export async function POST(request) {
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const { courtId, timeSlotId, date } = await request.json();
+    const { courtId, timeSlotId } = await request.json();
 
     if (!courtId || !timeSlotId) {
       return NextResponse.json({ error: 'courtId and timeSlotId are required' }, { status: 400 });
@@ -44,12 +44,19 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Time slot not found' }, { status: 404 });
     }
 
-    if (slot.status === 'booked' || slot.status === 'blocked') {
-      return NextResponse.json({ error: 'Time slot is not available' }, { status: 400 });
+    const { data: reserved, error: reserveError } = await supabaseServer
+      .from('time_slots')
+      .update({ status: 'booked' })
+      .eq('id', timeSlotId)
+      .eq('status', 'available')
+      .select()
+      .single();
+
+    if (reserveError || !reserved) {
+      return NextResponse.json({ error: 'Time slot is no longer available' }, { status: 400 });
     }
 
-    const isPeak = slot.is_peak || false;
-    const totalPrice = isPeak ? parseFloat(slot.peak_price) : parseFloat(slot.price);
+    const totalPrice = parseFloat(slot.price) || 0;
 
     const { data: booking, error: bookingError } = await supabaseServer
       .from('bookings')
@@ -57,15 +64,20 @@ export async function POST(request) {
         user_id: auth.user.id,
         court_id: courtId,
         time_slot_id: timeSlotId,
-        date: slot.date,
+        booking_date: slot.date,
+        start_time: slot.start_time,
+        end_time: slot.end_time,
         total_price: totalPrice,
         status: 'pending',
-        payment_status: 'pending',
+        payment_status: 'unpaid',
       })
       .select()
       .single();
 
-    if (bookingError) throw bookingError;
+    if (bookingError) {
+      await supabaseServer.from('time_slots').update({ status: 'available' }).eq('id', timeSlotId);
+      throw bookingError;
+    }
 
     return NextResponse.json({ success: true, data: booking }, { status: 201 });
   } catch (error) {

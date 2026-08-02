@@ -18,12 +18,12 @@ function verifySignature(orderId, statusCode, grossAmount, signature) {
 }
 
 const STATUS_MAP = {
-  capture: 'confirmed',
-  settlement: 'confirmed',
-  pending: 'pending',
-  deny: 'failed',
-  expire: 'cancelled',
-  cancel: 'cancelled',
+  capture: 'paid',
+  settlement: 'paid',
+  pending: 'unpaid',
+  deny: 'refunded',
+  expire: 'refunded',
+  cancel: 'refunded',
 };
 
 function getOrderPrefix(orderId) {
@@ -45,7 +45,6 @@ export async function POST(request) {
       signature_key,
       transaction_status,
       payment_type,
-      fraud_status,
     } = body;
 
     if (!order_id || !status_code || !gross_amount || !signature_key) {
@@ -54,7 +53,6 @@ export async function POST(request) {
 
     const isValid = verifySignature(order_id, status_code, gross_amount, signature_key);
     if (!isValid) {
-      console.error('Invalid webhook signature for order:', order_id);
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
 
@@ -70,8 +68,44 @@ export async function POST(request) {
       .single();
 
     if (lookupError || !record) {
-      console.error('Record not found for order:', order_id);
       return NextResponse.json({ error: 'Record not found' }, { status: 404 });
+    }
+
+    if (record.payment_status === 'paid' && (transaction_status === 'capture' || transaction_status === 'settlement')) {
+      return NextResponse.json({ success: true, message: 'Already processed' });
+    }
+
+    if (record.payment_status === 'refunded') {
+      return NextResponse.json({ success: true, message: 'Record was refunded' });
+    }
+
+    let expectedAmount;
+    if (table === 'bookings') {
+      expectedAmount = parseFloat(record.total_price);
+    } else if (table === 'coach_bookings') {
+      expectedAmount = parseFloat(record.total_price);
+    } else if (table === 'shop_orders') {
+      expectedAmount = parseFloat(record.total_price);
+    } else if (table === 'tournament_registrations') {
+      const { data: tournament } = await supabaseServer
+        .from('tournaments')
+        .select('entry_fee')
+        .eq('id', record.tournament_id)
+        .single();
+      expectedAmount = parseFloat(tournament?.entry_fee || 0);
+    } else if (table === 'user_memberships') {
+      const { data: tier } = await supabaseServer
+        .from('membership_tiers')
+        .select('monthly_price')
+        .eq('id', record.tier_id)
+        .single();
+      expectedAmount = parseFloat(tier?.monthly_price || 0);
+    }
+
+    const receivedAmount = parseFloat(gross_amount);
+    if (expectedAmount && Math.abs(expectedAmount - receivedAmount) > 0.01) {
+      console.error(`Amount mismatch for ${order_id}: expected ${expectedAmount}, got ${receivedAmount}`);
+      return NextResponse.json({ error: 'Amount mismatch' }, { status: 400 });
     }
 
     const paymentStatus = STATUS_MAP[transaction_status] || 'pending';
@@ -91,28 +125,15 @@ export async function POST(request) {
       .eq('id', record.id);
 
     if (updateError) {
-      console.error('Update error:', updateError);
       return NextResponse.json({ error: 'Update failed' }, { status: 500 });
     }
 
-    if (table === 'bookings' && paymentStatus === 'confirmed') {
-      const { data: timeSlot } = await supabaseServer
-        .from('time_slots')
-        .select('id')
-        .eq('id', record.time_slot_id)
-        .single();
-
-      if (timeSlot) {
-        await supabaseServer
-          .from('time_slots')
-          .update({ status: 'booked' })
-          .eq('id', timeSlot.id);
-      }
-
+    if (table === 'bookings' && paymentStatus === 'paid') {
       await supabaseServer
         .from('bookings')
         .update({ status: 'confirmed' })
-        .eq('id', record.id);
+        .eq('id', record.id)
+        .eq('status', 'pending');
     }
 
     return NextResponse.json({ success: true });

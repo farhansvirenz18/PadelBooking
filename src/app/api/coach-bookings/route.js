@@ -47,21 +47,36 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Coach not found' }, { status: 404 });
     }
 
+    const safeStartTime = String(startTime).replace(/[^0-9:]/g, '');
+    const safeEndTime = String(endTime).replace(/[^0-9:]/g, '');
+
+    const startParts = safeStartTime.split(':').map(Number);
+    const endParts = safeEndTime.split(':').map(Number);
+
+    if (startParts.length < 2 || endParts.length < 2 ||
+        startParts[0] < 0 || startParts[0] > 23 || startParts[1] < 0 || startParts[1] > 59 ||
+        endParts[0] < 0 || endParts[0] > 23 || endParts[1] < 0 || endParts[1] > 59) {
+      return NextResponse.json({ error: 'Invalid time format' }, { status: 400 });
+    }
+
+    const hours = (endParts[0] + endParts[1] / 60) - (startParts[0] + startParts[1] / 60);
+    if (hours <= 0) {
+      return NextResponse.json({ error: 'End time must be after start time' }, { status: 400 });
+    }
+
     const { data: conflict } = await supabaseServer
       .from('coach_bookings')
       .select('id')
       .eq('coach_id', coachId)
       .eq('date', date)
-      .eq('status', 'confirmed')
-      .or(`start_time.lt.${endTime},end_time.gt.${startTime}`);
+      .in('status', ['pending', 'confirmed'])
+      .lt('start_time', safeEndTime)
+      .gt('end_time', safeStartTime);
 
     if (conflict && conflict.length > 0) {
       return NextResponse.json({ error: 'Coach is not available at this time' }, { status: 400 });
     }
 
-    const startParts = startTime.split(':').map(Number);
-    const endParts = endTime.split(':').map(Number);
-    const hours = (endParts[0] + endParts[1] / 60) - (startParts[0] + startParts[1] / 60);
     const totalPrice = hours * parseFloat(coach.hourly_rate);
 
     const { data: booking, error: bookingError } = await supabaseServer
@@ -70,12 +85,12 @@ export async function POST(request) {
         user_id: auth.user.id,
         coach_id: coachId,
         date,
-        start_time: startTime,
-        end_time: endTime,
+        start_time: safeStartTime,
+        end_time: safeEndTime,
         total_price: totalPrice,
         notes: notes || null,
         status: 'pending',
-        payment_status: 'pending',
+        payment_status: 'unpaid',
       })
       .select()
       .single();
