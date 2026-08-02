@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import { adminFetch } from "@/lib/adminFetch";
 import ExportButton from "@/components/admin/ExportButton";
 
-const SPECIALTIES = ["beginners", "intermediate", "advanced", "kids", "women"];
+  const SPECIALTIES = ["beginners", "intermediate", "advanced", "kids", "women"];
 
-export default function CoachesPage() {
+  const getCoachName = (c) => c.name || `${c.first_name || ''} ${c.last_name || ''}`.trim() || '-';
+
+  export default function CoachesPage() {
   const [coaches, setCoaches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -32,7 +34,7 @@ export default function CoachesPage() {
     try {
       const res = await adminFetch("/api/admin/coaches");
       const data = await res.json();
-      setCoaches(data.coaches || data || []);
+      setCoaches(data.data || []);
     } catch (err) {
       console.error("Failed to fetch coaches:", err);
     } finally {
@@ -47,6 +49,7 @@ export default function CoachesPage() {
   const filtered = coaches.filter((c) => {
     const matchSearch =
       c.name?.toLowerCase().includes(search.toLowerCase()) ||
+      `${c.first_name || ''} ${c.last_name || ''}`.toLowerCase().includes(search.toLowerCase()) ||
       c.bio?.toLowerCase().includes(search.toLowerCase());
     const matchSpecialty =
       !filterSpecialty || c.specialties?.includes(filterSpecialty);
@@ -74,7 +77,7 @@ export default function CoachesPage() {
   const openEdit = (coach) => {
     setEditingCoach(coach);
     setForm({
-      name: coach.name || "",
+      name: coach.name || `${coach.first_name || ''} ${coach.last_name || ''}`.trim() || "",
       bio: coach.bio || "",
       specialties: coach.specialties || [],
       certifications: coach.certifications || "",
@@ -97,21 +100,25 @@ export default function CoachesPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const formData = new FormData();
-      formData.append("name", form.name);
-      formData.append("bio", form.bio);
-      formData.append("specialties", JSON.stringify(form.specialties));
-      formData.append("certifications", form.certifications);
-      formData.append("hourly_rate", form.hourly_rate);
-      formData.append("is_active", form.is_active);
-      if (form.image) formData.append("image", form.image);
+      const payload = {
+        name: form.name,
+        bio: form.bio,
+        specialties: form.specialties,
+        certifications: form.certifications,
+        hourly_rate: Number(form.hourly_rate) || 0,
+        is_active: form.is_active,
+      };
 
       const url = editingCoach
-        ? `/api/admin/coaches/${editingCoach.id}`
+        ? `/api/admin/coaches?id=${editingCoach.id}`
         : "/api/admin/coaches";
       const method = editingCoach ? "PUT" : "POST";
 
-      await adminFetch(url, { method, body: formData });
+      await adminFetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
       setModalOpen(false);
       fetchCoaches();
     } catch (err) {
@@ -123,7 +130,7 @@ export default function CoachesPage() {
 
   const handleDelete = async (id) => {
     try {
-      await adminFetch(`/api/admin/coaches/${id}`, { method: "DELETE" });
+      await adminFetch(`/api/admin/coaches?id=${id}`, { method: "DELETE" });
       setDeleteConfirm(null);
       fetchCoaches();
     } catch (err) {
@@ -201,7 +208,7 @@ export default function CoachesPage() {
               data={filtered}
               filename="coaches"
               columns={[
-                { header: "Name", key: "name" },
+                { header: "Name", key: "name", format: (v, row) => getCoachName(row) },
                 { header: "Specialties", key: "specialties", format: (v) => v?.join(", ") },
                 { header: "Hourly Rate", key: "hourly_rate" },
                 { header: "Rating", key: "rating" },
@@ -230,10 +237,10 @@ export default function CoachesPage() {
                 <div className="p-6">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="w-16 h-16 rounded-full bg-[#E8F5E9] flex items-center justify-center overflow-hidden flex-shrink-0">
-                      {coach.image || coach.photo ? (
+                      {coach.image_url || coach.image || coach.photo ? (
                         <img
-                          src={coach.image || coach.photo}
-                          alt={coach.name}
+                          src={coach.image_url || coach.image || coach.photo}
+                          alt={getCoachName(coach)}
                           className="w-full h-full object-cover"
                         />
                       ) : (
@@ -243,7 +250,7 @@ export default function CoachesPage() {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-gray-800 truncate">{coach.name}</h3>
+                      <h3 className="font-bold text-gray-800 truncate">{getCoachName(coach)}</h3>
                       <div className="flex items-center gap-1 mt-1">
                         {renderStars(coach.rating)}
                         <span className="text-xs text-gray-400 ml-1">
@@ -251,7 +258,7 @@ export default function CoachesPage() {
                         </span>
                       </div>
                       <p className="text-[#1B5E20] font-semibold mt-1">
-                        ${coach.hourly_rate}/hr
+                        Rp {Number(coach.hourly_rate || 0).toLocaleString('id-ID')}/hr
                       </p>
                     </div>
                     <span
@@ -434,7 +441,7 @@ export default function CoachesPage() {
               </div>
             </div>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete <strong>{deleteConfirm.name}</strong>?
+              Are you sure you want to delete <strong>{getCoachName(deleteConfirm)}</strong>?
             </p>
             <div className="flex gap-3">
               <button

@@ -33,7 +33,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data: inserted });
   } catch (error) {
     console.error('POST Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -52,7 +52,7 @@ export async function PUT(request) {
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     console.error('PUT Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -77,6 +77,6 @@ export async function DELETE(request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('DELETE Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

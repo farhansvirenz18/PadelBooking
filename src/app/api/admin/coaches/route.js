@@ -17,7 +17,7 @@ export async function GET(request) {
     return NextResponse.json({ success: true, data: data || [] });
   } catch (error) {
     console.error('Admin coaches fetch error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -27,25 +27,35 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
-    const { first_name, last_name, email, phone, specialization, hourly_rate, bio, image_url } = body;
+    const {
+      name, first_name, last_name, email, phone, specialization, hourly_rate,
+      bio, image_url, image, specialties, certifications, is_active,
+    } = body;
 
-    if (!first_name || !last_name) {
-      return NextResponse.json({ error: 'first_name and last_name are required' }, { status: 400 });
+    const resolvedFirstName = first_name || (name ? name.split(' ')[0] : null);
+    const resolvedLastName = last_name || (name ? name.split(' ').slice(1).join(' ') : null);
+
+    if (!resolvedFirstName) {
+      return NextResponse.json({ error: 'first_name or name is required' }, { status: 400 });
     }
+
+    const insertData = {
+      first_name: resolvedFirstName,
+      last_name: resolvedLastName || null,
+      email: email || null,
+      phone: phone || null,
+      specialization: specialization || (Array.isArray(specialties) ? specialties[0] : null),
+      hourly_rate: hourly_rate || 0,
+      bio: bio || null,
+      image_url: image_url || null,
+      specialties: Array.isArray(specialties) ? specialties : null,
+      certifications: certifications || null,
+      is_active: is_active !== undefined ? is_active : true,
+    };
 
     const { data, error } = await supabaseServer
       .from('coaches')
-      .insert({
-        first_name,
-        last_name,
-        email: email || null,
-        phone: phone || null,
-        specialization: specialization || null,
-        hourly_rate: hourly_rate || 0,
-        bio: bio || null,
-        image_url: image_url || null,
-        is_active: true,
-      })
+      .insert(insertData)
       .select()
       .single();
 
@@ -54,7 +64,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data }, { status: 201 });
   } catch (error) {
     console.error('Admin coach create error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -70,7 +80,7 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
     }
 
-    const allowedFields = ['first_name', 'last_name', 'email', 'phone', 'specialization', 'hourly_rate', 'bio', 'image_url', 'is_active'];
+    const allowedFields = ['first_name', 'last_name', 'email', 'phone', 'specialization', 'hourly_rate', 'bio', 'image_url', 'is_active', 'specialties', 'certifications'];
     const filtered = {};
     for (const key of allowedFields) {
       if (updateFields[key] !== undefined) {
@@ -96,7 +106,7 @@ export async function PUT(request) {
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Admin coach update error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -106,7 +116,10 @@ export async function DELETE(request) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    let id = searchParams.get('id');
+    if (!id) {
+      try { const body = await request.json(); id = body.id; } catch {}
+    }
 
     if (!id) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
@@ -122,6 +135,6 @@ export async function DELETE(request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Admin coach delete error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

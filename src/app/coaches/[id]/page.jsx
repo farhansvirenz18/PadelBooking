@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { userFetch } from '@/lib/userFetch'
 
 const LESSON_TYPES = [
   { value: 'private', label: 'Private', icon: 'person' },
@@ -68,17 +69,22 @@ export default function CoachProfilePage() {
     if (!selectedDate || !selectedTime) return alert('Please select date and time')
     setBooking(true)
     try {
-      const res = await fetch('/api/coach-bookings', {
+      const endTime = (() => {
+        const [h, m] = selectedTime.split(':').map(Number)
+        const totalMin = h * 60 + m + duration * 60
+        const endH = Math.floor(totalMin / 60)
+        const endM = totalMin % 60
+        return `${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`
+      })()
+
+      const res = await userFetch('/api/coach-bookings', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          coach_id: coach.id,
+          coachId: coach.id,
           date: selectedDate,
-          time: selectedTime,
-          lesson_type: lessonType,
-          duration,
-          participants,
-          total_price: totalPrice,
+          startTime: selectedTime,
+          endTime,
+          notes: '',
         }),
       })
       const data = await res.json()

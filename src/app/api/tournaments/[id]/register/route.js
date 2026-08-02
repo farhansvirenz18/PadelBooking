@@ -66,6 +66,6 @@ export async function POST(request, { params }) {
     return NextResponse.json({ success: true, data: registration }, { status: 201 });
   } catch (error) {
     console.error('Tournament registration error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

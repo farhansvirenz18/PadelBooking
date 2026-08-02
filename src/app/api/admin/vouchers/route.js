@@ -17,7 +17,7 @@ export async function GET(request) {
     return NextResponse.json({ success: true, data: data || [] });
   } catch (error) {
     console.error('Admin vouchers fetch error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -29,14 +29,17 @@ export async function POST(request) {
     const body = await request.json();
     const {
       code, description, discount_type, discount_value,
-      min_amount, max_discount, usage_limit, valid_from, valid_until,
+      min_amount, min_purchase, max_discount, usage_limit, max_uses,
+      valid_from, valid_until,
     } = body;
 
     if (!code || !discount_type || !discount_value) {
       return NextResponse.json({ error: 'code, discount_type, and discount_value are required' }, { status: 400 });
     }
 
-    if (!['percentage', 'fixed'].includes(discount_type)) {
+    const normalizedType = discount_type === 'percent' ? 'percentage' : discount_type;
+
+    if (!['percentage', 'fixed'].includes(normalizedType)) {
       return NextResponse.json({ error: 'discount_type must be percentage or fixed' }, { status: 400 });
     }
 
@@ -55,11 +58,11 @@ export async function POST(request) {
       .insert({
         code: code.toUpperCase(),
         description: description || null,
-        discount_type,
+        discount_type: normalizedType,
         discount_value,
-        min_amount: min_amount || null,
+        min_amount: min_amount || min_purchase || null,
         max_discount: max_discount || null,
-        usage_limit: usage_limit || null,
+        usage_limit: usage_limit || max_uses || null,
         usage_count: 0,
         valid_from: valid_from || null,
         valid_until: valid_until || null,
@@ -73,7 +76,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data }, { status: 201 });
   } catch (error) {
     console.error('Admin voucher create error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -91,7 +94,8 @@ export async function PUT(request) {
 
     const allowedFields = [
       'code', 'description', 'discount_type', 'discount_value',
-      'min_amount', 'max_discount', 'usage_limit', 'valid_from', 'valid_until', 'is_active',
+      'min_amount', 'min_purchase', 'max_discount', 'usage_limit', 'max_uses',
+      'valid_from', 'valid_until', 'is_active',
     ];
     const filtered = {};
     for (const key of allowedFields) {
@@ -99,6 +103,10 @@ export async function PUT(request) {
         filtered[key] = key === 'code' ? updateFields[key].toUpperCase() : updateFields[key];
       }
     }
+
+    if (filtered.discount_type === 'percent') filtered.discount_type = 'percentage';
+    if (filtered.min_purchase) { filtered.min_amount = filtered.min_purchase; delete filtered.min_purchase; }
+    if (filtered.max_uses) { filtered.usage_limit = filtered.max_uses; delete filtered.max_uses; }
 
     if (Object.keys(filtered).length === 0) {
       return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
@@ -118,7 +126,7 @@ export async function PUT(request) {
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Admin voucher update error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -128,7 +136,10 @@ export async function DELETE(request) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    let id = searchParams.get('id');
+    if (!id) {
+      try { const body = await request.json(); id = body.id; } catch {}
+    }
 
     if (!id) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
@@ -144,6 +155,6 @@ export async function DELETE(request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Admin voucher delete error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

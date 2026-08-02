@@ -54,7 +54,7 @@ export default function TournamentsPage() {
     try {
       const res = await adminFetch("/api/admin/tournaments");
       const data = await res.json();
-      setTournaments(data.tournaments || data || []);
+      setTournaments(data.data || []);
     } catch (err) {
       console.error("Failed to fetch tournaments:", err);
     } finally {
@@ -105,8 +105,8 @@ export default function TournamentsPage() {
       entry_fee: t.entry_fee || "",
       max_participants: t.max_participants || "",
       prize_pool: t.prize_pool || "",
-      tournament_date: t.tournament_date
-        ? new Date(t.tournament_date).toISOString().slice(0, 16)
+      tournament_date: t.start_date
+        ? new Date(t.start_date).toISOString().slice(0, 16)
         : "",
       registration_deadline: t.registration_deadline
         ? new Date(t.registration_deadline).toISOString().slice(0, 16)
@@ -121,16 +121,23 @@ export default function TournamentsPage() {
     setSaving(true);
     try {
       const payload = {
-        ...form,
+        name: form.name,
+        description: form.description,
+        format: form.format,
+        start_date: form.tournament_date ? new Date(form.tournament_date).toISOString() : null,
+        end_date: form.tournament_date ? new Date(form.tournament_date).toISOString() : null,
+        registration_deadline: form.registration_deadline ? new Date(form.registration_deadline).toISOString() : null,
         entry_fee: parseFloat(form.entry_fee) || 0,
-        prize_pool: parseFloat(form.prize_pool) || 0,
         max_participants: parseInt(form.max_participants) || 0,
-        level_min: parseInt(form.level_min),
-        level_max: parseInt(form.level_max),
+        prize_pool: parseFloat(form.prize_pool) || 0,
+        level_min: parseInt(form.level_min) || 1,
+        level_max: parseInt(form.level_max) || 5,
+        rules: form.rules || null,
+        status: form.status,
       };
 
       const url = editing
-        ? `/api/admin/tournaments/${editing.id}`
+        ? `/api/admin/tournaments?id=${editing.id}`
         : "/api/admin/tournaments";
       const method = editing ? "PUT" : "POST";
 
@@ -150,7 +157,7 @@ export default function TournamentsPage() {
 
   const handleDelete = async (id) => {
     try {
-      await adminFetch(`/api/admin/tournaments/${id}`, { method: "DELETE" });
+      await adminFetch(`/api/admin/tournaments?id=${id}`, { method: "DELETE" });
       setDeleteConfirm(null);
       fetchTournaments();
     } catch (err) {
@@ -160,14 +167,7 @@ export default function TournamentsPage() {
 
   const viewRegistrations = async (tournament) => {
     setRegistrationsOpen(tournament);
-    try {
-      const res = await adminFetch(`/api/admin/tournaments/${tournament.id}/registrations`);
-      const data = await res.json();
-      setRegistrations(data.registrations || data || []);
-    } catch (err) {
-      console.error("Failed to fetch registrations:", err);
-      setRegistrations([]);
-    }
+    setRegistrations(tournament.registrations || []);
   };
 
   const getStatusBadge = (status) => {
@@ -292,13 +292,13 @@ export default function TournamentsPage() {
                     </div>
                     <div className="flex items-center gap-2 text-gray-600">
                       <span className="material-symbols-rounded text-[#1B5E20] text-lg">paid</span>
-                      ${t.entry_fee || 0}
+                      Rp {Number(t.entry_fee || 0).toLocaleString('id-ID')}
                     </div>
                   </div>
                   {t.prize_pool > 0 && (
                     <div className="flex items-center gap-2 bg-amber-50 text-amber-700 px-3 py-2 rounded-lg text-sm mb-4">
                       <span className="material-symbols-rounded text-lg">emoji_events</span>
-                      Prize Pool: <strong>${t.prize_pool}</strong>
+                      Prize Pool: <strong>Rp {Number(t.prize_pool).toLocaleString('id-ID')}</strong>
                     </div>
                   )}
                   <div className="flex gap-2">
@@ -413,7 +413,7 @@ export default function TournamentsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Entry Fee ($)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Entry Fee (Rp)</label>
                   <input
                     type="number"
                     value={form.entry_fee}
@@ -435,7 +435,7 @@ export default function TournamentsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Prize Pool ($)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Prize Pool (Rp)</label>
                 <input
                   type="number"
                   value={form.prize_pool}

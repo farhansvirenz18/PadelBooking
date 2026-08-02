@@ -23,7 +23,7 @@ export async function GET(request) {
     return NextResponse.json({ success: true, data: data || [] });
   } catch (error) {
     console.error('Admin tournaments fetch error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -36,10 +36,13 @@ export async function POST(request) {
     const {
       name, description, category, format, start_date, end_date,
       registration_deadline, max_participants, entry_fee, location, status,
+      tournament_date, level_min, level_max, prize_pool, rules,
     } = body;
 
-    if (!name || !start_date) {
-      return NextResponse.json({ error: 'name and start_date are required' }, { status: 400 });
+    const resolvedStartDate = start_date || tournament_date;
+
+    if (!name) {
+      return NextResponse.json({ error: 'name is required' }, { status: 400 });
     }
 
     const { data, error } = await supabaseServer
@@ -49,13 +52,17 @@ export async function POST(request) {
         description: description || null,
         category: category || null,
         format: format || null,
-        start_date,
+        start_date: resolvedStartDate || null,
         end_date: end_date || null,
         registration_deadline: registration_deadline || null,
         max_participants: max_participants || null,
         entry_fee: entry_fee || 0,
         location: location || null,
         status: status || 'upcoming',
+        level_min: level_min || null,
+        level_max: level_max || null,
+        prize_pool: prize_pool || null,
+        rules: rules || null,
       })
       .select()
       .single();
@@ -65,7 +72,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data }, { status: 201 });
   } catch (error) {
     console.error('Admin tournament create error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -84,6 +91,7 @@ export async function PUT(request) {
     const allowedFields = [
       'name', 'description', 'category', 'format', 'start_date', 'end_date',
       'registration_deadline', 'max_participants', 'entry_fee', 'location', 'status',
+      'tournament_date', 'level_min', 'level_max', 'prize_pool', 'rules',
     ];
     const filtered = {};
     for (const key of allowedFields) {
@@ -110,7 +118,7 @@ export async function PUT(request) {
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Admin tournament update error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -120,7 +128,10 @@ export async function DELETE(request) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    let id = searchParams.get('id');
+    if (!id) {
+      try { const body = await request.json(); id = body.id; } catch {}
+    }
 
     if (!id) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
@@ -136,6 +147,6 @@ export async function DELETE(request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Admin tournament delete error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

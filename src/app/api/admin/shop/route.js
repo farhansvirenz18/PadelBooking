@@ -37,7 +37,7 @@ export async function GET(request) {
     return NextResponse.json({ success: true, data: data || [] });
   } catch (error) {
     console.error('Admin shop fetch error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -50,14 +50,21 @@ export async function POST(request) {
     const { type, ...payload } = body;
 
     if (type === 'category') {
-      const { name, description } = payload;
+      const { name, slug, description, icon, sort_order } = payload;
       if (!name) {
         return NextResponse.json({ error: 'name is required' }, { status: 400 });
       }
 
       const { data, error } = await supabaseServer
         .from('shop_categories')
-        .insert({ name, description: description || null, is_active: true })
+        .insert({
+          name,
+          slug: slug || null,
+          description: description || null,
+          icon: icon || null,
+          sort_order: sort_order || 0,
+          is_active: true,
+        })
         .select()
         .single();
 
@@ -65,7 +72,7 @@ export async function POST(request) {
       return NextResponse.json({ success: true, data }, { status: 201 });
     }
 
-    const { name, description, price, stock, category_id, image_url, sku } = payload;
+    const { name, description, price, stock, category_id, image_url, sku, brand, discount_price, is_active } = payload;
     if (!name || !price) {
       return NextResponse.json({ error: 'name and price are required' }, { status: 400 });
     }
@@ -80,7 +87,9 @@ export async function POST(request) {
         category_id: category_id || null,
         image_url: image_url || null,
         sku: sku || null,
-        is_active: true,
+        brand: brand || null,
+        discount_price: discount_price || null,
+        is_active: is_active !== undefined ? is_active : true,
       })
       .select()
       .single();
@@ -89,7 +98,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data }, { status: 201 });
   } catch (error) {
     console.error('Admin shop create error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -106,7 +115,7 @@ export async function PUT(request) {
     }
 
     if (type === 'category') {
-      const allowedFields = ['name', 'description', 'is_active'];
+      const allowedFields = ['name', 'slug', 'description', 'icon', 'sort_order', 'is_active'];
       const filtered = {};
       for (const key of allowedFields) {
         if (updateFields[key] !== undefined) filtered[key] = updateFields[key];
@@ -127,7 +136,7 @@ export async function PUT(request) {
       return NextResponse.json({ success: true, data });
     }
 
-    const allowedFields = ['name', 'description', 'price', 'stock', 'category_id', 'image_url', 'sku', 'is_active'];
+    const allowedFields = ['name', 'description', 'price', 'stock', 'category_id', 'image_url', 'sku', 'brand', 'discount_price', 'is_active'];
     const filtered = {};
     for (const key of allowedFields) {
       if (updateFields[key] !== undefined) filtered[key] = updateFields[key];
@@ -148,7 +157,7 @@ export async function PUT(request) {
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Admin shop update error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -158,8 +167,15 @@ export async function DELETE(request) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type');
-    const id = searchParams.get('id');
+    let type = searchParams.get('type');
+    let id = searchParams.get('id');
+    if (!id || !type) {
+      try {
+        const body = await request.json();
+        if (!id) id = body.id;
+        if (!type) type = body.type;
+      } catch {}
+    }
 
     if (!id) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
@@ -182,6 +198,6 @@ export async function DELETE(request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Admin shop delete error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

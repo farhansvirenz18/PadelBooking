@@ -29,6 +29,6 @@ export async function POST(request) {
     return NextResponse.json({ success: true, url: urlData.publicUrl, path: filePath });
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
+import { userFetch } from '@/lib/userFetch'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
@@ -39,7 +40,7 @@ export default function BookingsPage() {
 
   function fetchBookings() {
     setLoading(true)
-    fetch('/api/bookings')
+    userFetch('/api/bookings')
       .then(r => r.json())
       .then(res => setBookings(res.data || []))
       .catch(() => {})
@@ -70,10 +71,9 @@ export default function BookingsPage() {
     if (!confirm('Are you sure you want to cancel this booking?')) return
     setCancellingId(bookingId)
     try {
-      const res = await fetch(`/api/bookings/${bookingId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'cancelled' }),
+      const res = await userFetch(`/api/bookings/${bookingId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ action: 'cancel' }),
       })
       if (res.ok) {
         setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'cancelled' } : b))

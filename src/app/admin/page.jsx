@@ -31,10 +31,11 @@ function BookingRow({ b }) {
     cancelled: 'bg-[#FFEBEE] text-[#C62828]',
     completed: 'bg-[#E8F5E9] text-[#1B5E20]',
   };
+  const userName = b.users ? [b.users.first_name, b.users.last_name].filter(Boolean).join(' ') || b.users.email : (b.user_name || '-');
   return (
     <tr className="border-b border-outline-variant/15 hover:bg-surface-container/50 transition-colors">
-      <td className="px-4 py-3 text-sm text-on-surface">{b.user_name || b.user_email || '-'}</td>
-      <td className="px-4 py-3 text-sm text-on-surface-variant">{b.court_name || '-'}</td>
+      <td className="px-4 py-3 text-sm text-on-surface">{userName}</td>
+      <td className="px-4 py-3 text-sm text-on-surface-variant">{b.courts?.name || b.court_name || '-'}</td>
       <td className="px-4 py-3 text-sm text-on-surface-variant">{b.date || '-'}</td>
       <td className="px-4 py-3 text-sm text-on-surface-variant">{b.time || '-'}</td>
       <td className="px-4 py-3 text-sm font-medium text-on-surface">
@@ -50,8 +51,8 @@ function BookingRow({ b }) {
 }
 
 const BOOKING_COLUMNS = [
-  { header: 'User', key: 'user_name', width: 20 },
-  { header: 'Court', key: 'court_name', width: 18 },
+  { header: 'User', key: '_userName', width: 20 },
+  { header: 'Court', key: '_courtName', width: 18 },
   { header: 'Date', key: 'date', width: 14 },
   { header: 'Time', key: 'time', width: 12 },
   { header: 'Price', key: 'total_price', width: 15 },
@@ -90,6 +91,12 @@ export default function AdminDashboard() {
     return `Rp ${Number(v).toLocaleString('id-ID')}`;
   };
 
+  const exportBookings = bookings.map(b => ({
+    ...b,
+    _userName: b.users ? [b.users.first_name, b.users.last_name].filter(Boolean).join(' ') || b.users.email : (b.user_name || '-'),
+    _courtName: b.courts?.name || b.court_name || '-',
+  }));
+
   return (
     <div className="p-4 md:p-8 space-y-8">
       {/* Header */}
@@ -99,7 +106,7 @@ export default function AdminDashboard() {
           <p className="text-sm text-on-surface-variant mt-1">Overview of your Aero Padel platform</p>
         </div>
         <ExportButton
-          data={bookings}
+          data={exportBookings}
           columns={BOOKING_COLUMNS}
           filename="recent-bookings"
           title="Recent Bookings Report"

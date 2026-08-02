@@ -65,21 +65,44 @@ export async function GET(request) {
       }
     });
 
+    const revenueData = revenueLast30Days.map(d => ({ date: d.date, revenue: d.amount }));
+
+    const { data: statusRaw } = await supabaseServer
+      .from('bookings')
+      .select('status')
+      .gte('created_at', thirtyDaysAgo.toISOString());
+
+    const statusCounts = {};
+    (statusRaw || []).forEach(b => {
+      const s = b.status || 'unknown';
+      statusCounts[s] = (statusCounts[s] || 0) + 1;
+    });
+    const statusData = Object.entries(statusCounts).map(([name, value]) => ({ name, value }));
+
+    const dailyCounts = {};
+    (recentBookingsData || []).forEach(b => {
+      const dateStr = b.created_at?.split('T')[0];
+      if (dateStr) dailyCounts[dateStr] = (dailyCounts[dateStr] || 0) + 1;
+    });
+    const dailyData = revenueLast30Days.map(d => ({ date: d.date, count: dailyCounts[d.date] || 0 }));
+
     return NextResponse.json({
       success: true,
-      data: {
+      stats: {
         totalRevenue: Math.round(totalRevenue * 100) / 100,
         totalBookings: totalBookings.count || 0,
         activeUsers: activeUsers.count || 0,
         pendingBookings: pendingBookings.count || 0,
         courtUtilization,
-        activeMemberships: activeMemberships.count || 0,
-        revenueLast30Days,
-        recentBookings: recentBookings.data || [],
+        activeMembers: activeMemberships.count || 0,
       },
+      recentBookings: recentBookings.data || [],
+      revenueData,
+      statusData,
+      dailyData,
     });
   } catch (error) {
     console.error('Dashboard error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

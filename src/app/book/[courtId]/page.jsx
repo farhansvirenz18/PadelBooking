@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { userFetch } from '@/lib/userFetch'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
@@ -102,9 +103,8 @@ export default function BookCourtPage() {
 
     try {
       for (const slot of selectedSlots) {
-        const bookRes = await fetch('/api/bookings', {
+        const bookRes = await userFetch('/api/bookings', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ courtId, timeSlotId: slot.id, date: toISODate(selectedDate) }),
         })
         const bookData = await bookRes.json()
@@ -115,9 +115,8 @@ export default function BookCourtPage() {
           return
         }
 
-        const payRes = await fetch('/api/payments', {
+        const payRes = await userFetch('/api/payments', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ bookingId: bookData.data.id, type: 'booking' }),
         })
         const payData = await payRes.json()

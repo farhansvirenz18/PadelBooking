@@ -64,6 +64,6 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data: membership }, { status: 201 });
   } catch (error) {
     console.error('Membership subscribe error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

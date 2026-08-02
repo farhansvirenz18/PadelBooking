@@ -30,7 +30,7 @@ export async function GET(request) {
     return NextResponse.json({ success: true, data: data || [] });
   } catch (error) {
     console.error('Admin courts fetch error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -40,7 +40,7 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
-    const { name, type, location, description, base_price, peak_price, image_url, status } = body;
+    const { name, type, location, description, base_price, peak_price, image_url, status, amenities } = body;
 
     if (!name || !type || !base_price) {
       return NextResponse.json({ error: 'name, type, and base_price are required' }, { status: 400 });
@@ -57,6 +57,7 @@ export async function POST(request) {
         peak_price: peak_price || base_price,
         image_url: image_url || null,
         status: status || 'active',
+        amenities: amenities || null,
         is_active: true,
       })
       .select()
@@ -67,7 +68,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data }, { status: 201 });
   } catch (error) {
     console.error('Admin court create error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -83,7 +84,7 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
     }
 
-    const allowedFields = ['name', 'type', 'location', 'description', 'base_price', 'peak_price', 'image_url', 'status', 'is_active'];
+    const allowedFields = ['name', 'type', 'location', 'description', 'base_price', 'peak_price', 'image_url', 'status', 'amenities', 'is_active'];
     const filtered = {};
     for (const key of allowedFields) {
       if (updateFields[key] !== undefined) {
@@ -109,6 +110,6 @@ export async function PUT(request) {
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Admin court update error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

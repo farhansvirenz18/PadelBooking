@@ -61,11 +61,11 @@ export function validateTable(table) {
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 export function validateFile(file) {
   if (!file) return { error: 'No file provided' };
   if (file.size > MAX_FILE_SIZE) return { error: 'File too large. Maximum 5MB allowed.' };
-  if (!ALLOWED_TYPES.includes(file.type)) return { error: 'Invalid file type. Allowed: JPG, PNG, GIF, WebP, SVG' };
+  if (!ALLOWED_TYPES.includes(file.type)) return { error: 'Invalid file type. Allowed: JPG, PNG, GIF, WebP' };
   return { valid: true };
 }

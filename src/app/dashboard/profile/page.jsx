@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
+import { userFetch } from '@/lib/userFetch'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -38,7 +39,7 @@ export default function ProfilePage() {
       setUser(session.user)
       setEmail(session.user.email || '')
 
-      fetch('/api/users/profile')
+      userFetch('/api/users/profile')
         .then(r => r.json())
         .then(res => {
           if (res.data) {
@@ -91,9 +92,8 @@ export default function ProfilePage() {
     }
 
     try {
-      const res = await fetch('/api/users/profile', {
+      const res = await userFetch('/api/users/profile', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           first_name: firstName,
           last_name: lastName,

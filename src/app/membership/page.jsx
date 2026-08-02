@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { userFetch } from '@/lib/userFetch'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
@@ -85,10 +86,9 @@ export default function MembershipPage() {
   const handleSubscribe = async (tier) => {
     setSubscribing(tier.id)
     try {
-      const res = await fetch('/api/memberships/subscribe', {
+      const res = await userFetch('/api/memberships/subscribe', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ membership_id: tier.id }),
+        body: JSON.stringify({ tierId: tier.id }),
       })
       const data = await res.json()
       if (data.payment_url) {

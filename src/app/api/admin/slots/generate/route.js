@@ -101,7 +101,7 @@ export async function POST(request) {
 
       if (error) {
         console.error('Batch insert error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
       }
 
       inserted += (data || []).length;
@@ -119,6 +119,6 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error('Slot generation error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { userFetch } from '@/lib/userFetch'
 
 const FORMAT_LABELS = {
   single_elimination: 'Single Elimination',
@@ -44,13 +45,11 @@ export default function TournamentDetailPage() {
     if (!partnerLevel) return alert('Please select your partner level')
     setRegistering(true)
     try {
-      const res = await fetch('/api/tournament-registrations', {
+      const res = await userFetch(`/api/tournaments/${tournament.id}/register`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          tournament_id: tournament.id,
-          partner_name: partnerName,
-          partner_level: partnerLevel,
+          partnerName,
+          partnerLevel,
         }),
       })
       const data = await res.json()

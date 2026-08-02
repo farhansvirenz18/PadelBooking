@@ -84,7 +84,7 @@ export default function Navbar() {
                         Dashboard
                       </Link>
                       <Link
-                        href="/dashboard"
+                        href="/dashboard/bookings"
                         onClick={() => setDropdownOpen(false)}
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface-variant hover:bg-surface-container transition-colors"
                       >
@@ -92,7 +92,7 @@ export default function Navbar() {
                         My Bookings
                       </Link>
                       <Link
-                        href="/dashboard"
+                        href="/dashboard/profile"
                         onClick={() => setDropdownOpen(false)}
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-on-surface-variant hover:bg-surface-container transition-colors"
                       >

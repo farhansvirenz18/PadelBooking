@@ -20,7 +20,7 @@ export async function GET(request) {
     return NextResponse.json({ success: true, data: profile });
   } catch (error) {
     console.error('Profile fetch error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -56,6 +56,6 @@ export async function PUT(request) {
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     console.error('Profile update error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

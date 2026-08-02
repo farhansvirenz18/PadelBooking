@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
+import { userFetch } from '@/lib/userFetch'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
@@ -39,8 +40,8 @@ export default function DashboardPage() {
       setUser(session.user)
 
       Promise.all([
-        fetch('/api/users/profile').then(r => r.json()),
-        fetch('/api/bookings').then(r => r.json()),
+        userFetch('/api/users/profile').then(r => r.json()),
+        userFetch('/api/bookings').then(r => r.json()),
       ])
         .then(([profileRes, bookingsRes]) => {
           if (profileRes.data) setProfile(profileRes.data)

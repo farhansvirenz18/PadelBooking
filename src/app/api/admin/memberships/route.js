@@ -17,7 +17,7 @@ export async function GET(request) {
     return NextResponse.json({ success: true, data: data || [] });
   } catch (error) {
     console.error('Admin memberships fetch error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -27,9 +27,14 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
-    const { name, description, price, duration_months, benefits, max_bookings_per_month } = body;
+    const {
+      name, description, price, monthly_price, duration_months, benefits, perks,
+      max_bookings_per_month, discount_percent, priority_booking_days, free_credits, is_active,
+    } = body;
 
-    if (!name || !price) {
+    const resolvedPrice = price || monthly_price;
+
+    if (!name || !resolvedPrice) {
       return NextResponse.json({ error: 'name and price are required' }, { status: 400 });
     }
 
@@ -38,11 +43,15 @@ export async function POST(request) {
       .insert({
         name,
         description: description || null,
-        price,
+        price: resolvedPrice,
         duration_months: duration_months || 1,
-        benefits: benefits || null,
+        benefits: benefits || perks || null,
         max_bookings_per_month: max_bookings_per_month || null,
-        is_active: true,
+        discount_percent: discount_percent || null,
+        priority_booking_days: priority_booking_days || null,
+        free_credits: free_credits || null,
+        perks: perks || null,
+        is_active: is_active !== undefined ? is_active : true,
       })
       .select()
       .single();
@@ -52,7 +61,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data }, { status: 201 });
   } catch (error) {
     console.error('Admin membership create error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -68,7 +77,7 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
     }
 
-    const allowedFields = ['name', 'description', 'price', 'duration_months', 'benefits', 'max_bookings_per_month', 'is_active'];
+    const allowedFields = ['name', 'description', 'price', 'monthly_price', 'duration_months', 'benefits', 'perks', 'max_bookings_per_month', 'discount_percent', 'priority_booking_days', 'free_credits', 'is_active'];
     const filtered = {};
     for (const key of allowedFields) {
       if (updateFields[key] !== undefined) filtered[key] = updateFields[key];
@@ -92,7 +101,7 @@ export async function PUT(request) {
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Admin membership update error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -102,7 +111,10 @@ export async function DELETE(request) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    let id = searchParams.get('id');
+    if (!id) {
+      try { const body = await request.json(); id = body.id; } catch {}
+    }
 
     if (!id) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
@@ -118,6 +130,6 @@ export async function DELETE(request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Admin membership delete error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

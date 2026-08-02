@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { userFetch } from '@/lib/userFetch'
 
 const STOCK_BADGES = {
   in_stock: { label: 'In Stock', color: 'bg-[#1B5E20]/10 text-[#1B5E20]' },
@@ -43,12 +44,12 @@ export default function ProductDetailPage() {
     if (!product || product.stock <= 0) return
     setOrdering(true)
     try {
-      const res = await fetch('/api/shop/orders', {
+      const res = await userFetch('/api/shop/orders', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          product_id: product.id,
-          quantity,
+          items: [{ productId: product.id, quantity }],
+          shippingAddress: '',
+          notes: '',
         }),
       })
       const data = await res.json()

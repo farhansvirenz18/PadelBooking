@@ -41,13 +41,13 @@ export default function ShopPage() {
     setLoading(true);
     try {
       const [prodRes, catRes] = await Promise.all([
-        adminFetch("/api/admin/shop/products"),
-        adminFetch("/api/admin/shop/categories"),
+        adminFetch("/api/admin/shop?type=products&includeInactive=true"),
+        adminFetch("/api/admin/shop?type=categories&includeInactive=true"),
       ]);
       const prodData = await prodRes.json();
       const catData = await catRes.json();
-      setProducts(prodData.products || prodData || []);
-      setCategories(catData.categories || catData || []);
+      setProducts(prodData.data || []);
+      setCategories(catData.data || []);
     } catch (err) {
       console.error("Failed to fetch shop data:", err);
     } finally {
@@ -110,23 +110,26 @@ export default function ShopPage() {
   const handleSaveProduct = async () => {
     setSaving(true);
     try {
-      const formData = new FormData();
-      formData.append("name", productForm.name);
-      formData.append("description", productForm.description);
-      formData.append("category_id", productForm.category_id);
-      formData.append("price", productForm.price);
-      formData.append("discount_price", productForm.discount_price);
-      formData.append("brand", productForm.brand);
-      formData.append("stock", productForm.stock);
-      formData.append("is_active", productForm.is_active);
-      if (productForm.image) formData.append("image", productForm.image);
+      const payload = {
+        name: productForm.name,
+        description: productForm.description,
+        category_id: productForm.category_id || null,
+        price: Number(productForm.price) || 0,
+        stock: Number(productForm.stock) || 0,
+        brand: productForm.brand || null,
+        discount_price: Number(productForm.discount_price) || null,
+        is_active: productForm.is_active,
+      };
 
-      const url = editing
-        ? `/api/admin/shop/products/${editing.id}`
-        : "/api/admin/shop/products";
+      const url = "/api/admin/shop";
       const method = editing ? "PUT" : "POST";
+      const body = editing ? { id: editing.id, ...payload } : payload;
 
-      await adminFetch(url, { method, body: formData });
+      await adminFetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
       setModalOpen(false);
       fetchData();
     } catch (err) {
@@ -138,7 +141,7 @@ export default function ShopPage() {
 
   const handleDeleteProduct = async (id) => {
     try {
-      await adminFetch(`/api/admin/shop/products/${id}`, { method: "DELETE" });
+      await adminFetch(`/api/admin/shop?type=product&id=${id}`, { method: "DELETE" });
       setDeleteConfirm(null);
       fetchData();
     } catch (err) {
@@ -150,20 +153,22 @@ export default function ShopPage() {
     setSaving(true);
     try {
       const payload = {
-        ...categoryForm,
+        type: 'category',
+        name: categoryForm.name,
         slug: categoryForm.slug || categoryForm.name.toLowerCase().replace(/\s+/g, "-"),
+        description: null,
+        icon: categoryForm.icon || null,
         sort_order: parseInt(categoryForm.sort_order) || 0,
       };
 
-      const url = editingCategory
-        ? `/api/admin/shop/categories/${editingCategory.id}`
-        : "/api/admin/shop/categories";
+      const url = "/api/admin/shop";
       const method = editingCategory ? "PUT" : "POST";
+      const body = editingCategory ? { id: editingCategory.id, ...payload } : payload;
 
       await adminFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(body),
       });
       setCategoryForm({ name: "", slug: "", icon: "", sort_order: 0 });
       setEditingCategory(null);
@@ -177,7 +182,7 @@ export default function ShopPage() {
 
   const handleDeleteCategory = async (id) => {
     try {
-      await adminFetch(`/api/admin/shop/categories/${id}`, { method: "DELETE" });
+      await adminFetch(`/api/admin/shop?type=category&id=${id}`, { method: "DELETE" });
       fetchData();
     } catch (err) {
       console.error("Failed to delete category:", err);
@@ -405,11 +410,11 @@ export default function ShopPage() {
                     <div className="flex items-baseline gap-2 mb-3">
                       {p.discount_price && p.discount_price < p.price ? (
                         <>
-                          <span className="text-[#1B5E20] font-bold">${p.discount_price}</span>
-                          <span className="text-gray-400 text-xs line-through">${p.price}</span>
+                          <span className="text-[#1B5E20] font-bold">Rp {Number(p.discount_price).toLocaleString('id-ID')}</span>
+                          <span className="text-gray-400 text-xs line-through">Rp {Number(p.price).toLocaleString('id-ID')}</span>
                         </>
                       ) : (
-                        <span className="text-[#1B5E20] font-bold">${p.price}</span>
+                        <span className="text-[#1B5E20] font-bold">Rp {Number(p.price).toLocaleString('id-ID')}</span>
                       )}
                     </div>
                     <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
@@ -535,7 +540,7 @@ export default function ShopPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Price ($) *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Price (Rp) *</label>
                   <input
                     type="number"
                     value={productForm.price}
@@ -546,7 +551,7 @@ export default function ShopPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Discount Price ($)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Discount Price (Rp)</label>
                   <input
                     type="number"
                     value={productForm.discount_price}

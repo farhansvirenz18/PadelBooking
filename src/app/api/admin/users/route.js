@@ -35,6 +35,45 @@ export async function GET(request) {
     });
   } catch (error) {
     console.error('Admin users fetch error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function POST(request) {
+  const auth = await verifyAdmin(request);
+  if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
+  try {
+    const body = await request.json();
+    const { email, password, first_name, last_name, phone, role } = body;
+
+    if (!email || !password) {
+      return NextResponse.json({ error: 'email and password are required' }, { status: 400 });
+    }
+
+    const { data, error } = await supabaseServer.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+    });
+
+    if (error) throw error;
+
+    const { error: profileError } = await supabaseServer
+      .from('users')
+      .update({
+        first_name: first_name || null,
+        last_name: last_name || null,
+        phone: phone || null,
+        role: role || 'user',
+      })
+      .eq('id', data.user.id);
+
+    if (profileError) console.error('Profile update error:', profileError);
+
+    return NextResponse.json({ success: true, data: { id: data.user.id, email } }, { status: 201 });
+  } catch (error) {
+    console.error('Admin user create error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

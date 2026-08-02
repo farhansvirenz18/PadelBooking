@@ -33,7 +33,7 @@ export async function GET(request, { params }) {
     return NextResponse.json({ success: true, data: booking });
   } catch (error) {
     console.error('Booking detail error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -92,6 +92,6 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ success: true, message: 'Booking cancelled' });
   } catch (error) {
     console.error('Booking cancel error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

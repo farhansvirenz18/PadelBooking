@@ -7,7 +7,14 @@ const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY;
 function verifySignature(orderId, statusCode, grossAmount, signature) {
   const payload = `${orderId}${statusCode}${grossAmount}${MIDTRANS_SERVER_KEY}`;
   const expectedSignature = crypto.createHash('sha512').update(payload).digest('hex');
-  return expectedSignature === signature;
+  try {
+    return crypto.timingSafeEqual(
+      Buffer.from(expectedSignature, 'hex'),
+      Buffer.from(signature, 'hex')
+    );
+  } catch {
+    return false;
+  }
 }
 
 const STATUS_MAP = {
@@ -111,6 +118,6 @@ export async function POST(request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Webhook error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

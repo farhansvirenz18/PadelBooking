@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
+import { userFetch } from '@/lib/userFetch'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
@@ -36,7 +37,7 @@ export default function OrdersPage() {
         router.push('/login')
         return
       }
-      fetch('/api/shop/orders')
+      userFetch('/api/shop/orders')
         .then(r => r.json())
         .then(res => setOrders(res.data || []))
         .catch(() => {})
