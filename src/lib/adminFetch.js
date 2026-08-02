@@ -1,30 +1,42 @@
 import { supabase } from '@/lib/supabaseClient';
 
-// Helper to auto-attach auth header to admin API calls
 export async function adminFetch(url, options = {}) {
-  const { data: { session } } = await supabase.auth.getSession();
-  
-  if (!session?.access_token) {
-    window.location.href = '/login';
-    throw new Error('Session expired, please log in again');
+  try {
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+    if (sessionError) {
+      console.error('Session error in adminFetch:', sessionError);
+      window.location.href = '/login';
+      throw new Error('Authentication error');
+    }
+
+    if (!session?.access_token) {
+      window.location.href = '/login';
+      throw new Error('Session expired, please log in again');
+    }
+
+    const headers = {
+      ...options.headers,
+      'Authorization': `Bearer ${session.access_token}`,
+    };
+
+    if (!(options.body instanceof FormData)) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    const res = await fetch(url, { ...options, headers });
+
+    if (res.status === 401) {
+      window.location.href = '/login';
+      throw new Error('Session expired, please log in again');
+    }
+
+    return res;
+  } catch (err) {
+    if (err.message?.includes('log in again') || err.message?.includes('Authentication error')) {
+      throw err;
+    }
+    console.error('adminFetch network error:', err);
+    throw new Error('Network error. Please check your connection.');
   }
-
-  const headers = {
-    ...options.headers,
-    'Authorization': `Bearer ${session.access_token}`,
-  };
-
-  // Don't override Content-Type for FormData
-  if (!(options.body instanceof FormData)) {
-    headers['Content-Type'] = 'application/json';
-  }
-
-  const res = await fetch(url, { ...options, headers });
-
-  if (res.status === 401) {
-    window.location.href = '/login';
-    throw new Error('Session expired, please log in again');
-  }
-
-  return res;
 }
