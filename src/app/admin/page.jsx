@@ -60,7 +60,7 @@ const BOOKING_COLUMNS = [
 ];
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState({});
   const [bookings, setBookings] = useState([]);
   const [revenueData, setRevenueData] = useState([]);
   const [statusData, setStatusData] = useState([]);
