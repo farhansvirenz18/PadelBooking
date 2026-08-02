@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="antialiased">
         {children}
-        <Toaster position="top-right" richColors />
+        <Toaster position="top-right" richColors closeButton className="!z-[999]" />
       </body>
     </html>
   );
