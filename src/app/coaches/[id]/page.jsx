@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
+import { toast } from 'sonner'
 import Footer from '@/components/Footer'
 import { userFetch } from '@/lib/userFetch'
 
@@ -66,7 +67,7 @@ export default function CoachProfilePage() {
   const totalPrice = coach ? coach.hourly_rate * duration * participants : 0
 
   const handleBooking = async () => {
-    if (!selectedDate || !selectedTime) return alert('Please select date and time')
+    if (!selectedDate || !selectedTime) return toast.error('Please select date and time')
     setBooking(true)
     try {
       const endTime = (() => {
@@ -91,10 +92,10 @@ export default function CoachProfilePage() {
       if (data.payment_url) {
         window.location.href = data.payment_url
       } else {
-        alert(data.error || 'Booking created! Check your email for confirmation.')
+        toast.error(data.error || 'Booking created! Check your email for confirmation.')
       }
     } catch {
-      alert('Failed to create booking. Please try again.')
+      toast.error('Failed to create booking. Please try again.')
     } finally {
       setBooking(false)
     }

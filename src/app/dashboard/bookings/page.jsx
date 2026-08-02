@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
@@ -77,8 +78,13 @@ export default function BookingsPage() {
       })
       if (res.ok) {
         setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'cancelled' } : b))
+        toast.success('Booking cancelled successfully')
+      } else {
+        toast.error('Failed to cancel booking')
       }
-    } catch {}
+    } catch {
+      toast.error('Failed to cancel booking')
+    }
     setCancellingId(null)
   }
 

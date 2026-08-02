@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
+import { toast } from 'sonner'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -78,6 +79,7 @@ export default function RegisterPage() {
         role: 'user',
       });
       router.push('/login?registered=true')
+      toast.success('Account created successfully!')
     }
     setLoading(false)
   }

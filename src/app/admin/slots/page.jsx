@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { adminFetch } from '@/lib/adminFetch';
 import ExportButton from '@/components/admin/ExportButton';
+import { toast } from 'sonner';
 
 function generateDateRange(start, end) {
   const dates = [];
@@ -63,10 +64,14 @@ function GenerateSlotsModal({ open, onClose, onGenerate, courts }) {
       const json = await res.json();
       if (json.success) {
         setResult(json.data);
+        toast.success(`Generated ${json.data.generated} time slots`);
         setTimeout(() => { onGenerate(); }, 1500);
+      } else {
+        toast.error('Failed to generate slots');
       }
     } catch (err) {
       console.error('Generate failed:', err);
+      toast.error('Failed to generate slots');
     } finally {
       setGenerating(false);
     }
@@ -247,9 +252,11 @@ export default function AdminSlots() {
     try {
       const newStatus = blockModal.slot.status === 'available' ? 'blocked' : 'available';
       await adminFetch('/api/admin/crud', { method: 'PUT', body: JSON.stringify({ table: 'time_slots', id: blockModal.slot.id, data: { status: newStatus } }) });
+      toast.success(newStatus === 'blocked' ? 'Slot blocked' : 'Slot unblocked');
       fetchSlots();
     } catch (err) {
       console.error('Toggle block failed:', err);
+      toast.error('Failed to update slot');
     } finally {
       setBlocking(false);
       setBlockModal({ open: false, slot: null });

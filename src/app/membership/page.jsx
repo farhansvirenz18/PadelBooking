@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { toast } from 'sonner'
 import { userFetch } from '@/lib/userFetch'
 
 function formatPrice(price) {
@@ -94,10 +95,10 @@ export default function MembershipPage() {
       if (data.payment_url) {
         window.location.href = data.payment_url
       } else {
-        alert(data.error || 'Subscription created! Check your email for payment details.')
+        toast.error(data.error || 'Subscription created! Check your email for payment details.')
       }
     } catch {
-      alert('Failed to subscribe. Please try again.')
+      toast.error('Failed to subscribe. Please try again.')
     } finally {
       setSubscribing(null)
     }

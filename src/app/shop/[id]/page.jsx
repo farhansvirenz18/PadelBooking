@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
+import { toast } from 'sonner'
 import Footer from '@/components/Footer'
 import { userFetch } from '@/lib/userFetch'
 
@@ -56,10 +57,10 @@ export default function ProductDetailPage() {
       if (data.payment_url) {
         window.location.href = data.payment_url
       } else {
-        alert(data.error || 'Order created! Check your email for payment details.')
+        toast.error(data.error || 'Order created! Check your email for payment details.')
       }
     } catch {
-      alert('Failed to create order. Please try again.')
+      toast.error('Failed to create order. Please try again.')
     } finally {
       setOrdering(false)
     }

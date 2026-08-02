@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
+import { toast } from 'sonner'
 
 function LoginForm() {
   const router = useRouter()
@@ -18,10 +19,16 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
+    if (searchParams.get('registered') === 'true') {
+      toast.success('Registration successful! Please sign in.')
+    }
+    if (searchParams.get('error') === 'auth') {
+      toast.error('Authentication failed. Please try again.')
+    }
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) redirectByRole(session.user)
     })
-  }, [router])
+  }, [router, searchParams])
 
   async function redirectByRole(user) {
     const { data } = await supabase

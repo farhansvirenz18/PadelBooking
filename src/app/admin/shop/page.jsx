@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { adminFetch } from "@/lib/adminFetch";
 import ExportButton from "@/components/admin/ExportButton";
+import { toast } from "sonner";
 
 export default function ShopPage() {
   const [activeTab, setActiveTab] = useState("products");
@@ -122,6 +123,7 @@ export default function ShopPage() {
         const uploadRes = await adminFetch("/api/admin/upload", { method: "POST", body: fd });
         const uploadData = await uploadRes.json();
         if (uploadData.success) imageUrl = uploadData.url;
+      else { toast.error('Failed to upload image'); setSaving(false); return; }
       }
 
       const payload = {
@@ -145,10 +147,12 @@ export default function ShopPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      toast.success(editing ? "Product updated successfully" : "Product created successfully");
       setModalOpen(false);
       fetchData();
     } catch (err) {
       console.error("Failed to save product:", err);
+      toast.error("Failed to save product");
     } finally {
       setSaving(false);
     }
@@ -157,10 +161,12 @@ export default function ShopPage() {
   const handleDeleteProduct = async (id) => {
     try {
       await adminFetch(`/api/admin/shop?type=product&id=${id}`, { method: "DELETE" });
+      toast.success("Product deleted successfully");
       setDeleteConfirm(null);
       fetchData();
     } catch (err) {
       console.error("Failed to delete product:", err);
+      toast.error("Failed to delete product");
     }
   };
 
@@ -185,11 +191,13 @@ export default function ShopPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      toast.success(editingCategory ? "Category updated successfully" : "Category created successfully");
       setCategoryForm({ name: "", slug: "", icon: "", sort_order: 0 });
       setEditingCategory(null);
       fetchData();
     } catch (err) {
       console.error("Failed to save category:", err);
+      toast.error("Failed to save category");
     } finally {
       setSaving(false);
     }
@@ -198,9 +206,11 @@ export default function ShopPage() {
   const handleDeleteCategory = async (id) => {
     try {
       await adminFetch(`/api/admin/shop?type=category&id=${id}`, { method: "DELETE" });
+      toast.success("Category deleted successfully");
       fetchData();
     } catch (err) {
       console.error("Failed to delete category:", err);
+      toast.error("Failed to delete category");
     }
   };
 

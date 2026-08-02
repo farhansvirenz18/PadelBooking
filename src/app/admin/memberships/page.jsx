@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { adminFetch } from '@/lib/adminFetch';
 import ExportButton from '@/components/admin/ExportButton';
+import { toast } from 'sonner';
 
 const PERK_OPTIONS = [
   { value: 'free_racket_rental', label: 'Free Racket Rental' },
@@ -136,12 +137,15 @@ function TierModal({ open, onClose, onSave, tier }) {
       };
       if (tier?.id) {
         await adminFetch('/api/admin/memberships', { method: 'PUT', body: JSON.stringify({ id: tier.id, ...payload }) });
+        toast.success('Membership updated successfully');
       } else {
         await adminFetch('/api/admin/memberships', { method: 'POST', body: JSON.stringify(payload) });
+        toast.success('Membership created successfully');
       }
       onSave();
     } catch (err) {
       console.error('Save failed:', err);
+      toast.error('Failed to save membership');
     } finally {
       setSaving(false);
     }
@@ -223,9 +227,11 @@ function DeleteModal({ open, onClose, onConfirm, tier }) {
     setDeleting(true);
     try {
       await adminFetch('/api/admin/memberships', { method: 'DELETE', body: JSON.stringify({ id: tier.id }) });
+      toast.success('Membership deleted successfully');
       onConfirm();
     } catch (err) {
       console.error('Delete failed:', err);
+      toast.error('Failed to delete membership');
     } finally {
       setDeleting(false);
     }

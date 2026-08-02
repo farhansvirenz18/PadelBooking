@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { adminFetch } from "@/lib/adminFetch";
 import ExportButton from "@/components/admin/ExportButton";
+import { toast } from "sonner";
 
 const FORMATS = [
   { value: "americano", label: "Americano" },
@@ -145,10 +146,12 @@ export default function TournamentsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      toast.success(editing ? "Tournament updated successfully" : "Tournament created successfully");
       setModalOpen(false);
       fetchTournaments();
     } catch (err) {
       console.error("Failed to save tournament:", err);
+      toast.error("Failed to save tournament");
     } finally {
       setSaving(false);
     }
@@ -157,10 +160,12 @@ export default function TournamentsPage() {
   const handleDelete = async (id) => {
     try {
       await adminFetch(`/api/admin/tournaments?id=${id}`, { method: "DELETE" });
+      toast.success("Tournament deleted successfully");
       setDeleteConfirm(null);
       fetchTournaments();
     } catch (err) {
       console.error("Failed to delete tournament:", err);
+      toast.error("Failed to delete tournament");
     }
   };
 

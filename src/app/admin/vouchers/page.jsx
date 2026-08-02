@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { adminFetch } from '@/lib/adminFetch';
 import ExportButton from '@/components/admin/ExportButton';
+import { toast } from 'sonner';
 
 const PAGE_SIZE = 10;
 
@@ -119,12 +120,15 @@ function VoucherModal({ open, onClose, onSave, voucher }) {
       };
       if (voucher?.id) {
         await adminFetch('/api/admin/vouchers', { method: 'PUT', body: JSON.stringify({ id: voucher.id, ...payload }) });
+        toast.success('Voucher updated successfully');
       } else {
         await adminFetch('/api/admin/vouchers', { method: 'POST', body: JSON.stringify(payload) });
+        toast.success('Voucher created successfully');
       }
       onSave();
     } catch (err) {
       console.error('Save failed:', err);
+      toast.error('Failed to save voucher');
     } finally {
       setSaving(false);
     }
@@ -216,9 +220,11 @@ function DeleteModal({ open, onClose, onConfirm, voucher }) {
     setDeleting(true);
     try {
       await adminFetch('/api/admin/vouchers', { method: 'DELETE', body: JSON.stringify({ id: voucher.id }) });
+      toast.success('Voucher deleted successfully');
       onConfirm();
     } catch (err) {
       console.error('Delete failed:', err);
+      toast.error('Failed to delete voucher');
     } finally {
       setDeleting(false);
     }

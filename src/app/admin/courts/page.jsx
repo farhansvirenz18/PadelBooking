@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { adminFetch } from '@/lib/adminFetch';
 import ExportButton from '@/components/admin/ExportButton';
+import { toast } from 'sonner';
 
 const AMENITIES_LIST = ['Floodlights', 'Changing Room', 'Shower', 'Parking', 'Pro Shop', 'Cafe', 'Air Conditioning', 'Seating Area', 'Water Fountain', 'First Aid'];
 
@@ -114,6 +115,7 @@ function CourtModal({ open, onClose, onSave, court }) {
       if (json.success) setForm((prev) => ({ ...prev, image_url: json.url }));
     } catch (err) {
       console.error('Upload failed:', err);
+      toast.error('Failed to upload image');
     } finally {
       setUploading(false);
     }
@@ -138,12 +140,15 @@ function CourtModal({ open, onClose, onSave, court }) {
       };
       if (court?.id) {
         await adminFetch('/api/admin/courts', { method: 'PUT', body: JSON.stringify({ id: court.id, ...payload }) });
+        toast.success('Court updated successfully');
       } else {
         await adminFetch('/api/admin/courts', { method: 'POST', body: JSON.stringify(payload) });
+        toast.success('Court created successfully');
       }
       onSave();
     } catch (err) {
       console.error('Save failed:', err);
+      toast.error('Failed to save court');
     } finally {
       setSaving(false);
     }
@@ -244,9 +249,11 @@ function DeleteModal({ open, onClose, onConfirm, court }) {
     setDeleting(true);
     try {
       await adminFetch('/api/admin/crud?table=courts&id=' + court.id, { method: 'DELETE' });
+      toast.success('Court deleted successfully');
       onConfirm();
     } catch (err) {
       console.error('Delete failed:', err);
+      toast.error('Failed to delete court');
     } finally {
       setDeleting(false);
     }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
+import { toast } from 'sonner'
 import Footer from '@/components/Footer'
 import { userFetch } from '@/lib/userFetch'
 
@@ -41,8 +42,8 @@ export default function TournamentDetailPage() {
   }, [params.id])
 
   const handleRegister = async () => {
-    if (!partnerName.trim()) return alert('Please enter your partner name')
-    if (!partnerLevel) return alert('Please select your partner level')
+    if (!partnerName.trim()) return toast.error('Please enter your partner name')
+    if (!partnerLevel) return toast.error('Please select your partner level')
     setRegistering(true)
     try {
       const res = await userFetch(`/api/tournaments/${tournament.id}/register`, {
@@ -56,10 +57,10 @@ export default function TournamentDetailPage() {
       if (data.payment_url) {
         window.location.href = data.payment_url
       } else {
-        alert(data.error || 'Registration successful! Check your email.')
+        toast.error(data.error || 'Registration successful! Check your email.')
       }
     } catch {
-      alert('Failed to register. Please try again.')
+      toast.error('Failed to register. Please try again.')
     } finally {
       setRegistering(false)
     }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { adminFetch } from "@/lib/adminFetch";
 import ExportButton from "@/components/admin/ExportButton";
+import { toast } from "sonner";
 
   const SPECIALTIES = ["beginners", "intermediate", "advanced", "kids", "women"];
 
@@ -112,6 +113,7 @@ import ExportButton from "@/components/admin/ExportButton";
         const uploadRes = await adminFetch("/api/admin/upload", { method: "POST", body: fd });
         const uploadData = await uploadRes.json();
         if (uploadData.success) imageUrl = uploadData.url;
+      else { toast.error('Failed to upload image'); setSaving(false); return; }
       }
 
       const payload = {
@@ -134,10 +136,12 @@ import ExportButton from "@/components/admin/ExportButton";
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      toast.success(editingCoach ? "Coach updated successfully" : "Coach created successfully");
       setModalOpen(false);
       fetchCoaches();
     } catch (err) {
       console.error("Failed to save coach:", err);
+      toast.error("Failed to save coach");
     } finally {
       setSaving(false);
     }
@@ -146,10 +150,12 @@ import ExportButton from "@/components/admin/ExportButton";
   const handleDelete = async (id) => {
     try {
       await adminFetch(`/api/admin/coaches?id=${id}`, { method: "DELETE" });
+      toast.success("Coach deleted successfully");
       setDeleteConfirm(null);
       fetchCoaches();
     } catch (err) {
       console.error("Failed to delete coach:", err);
+      toast.error("Failed to delete coach");
     }
   };
 

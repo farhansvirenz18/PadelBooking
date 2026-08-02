@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { adminFetch } from '@/lib/adminFetch';
 import ExportButton from '@/components/admin/ExportButton';
+import { toast } from 'sonner';
 
 const PAGE_SIZE = 10;
 const ROLE_OPTIONS = ['', 'user', 'admin', 'coach'];
@@ -128,9 +129,11 @@ function CreateUserModal({ open, onClose, onSave }) {
     setSaving(true);
     try {
       await adminFetch('/api/admin/users', { method: 'POST', body: JSON.stringify(form) });
+      toast.success('User created successfully');
       onSave();
     } catch (err) {
       console.error('Create user failed:', err);
+      toast.error('Failed to create user');
     } finally {
       setSaving(false);
     }
