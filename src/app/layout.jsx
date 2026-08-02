@@ -1,9 +1,10 @@
-import { Sora, Hanken_Grotesk } from 'next/font/google';
+import { Bebas_Neue, Space_Grotesk, DM_Sans } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'sonner';
 
-const sora = Sora({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
-const hanken = Hanken_Grotesk({ subsets: ['latin'], variable: '--font-body', display: 'swap' });
+const bebas = Bebas_Neue({ subsets: ['latin'], variable: '--font-brand', weight: '400', display: 'swap' });
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
+const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-body', display: 'swap' });
 
 export const metadata = {
   title: 'Aero Padel - Book Padel Courts Easily',
@@ -13,7 +14,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="id" className={`${sora.variable} ${hanken.variable}`}>
+    <html lang="id" className={`${bebas.variable} ${spaceGrotesk.variable} ${dmSans.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

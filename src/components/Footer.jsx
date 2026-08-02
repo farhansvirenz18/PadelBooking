@@ -41,7 +41,7 @@ export default function Footer() {
               <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
                 <span className="material-symbols-outlined text-white text-[22px]">sports_tennis</span>
               </div>
-              <span className="font-display text-xl font-bold">Aero Padel</span>
+              <span className="font-brand text-2xl tracking-wide">AERO PADEL</span>
             </div>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
               Your all-in-one platform to book padel courts, hire coaches, join tournaments, and gear up.

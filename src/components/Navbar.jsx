@@ -40,8 +40,9 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/20">
       <div className="max-w-[1280px] mx-auto px-4 md:px-10 h-16 flex items-center justify-between">
         {/* Left: Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center gap-2">
           <Image src="/images/logopadel.jpg" alt="Aero Padel" width={40} height={40} className="rounded-xl object-cover" priority />
+          <span className="font-brand text-[28px] leading-none tracking-wide text-on-surface">AERO PADEL</span>
         </Link>
 
         {/* Center: Nav links (desktop) */}

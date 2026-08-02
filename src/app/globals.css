@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: 'Sora', sans-serif;
-  --font-body: 'Hanken Grotesk', sans-serif;
+  --font-brand: 'Bebas Neue', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   --color-primary: #1B5E20;
