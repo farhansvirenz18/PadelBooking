@@ -63,7 +63,7 @@ export default function LoginPage() {
                 <span className="material-symbols-outlined text-white text-[28px]">sports_tennis</span>
               </div>
               <h1 className="text-2xl font-display font-bold text-on-surface">Welcome Back</h1>
-              <p className="text-on-surface-variant text-sm mt-1">Sign in to your PadelBook account</p>
+              <p className="text-on-surface-variant text-sm mt-1">Sign in to your Aero Padel account</p>
             </div>
 
             {/* Error */}

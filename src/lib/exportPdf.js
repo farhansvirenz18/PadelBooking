@@ -6,7 +6,7 @@ export function exportToPdf({ data, columns, filename, title }) {
 
   doc.setFontSize(18);
   doc.setTextColor(27, 94, 32);
-  doc.text(title || 'PadelBook Report', 14, 20);
+  doc.text(title || 'Aero Padel Report', 14, 20);
 
   doc.setFontSize(9);
   doc.setTextColor(100);
@@ -44,7 +44,7 @@ export function exportToPdf({ data, columns, filename, title }) {
       doc.setFontSize(8);
       doc.setTextColor(150);
       doc.text(
-        `Page ${data.pageNumber} of ${pageCount} | PadelBook`,
+        `Page ${data.pageNumber} of ${pageCount} | Aero Padel`,
         doc.internal.pageSize.width / 2,
         doc.internal.pageSize.height - 10,
         { align: 'center' }

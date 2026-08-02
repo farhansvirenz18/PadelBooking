@@ -2,7 +2,7 @@ import AdminGuard from '@/components/AdminGuard';
 import AdminSidebar from '@/components/AdminSidebar';
 
 export const metadata = {
-  title: 'Admin - PadelBook',
+  title: 'Admin - Aero Padel',
 };
 
 export default function AdminLayout({ children }) {

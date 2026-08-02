@@ -56,7 +56,7 @@ export default function AdminSidebar() {
             <span className="material-symbols-outlined text-on-primary text-[22px]">sports_tennis</span>
           </div>
           <div>
-            <h1 className="font-display text-lg font-bold text-on-surface">PadelBook</h1>
+            <h1 className="font-display text-lg font-bold text-on-surface">Aero Padel</h1>
             <p className="text-xs text-on-surface-variant">Admin Panel</p>
           </div>
         </Link>

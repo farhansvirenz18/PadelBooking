@@ -313,6 +313,20 @@ CREATE TRIGGER on_auth_user_created
   FOR EACH ROW EXECUTE FUNCTION handle_new_user();
 
 -- ============================================
+-- HELPER: Check if current user is admin
+-- SECURITY DEFINER bypasses RLS to avoid recursion
+-- ============================================
+CREATE OR REPLACE FUNCTION public.check_is_admin()
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM public.users
+    WHERE id = auth.uid() AND role = 'admin'
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
+
+-- ============================================
 -- ROW LEVEL SECURITY POLICIES
 -- ============================================
 
@@ -332,105 +346,73 @@ ALTER TABLE shop_orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE shop_order_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE vouchers ENABLE ROW LEVEL SECURITY;
 
--- Users: can read/update own profile, admins can read all
+-- Users
 CREATE POLICY "Users can view own profile" ON users FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update own profile" ON users FOR UPDATE USING (auth.uid() = id);
-CREATE POLICY "Admins can view all users" ON users FOR SELECT USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can view all users" ON users FOR SELECT USING (public.check_is_admin());
 
--- Courts: publicly readable
+-- Courts
 CREATE POLICY "Courts are publicly readable" ON courts FOR SELECT USING (true);
-CREATE POLICY "Admins can manage courts" ON courts FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage courts" ON courts FOR ALL USING (public.check_is_admin());
 
--- Time slots: publicly readable
+-- Time slots
 CREATE POLICY "Time slots are publicly readable" ON time_slots FOR SELECT USING (true);
-CREATE POLICY "Admins can manage time slots" ON time_slots FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage time slots" ON time_slots FOR ALL USING (public.check_is_admin());
 
--- Bookings: users can view own, admins can view all
+-- Bookings
 CREATE POLICY "Users can view own bookings" ON bookings FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can create bookings" ON bookings FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Admins can view all bookings" ON bookings FOR SELECT USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
-CREATE POLICY "Admins can manage bookings" ON bookings FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can view all bookings" ON bookings FOR SELECT USING (public.check_is_admin());
+CREATE POLICY "Admins can manage bookings" ON bookings FOR ALL USING (public.check_is_admin());
 
--- Membership tiers: publicly readable
+-- Membership tiers
 CREATE POLICY "Membership tiers are publicly readable" ON membership_tiers FOR SELECT USING (true);
-CREATE POLICY "Admins can manage tiers" ON membership_tiers FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage tiers" ON membership_tiers FOR ALL USING (public.check_is_admin());
 
--- User memberships: users can view own
+-- User memberships
 CREATE POLICY "Users can view own memberships" ON user_memberships FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can create memberships" ON user_memberships FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Admins can manage memberships" ON user_memberships FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage memberships" ON user_memberships FOR ALL USING (public.check_is_admin());
 
--- Coaches: publicly readable
+-- Coaches
 CREATE POLICY "Coaches are publicly readable" ON coaches FOR SELECT USING (true);
-CREATE POLICY "Admins can manage coaches" ON coaches FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage coaches" ON coaches FOR ALL USING (public.check_is_admin());
 
--- Coach bookings: users can view own
+-- Coach bookings
 CREATE POLICY "Users can view own coach bookings" ON coach_bookings FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can create coach bookings" ON coach_bookings FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Admins can manage coach bookings" ON coach_bookings FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage coach bookings" ON coach_bookings FOR ALL USING (public.check_is_admin());
 
--- Tournaments: publicly readable
+-- Tournaments
 CREATE POLICY "Tournaments are publicly readable" ON tournaments FOR SELECT USING (true);
-CREATE POLICY "Admins can manage tournaments" ON tournaments FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage tournaments" ON tournaments FOR ALL USING (public.check_is_admin());
 
--- Tournament registrations: users can view own
+-- Tournament registrations
 CREATE POLICY "Users can view own registrations" ON tournament_registrations FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can register for tournaments" ON tournament_registrations FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Admins can manage registrations" ON tournament_registrations FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage registrations" ON tournament_registrations FOR ALL USING (public.check_is_admin());
 
--- Shop categories: publicly readable
+-- Shop categories
 CREATE POLICY "Shop categories are publicly readable" ON shop_categories FOR SELECT USING (true);
-CREATE POLICY "Admins can manage categories" ON shop_categories FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage categories" ON shop_categories FOR ALL USING (public.check_is_admin());
 
--- Shop products: publicly readable
+-- Shop products
 CREATE POLICY "Shop products are publicly readable" ON shop_products FOR SELECT USING (true);
-CREATE POLICY "Admins can manage products" ON shop_products FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage products" ON shop_products FOR ALL USING (public.check_is_admin());
 
--- Shop orders: users can view own
+-- Shop orders
 CREATE POLICY "Users can view own orders" ON shop_orders FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can create orders" ON shop_orders FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Admins can manage orders" ON shop_orders FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage orders" ON shop_orders FOR ALL USING (public.check_is_admin());
 
--- Shop order items: users can view via parent order
+-- Shop order items
 CREATE POLICY "Users can view own order items" ON shop_order_items FOR SELECT USING (
   EXISTS (SELECT 1 FROM shop_orders WHERE id = order_id AND user_id = auth.uid())
 );
 CREATE POLICY "Users can create order items" ON shop_order_items FOR INSERT WITH CHECK (
   EXISTS (SELECT 1 FROM shop_orders WHERE id = order_id AND user_id = auth.uid())
 );
-CREATE POLICY "Admins can manage order items" ON shop_order_items FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+CREATE POLICY "Admins can manage order items" ON shop_order_items FOR ALL USING (public.check_is_admin());
 
--- Vouchers: validate via API only (service role)
-CREATE POLICY "Admins can manage vouchers" ON vouchers FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
+-- Vouchers
+CREATE POLICY "Admins can manage vouchers" ON vouchers FOR ALL USING (public.check_is_admin());

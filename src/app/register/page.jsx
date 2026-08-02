@@ -90,7 +90,7 @@ export default function RegisterPage() {
                 <span className="material-symbols-outlined text-white text-[28px]">person_add</span>
               </div>
               <h1 className="text-2xl font-display font-bold text-on-surface">Create Account</h1>
-              <p className="text-on-surface-variant text-sm mt-1">Join PadelBook and start playing</p>
+              <p className="text-on-surface-variant text-sm mt-1">Join Aero Padel and start playing</p>
             </div>
 
             {/* Error */}

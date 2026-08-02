@@ -41,7 +41,7 @@ export default function Footer() {
               <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
                 <span className="material-symbols-outlined text-white text-[22px]">sports_tennis</span>
               </div>
-              <span className="font-display text-xl font-bold">PadelBook</span>
+              <span className="font-display text-xl font-bold">Aero Padel</span>
             </div>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
               Your all-in-one platform to book padel courts, hire coaches, join tournaments, and gear up.
@@ -105,7 +105,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/15 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-white/50 text-xs">
-            &copy; {new Date().getFullYear()} PadelBook. All rights reserved.
+            &copy; {new Date().getFullYear()} Aero Padel. All rights reserved.
           </p>
           <div className="flex items-center gap-4 text-white/50 text-xs">
             <Link href="#" className="hover:text-white transition-colors">Terms</Link>

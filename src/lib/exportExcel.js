@@ -2,7 +2,7 @@ import ExcelJS from 'exceljs';
 
 export async function exportToExcel({ data, columns, filename, title }) {
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = 'PadelBook';
+  workbook.creator = 'Aero Padel';
   workbook.created = new Date();
 
   const sheet = workbook.addWorksheet(title || 'Report');

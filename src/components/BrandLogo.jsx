@@ -14,7 +14,7 @@ export default function BrandLogo({ size = 'md', showText = true }) {
         <span className="material-symbols-outlined text-on-primary" style={{ fontSize: s.icon }}>sports_tennis</span>
       </div>
       {showText && (
-        <span className={`font-display font-bold text-on-surface ${s.text}`}>PadelBook</span>
+        <span className={`font-display font-bold text-on-surface ${s.text}`}>Aero Padel</span>
       )}
     </Link>
   );

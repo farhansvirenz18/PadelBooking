@@ -96,7 +96,7 @@ export default function AdminDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-on-surface">Dashboard</h1>
-          <p className="text-sm text-on-surface-variant mt-1">Overview of your PadelBook platform</p>
+          <p className="text-sm text-on-surface-variant mt-1">Overview of your Aero Padel platform</p>
         </div>
         <ExportButton
           data={bookings}
