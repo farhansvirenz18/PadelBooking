@@ -32,7 +32,7 @@ const SOCIALS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-on-primary">
+    <footer style={{ backgroundColor: '#1B5E20', color: '#FFFFFF' }}>
       <div className="max-w-[1280px] mx-auto px-4 md:px-10 pt-16 pb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
@@ -60,7 +60,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-5">Quick Links</h3>
+            <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-5 text-white">Quick Links</h3>
             <ul className="space-y-3">
               {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
@@ -74,7 +74,7 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-5">Support</h3>
+            <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-5 text-white">Support</h3>
             <ul className="space-y-3">
               {SUPPORT_LINKS.map((link) => (
                 <li key={link.label}>
@@ -88,7 +88,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-5">Contact</h3>
+            <h3 className="font-display font-bold text-sm uppercase tracking-wider mb-5 text-white">Contact</h3>
             <ul className="space-y-4">
               {CONTACT_INFO.map((item) => (
                 <li key={item.text} className="flex items-start gap-3">
