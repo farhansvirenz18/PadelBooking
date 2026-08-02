@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import BrandLogo from './BrandLogo';
+import Image from 'next/image';
 
 const QUICK_LINKS = [
   { label: 'Book a Court', href: '/courts' },
@@ -32,15 +32,13 @@ const SOCIALS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1B5E20] text-white">
+    <footer className="bg-primary text-on-primary">
       <div className="max-w-[1280px] mx-auto px-4 md:px-10 pt-16 pb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
-                <span className="material-symbols-outlined text-white text-[22px]">sports_tennis</span>
-              </div>
+              <Image src="/images/logopadel.png" alt="Aero Padel" width={44} height={44} className="rounded-xl object-cover" />
               <span className="font-brand text-2xl tracking-wide">AERO PADEL</span>
             </div>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
