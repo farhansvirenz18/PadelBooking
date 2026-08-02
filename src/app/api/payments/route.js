@@ -119,7 +119,7 @@ async function buildPayload(type, record) {
       },
     ],
     callbacks: {
-      finish: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/payment/finish`,
+      finish: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/payment/finish`,
     },
   };
 }

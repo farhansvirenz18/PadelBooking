@@ -24,7 +24,7 @@ export async function GET(request) {
       supabaseServer.from('bookings').select('id', { count: 'exact', head: true }),
       supabaseServer.from('users').select('id', { count: 'exact', head: true }).eq('role', 'user'),
       supabaseServer.from('bookings').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
-      supabaseServer.from('time_slots').select('id, status'),
+      supabaseServer.from('time_slots').select('id, status, date'),
       supabaseServer.from('user_memberships').select('id', { count: 'exact', head: true }).eq('status', 'active'),
       supabaseServer.from('bookings').select('*, users(first_name, last_name, email), courts(name)').order('created_at', { ascending: false }).limit(10),
     ]);
@@ -36,7 +36,7 @@ export async function GET(request) {
 
     const allSlots = timeSlots.data || [];
     const weekSlots = allSlots.filter(s => {
-      const slotDate = new Date(s.created_at);
+      const slotDate = new Date(s.date);
       return slotDate >= startOfWeek && slotDate < endOfWeek;
     });
     const bookedSlots = weekSlots.filter(s => s.status === 'booked').length;
