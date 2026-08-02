@@ -13,7 +13,7 @@ export async function GET(request) {
     let query = supabaseServer
       .from('tournaments')
       .select('*')
-      .order('start_date', { ascending: false });
+      .order('tournament_date', { ascending: false });
 
     if (status) query = query.eq('status', status);
 
@@ -34,12 +34,10 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const {
-      name, description, category, format, start_date, end_date,
-      registration_deadline, max_participants, entry_fee, location, status,
-      tournament_date, level_min, level_max, prize_pool, rules,
+      name, description, format, tournament_date,
+      registration_deadline, max_participants, entry_fee, status,
+      level_min, level_max, prize_pool, rules,
     } = body;
-
-    const resolvedStartDate = start_date || tournament_date;
 
     if (!name) {
       return NextResponse.json({ error: 'name is required' }, { status: 400 });
@@ -50,14 +48,11 @@ export async function POST(request) {
       .insert({
         name,
         description: description || null,
-        category: category || null,
         format: format || null,
-        start_date: resolvedStartDate || null,
-        end_date: end_date || null,
+        tournament_date: tournament_date || null,
         registration_deadline: registration_deadline || null,
         max_participants: max_participants || null,
         entry_fee: entry_fee || 0,
-        location: location || null,
         status: status || 'upcoming',
         level_min: level_min || null,
         level_max: level_max || null,
@@ -89,9 +84,9 @@ export async function PUT(request) {
     }
 
     const allowedFields = [
-      'name', 'description', 'category', 'format', 'start_date', 'end_date',
-      'registration_deadline', 'max_participants', 'entry_fee', 'location', 'status',
-      'tournament_date', 'level_min', 'level_max', 'prize_pool', 'rules',
+      'name', 'description', 'format', 'tournament_date',
+      'registration_deadline', 'max_participants', 'entry_fee', 'status',
+      'level_min', 'level_max', 'prize_pool', 'rules',
     ];
     const filtered = {};
     for (const key of allowedFields) {

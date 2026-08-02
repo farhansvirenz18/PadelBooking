@@ -158,7 +158,7 @@ export default function TournamentsPage() {
                       {/* Date */}
                       <div className="flex items-center gap-2 text-on-surface-variant text-sm mb-2">
                         <span className="material-symbols-outlined text-[16px]">event</span>
-                        {formatDate(tournament.start_date)}
+                        {formatDate(tournament.tournament_date)}
                       </div>
 
                       {/* Participants */}

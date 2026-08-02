@@ -105,8 +105,8 @@ export default function TournamentsPage() {
       entry_fee: t.entry_fee || "",
       max_participants: t.max_participants || "",
       prize_pool: t.prize_pool || "",
-      tournament_date: t.start_date
-        ? new Date(t.start_date).toISOString().slice(0, 16)
+      tournament_date: t.tournament_date
+        ? new Date(t.tournament_date).toISOString().slice(0, 16)
         : "",
       registration_deadline: t.registration_deadline
         ? new Date(t.registration_deadline).toISOString().slice(0, 16)
@@ -124,8 +124,7 @@ export default function TournamentsPage() {
         name: form.name,
         description: form.description,
         format: form.format,
-        start_date: form.tournament_date ? new Date(form.tournament_date).toISOString() : null,
-        end_date: form.tournament_date ? new Date(form.tournament_date).toISOString() : null,
+        tournament_date: form.tournament_date ? new Date(form.tournament_date).toISOString() : null,
         registration_deadline: form.registration_deadline ? new Date(form.registration_deadline).toISOString() : null,
         entry_fee: parseFloat(form.entry_fee) || 0,
         max_participants: parseInt(form.max_participants) || 0,

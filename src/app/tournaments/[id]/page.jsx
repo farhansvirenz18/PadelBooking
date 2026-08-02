@@ -154,7 +154,7 @@ export default function TournamentDetailPage() {
                 <div className="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/15 text-center">
                   <span className="material-symbols-outlined text-[24px] text-[#1B5E20] mb-1">calendar_today</span>
                   <p className="text-on-surface text-xs font-semibold">Date</p>
-                  <p className="text-on-surface-variant text-[11px]">{formatDate(tournament.start_date)}</p>
+                   <p className="text-on-surface-variant text-[11px]">{formatDate(tournament.tournament_date)}</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/15 text-center">
                   <span className="material-symbols-outlined text-[24px] text-[#1B5E20] mb-1">trophy</span>

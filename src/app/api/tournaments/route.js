@@ -10,14 +10,10 @@ export async function GET(request) {
     let query = supabaseServer
       .from('tournaments')
       .select('*')
-      .order('start_date', { ascending: true });
+      .order('tournament_date', { ascending: true });
 
     if (status) {
       query = query.eq('status', status);
-    }
-
-    if (category) {
-      query = query.eq('category', category);
     }
 
     const { data, error } = await query;

@@ -10,7 +10,7 @@ export async function GET(request) {
     let query = supabaseServer
       .from('courts')
       .select('*')
-      .eq('is_active', true)
+      .eq('status', 'active')
       .order('created_at', { ascending: false });
 
     if (type) {

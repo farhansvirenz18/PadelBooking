@@ -10,7 +10,7 @@ const FIELD_ALLOWLISTS = {
   user_memberships: ['user_id', 'tier_id', 'status', 'start_date', 'end_date'],
   coaches: ['first_name', 'last_name', 'email', 'phone', 'specialization', 'hourly_rate', 'bio', 'avatar_url', 'is_active'],
   coach_bookings: ['user_id', 'coach_id', 'date', 'start_time', 'end_time', 'total_price', 'notes', 'status', 'payment_status'],
-  tournaments: ['name', 'description', 'tournament_date', 'deadline', 'location', 'format', 'entry_fee', 'prize_pool', 'max_participants', 'level_min', 'level_max', 'rules', 'is_active'],
+  tournaments: ['name', 'description', 'tournament_date', 'registration_deadline', 'format', 'entry_fee', 'prize_pool', 'max_participants', 'level_min', 'level_max', 'rules', 'status'],
   tournament_registrations: ['tournament_id', 'user_id', 'team_name', 'partner_name', 'status'],
   shop_categories: ['name', 'description', 'image_url'],
   shop_products: ['name', 'description', 'price', 'discount_price', 'stock', 'category_id', 'brand', 'image_url', 'is_active'],
