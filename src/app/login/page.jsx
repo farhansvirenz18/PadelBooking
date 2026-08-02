@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
@@ -18,15 +18,10 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
-    const registered = searchParams.get('registered')
-    if (registered) {
-      setError('')
-    }
-
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) redirectByRole(session.user)
     })
-  }, [router, searchParams])
+  }, [router])
 
   async function redirectByRole(user) {
     const { data } = await supabase
@@ -87,10 +82,8 @@ export default function LoginPage() {
       <main className="min-h-screen pt-24 pb-20 flex items-center justify-center">
         <div className="w-full max-w-md mx-auto px-4">
 
-          {/* Card */}
           <div className="p-8 rounded-3xl bg-surface-container-lowest border border-outline-variant/15 shadow-xl">
 
-            {/* Header */}
             <div className="text-center mb-8">
               <div className="w-14 h-14 rounded-2xl bg-[#1B5E20] flex items-center justify-center mx-auto mb-4">
                 <span className="material-symbols-outlined text-white text-[28px]">sports_tennis</span>
@@ -99,7 +92,6 @@ export default function LoginPage() {
               <p className="text-on-surface-variant text-sm mt-1">Sign in to your Aero Padel account</p>
             </div>
 
-            {/* Error */}
             {error && (
               <div className="mb-6 p-4 rounded-2xl bg-red-50 text-red-700 text-sm font-medium border border-red-200 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[18px]">error</span>
@@ -107,7 +99,6 @@ export default function LoginPage() {
               </div>
             )}
 
-            {/* Google Login Button */}
             <button
               type="button"
               onClick={handleGoogleLogin}
@@ -127,14 +118,12 @@ export default function LoginPage() {
               Continue with Google
             </button>
 
-            {/* Divider */}
             <div className="flex items-center gap-4 my-6">
               <div className="flex-1 h-px bg-outline-variant/30" />
               <span className="text-on-surface-variant text-xs">OR</span>
               <div className="flex-1 h-px bg-outline-variant/30" />
             </div>
 
-            {/* Form */}
             <form onSubmit={handleLogin} className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-on-surface mb-2">Email</label>
@@ -204,7 +193,6 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* Register Link */}
             <p className="text-center text-sm text-on-surface-variant mt-6">
               Don&apos;t have an account?{' '}
               <Link href="/register" className="text-[#1B5E20] font-semibold hover:underline">
@@ -216,5 +204,17 @@ export default function LoginPage() {
       </main>
       <Footer />
     </>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <span className="w-8 h-8 border-3 border-[#1B5E20]/30 border-t-[#1B5E20] rounded-full animate-spin" />
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }
