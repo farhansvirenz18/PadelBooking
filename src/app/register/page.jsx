@@ -70,6 +70,13 @@ export default function RegisterPage() {
         setLoading(false)
         return
       }
+      await supabase.from('users').insert({
+        id: data.user.id,
+        email: email,
+        first_name: firstName,
+        last_name: lastName,
+        role: 'user',
+      });
       router.push('/login?registered=true')
     }
     setLoading(false)

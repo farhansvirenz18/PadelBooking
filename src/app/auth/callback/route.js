@@ -23,19 +23,29 @@ export async function GET(request) {
 
         const { data: existing } = await supabaseAdmin
           .from('users')
-          .select('id')
+          .select('id, first_name, last_name, avatar_url')
           .eq('id', user.id)
           .single();
+
+        const googleFirstName = user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || '';
+        const googleLastName = user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || user.user_metadata?.name?.split(' ').slice(1).join(' ') || '';
+        const googleAvatar = user.user_metadata?.avatar_url || null;
 
         if (!existing) {
           await supabaseAdmin.from('users').insert({
             id: user.id,
             email: user.email,
-            first_name: user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || '',
-            last_name: user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || user.user_metadata?.name?.split(' ').slice(1).join(' ') || '',
-            avatar_url: user.user_metadata?.avatar_url || null,
+            first_name: googleFirstName,
+            last_name: googleLastName,
+            avatar_url: googleAvatar,
             role: 'user',
           });
+        } else if (!existing.first_name && googleFirstName) {
+          await supabaseAdmin.from('users').update({
+            first_name: googleFirstName,
+            last_name: googleLastName,
+            avatar_url: existing.avatar_url || googleAvatar,
+          }).eq('id', user.id);
         }
 
         const { data: profile } = await supabaseAdmin
