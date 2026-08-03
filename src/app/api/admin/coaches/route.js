@@ -28,28 +28,26 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const {
-      name, first_name, last_name, email, phone, specialization, hourly_rate,
-      bio, image_url, image, specialties, certifications, is_active,
+      name, bio, image_url, specialties, certifications, hourly_rate, is_active,
     } = body;
 
-    const resolvedFirstName = first_name || (name ? name.split(' ')[0] : null);
-    const resolvedLastName = last_name || (name ? name.split(' ').slice(1).join(' ') : null);
-
-    if (!resolvedFirstName) {
-      return NextResponse.json({ error: 'first_name or name is required' }, { status: 400 });
+    if (!name) {
+      return NextResponse.json({ error: 'name is required' }, { status: 400 });
     }
 
+    const certs = Array.isArray(certifications)
+      ? certifications
+      : typeof certifications === 'string' && certifications.trim()
+        ? certifications.split(',').map(s => s.trim()).filter(Boolean)
+        : null;
+
     const insertData = {
-      first_name: resolvedFirstName,
-      last_name: resolvedLastName || null,
-      email: email || null,
-      phone: phone || null,
-      specialization: specialization || (Array.isArray(specialties) ? specialties[0] : null),
-      hourly_rate: hourly_rate || 0,
+      name,
       bio: bio || null,
       image_url: image_url || null,
       specialties: Array.isArray(specialties) ? specialties : null,
-      certifications: certifications || null,
+      certifications: certs,
+      hourly_rate: hourly_rate || 0,
       is_active: is_active !== undefined ? is_active : true,
     };
 
@@ -80,7 +78,7 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'id is required' }, { status: 400 });
     }
 
-    const allowedFields = ['first_name', 'last_name', 'email', 'phone', 'specialization', 'hourly_rate', 'bio', 'image_url', 'is_active', 'specialties', 'certifications'];
+    const allowedFields = ['name', 'bio', 'hourly_rate', 'image_url', 'is_active', 'specialties', 'certifications'];
     const filtered = {};
     for (const key of allowedFields) {
       if (updateFields[key] !== undefined) {
@@ -88,11 +86,17 @@ export async function PUT(request) {
       }
     }
 
+    if (filtered.certifications !== undefined) {
+      filtered.certifications = Array.isArray(filtered.certifications)
+        ? filtered.certifications
+        : typeof filtered.certifications === 'string' && filtered.certifications.trim()
+          ? filtered.certifications.split(',').map(s => s.trim()).filter(Boolean)
+          : null;
+    }
+
     if (Object.keys(filtered).length === 0) {
       return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
     }
-
-    filtered.updated_at = new Date().toISOString();
 
     const { data, error } = await supabaseServer
       .from('coaches')
@@ -127,7 +131,7 @@ export async function DELETE(request) {
 
     const { error } = await supabaseServer
       .from('coaches')
-      .update({ is_active: false, updated_at: new Date().toISOString() })
+      .update({ is_active: false })
       .eq('id', id);
 
     if (error) throw error;

@@ -73,7 +73,7 @@ export async function GET(request) {
           .eq('id', user.id)
           .single();
 
-        const redirectPath = profile?.role === 'admin' ? '/admin' : safeNext;
+        const redirectPath = profile?.role === 'admin' ? '/admin' : `${safeNext}?login=true`;
         return NextResponse.redirect(`${origin}${redirectPath}`);
       }
     }

@@ -131,11 +131,17 @@ import { toast } from "sonner";
         : "/api/admin/coaches";
       const method = editingCoach ? "PUT" : "POST";
 
-      await adminFetch(url, {
+      const saveRes = await adminFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      const saveData = await saveRes.json();
+      if (!saveRes.ok) {
+        toast.error(saveData.error || "Failed to save coach");
+        setSaving(false);
+        return;
+      }
       toast.success(editingCoach ? "Coach updated successfully" : "Coach created successfully");
       setModalOpen(false);
       fetchCoaches();
@@ -149,7 +155,12 @@ import { toast } from "sonner";
 
   const handleDelete = async (id) => {
     try {
-      await adminFetch(`/api/admin/coaches?id=${id}`, { method: "DELETE" });
+      const res = await adminFetch(`/api/admin/coaches?id=${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Failed to delete coach");
+        return;
+      }
       toast.success("Coach deleted successfully");
       setDeleteConfirm(null);
       fetchCoaches();

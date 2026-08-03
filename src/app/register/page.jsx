@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
 import { toast } from 'sonner'
+import Image from 'next/image'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -95,8 +96,8 @@ export default function RegisterPage() {
 
             {/* Header */}
             <div className="text-center mb-8">
-              <div className="w-14 h-14 rounded-2xl bg-[#1B5E20] flex items-center justify-center mx-auto mb-4">
-                <span className="material-symbols-outlined text-white text-[28px]">person_add</span>
+              <div className="w-14 h-14 rounded-2xl mx-auto mb-4 overflow-hidden">
+                <Image src="/images/logopadel.png" alt="Aero Padel" width={56} height={56} className="w-full h-full object-cover" />
               </div>
               <h1 className="text-2xl font-display font-bold text-on-surface">Create Account</h1>
               <p className="text-on-surface-variant text-sm mt-1">Join Aero Padel and start playing</p>

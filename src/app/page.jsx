@@ -1,9 +1,11 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { toast } from 'sonner'
 
 const FEATURES = [
   {
@@ -34,9 +36,17 @@ function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
 }
 
-export default function LandingPage() {
+function LandingContent() {
+  const searchParams = useSearchParams()
   const [courts, setCourts] = useState([])
   const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (searchParams.get('login') === 'true') {
+      toast.success('Login successful! Welcome back.')
+      window.history.replaceState({}, '', '/')
+    }
+  }, [searchParams])
 
   useEffect(() => {
     fetch('/api/courts')
@@ -51,7 +61,7 @@ export default function LandingPage() {
       <Navbar />
       <main className="min-h-screen">
 
-        {/* ─── Hero ─── */}
+        {/* Hero */}
         <section className="relative h-[92vh] min-h-[600px] flex items-center overflow-hidden">
           <div className="absolute inset-0">
             <img
@@ -100,7 +110,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── Features ─── */}
+        {/* Features */}
         <section className="py-20 md:py-28">
           <div className="max-w-[1280px] mx-auto px-4 md:px-10">
             <div className="text-center mb-16">
@@ -131,7 +141,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── How It Works ─── */}
+        {/* How It Works */}
         <section className="py-20 md:py-28 bg-[#1B5E20]/5">
           <div className="max-w-[1280px] mx-auto px-4 md:px-10">
             <div className="text-center mb-16">
@@ -158,7 +168,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── Popular Courts ─── */}
+        {/* Popular Courts */}
         <section className="py-20 md:py-28">
           <div className="max-w-[1280px] mx-auto px-4 md:px-10">
             <div className="flex items-end justify-between mb-12">
@@ -243,7 +253,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── Membership CTA ─── */}
+        {/* Membership CTA */}
         <section className="py-20 md:py-28">
           <div className="max-w-[1280px] mx-auto px-4 md:px-10">
             <div className="relative rounded-[2rem] overflow-hidden">
@@ -280,5 +290,13 @@ export default function LandingPage() {
       </main>
       <Footer />
     </>
+  )
+}
+
+export default function LandingPage() {
+  return (
+    <Suspense fallback={<Navbar />}>
+      <LandingContent />
+    </Suspense>
   )
 }

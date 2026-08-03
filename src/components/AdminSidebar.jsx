@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 const NAV_SECTIONS = [
   {
@@ -54,8 +55,8 @@ export default function AdminSidebar() {
     <div className="flex flex-col h-full">
       <div className="p-6 border-b border-outline-variant/30">
         <Link href="/admin" className="flex items-center gap-3" onClick={() => setMobileOpen(false)}>
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-            <span className="material-symbols-outlined text-on-primary text-[22px]">sports_tennis</span>
+          <div className="w-10 h-10 rounded-xl overflow-hidden">
+            <Image src="/images/logopadel.png" alt="Aero Padel" width={40} height={40} className="w-full h-full object-cover" />
           </div>
           <div>
             <h1 className="font-display text-lg font-bold text-on-surface">Aero Padel</h1>
