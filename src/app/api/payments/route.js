@@ -57,7 +57,7 @@ async function buildPayload(type, record) {
       .eq('id', record.time_slot_id)
       .single();
     amount = record.total_price;
-    itemName = `Court Booking - ${court?.name || 'Court'} (${timeSlot?.start_time || ''} - ${timeSlot?.end_time || ''})`;
+    itemName = `Booking - ${court?.name || 'Court'}`;
   } else if (type === 'coach_booking') {
     const { data: coach } = await supabaseServer
       .from('coaches')
@@ -89,6 +89,10 @@ async function buildPayload(type, record) {
 
   if (!amount || amount <= 0) {
     return { error: 'Invalid payment amount' };
+  }
+
+  if (itemName && itemName.length > 50) {
+    itemName = itemName.substring(0, 50);
   }
 
   const { data: user } = await supabaseServer
