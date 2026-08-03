@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import Image from 'next/image';
 import ThemeToggle from './ThemeToggle';
+import { toast } from 'sonner';
 
 const NAV_LINKS = [
   { label: 'Courts', href: '/courts' },
@@ -32,6 +33,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    toast.success('Logged out successfully');
     setDropdownOpen(false);
     router.push('/');
   };

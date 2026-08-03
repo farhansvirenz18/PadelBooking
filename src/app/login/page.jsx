@@ -61,6 +61,7 @@ function LoginForm() {
     }
 
     if (data.user) {
+      toast.success('Login successful!')
       await redirectByRole(data.user)
     }
     setLoading(false)

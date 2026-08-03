@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
+import { toast } from 'sonner';
 
 const NAV_SECTIONS = [
   {
@@ -45,6 +46,7 @@ export default function AdminSidebar() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    toast.success('Logged out successfully');
     router.push('/login');
   };
 
