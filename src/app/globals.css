@@ -81,7 +81,6 @@
 @layer base {
   * {
     box-sizing: border-box;
-    transition: background-color 0.3s ease, color 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease, fill 0.3s ease;
   }
 
   html {
@@ -94,6 +93,10 @@
     color: var(--color-on-surface);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  button, a, [role="button"], .card {
+    transition: background-color 0.3s ease, color 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
