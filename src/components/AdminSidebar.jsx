@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { toast } from 'sonner';
 import Image from 'next/image';
 import UserAvatar from './UserAvatar';
+import { userFetch } from '@/lib/userFetch';
 
 const NAV_SECTIONS = [
   {
@@ -48,7 +49,7 @@ export default function AdminSidebar() {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    fetch('/api/users/profile').then(r => r.json()).then(res => {
+    userFetch('/api/users/profile').then(r => r.json()).then(res => {
       if (res.data) setProfile(res.data);
     }).catch(() => {});
   }, []);

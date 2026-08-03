@@ -48,7 +48,7 @@ export async function GET(request) {
 
         const googleFirstName = user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || '';
         const googleLastName = user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || user.user_metadata?.name?.split(' ').slice(1).join(' ') || '';
-        const googleAvatar = user.user_metadata?.avatar_url || null;
+        const googleAvatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
 
         if (!existing) {
           await supabaseAdmin.from('users').insert({

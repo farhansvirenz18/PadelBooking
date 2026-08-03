@@ -49,8 +49,8 @@ export default function CourtsPage() {
       result = result.filter(c => c.type === typeFilter)
     }
 
-    if (sortBy === 'price-low') result.sort((a, b) => a.price_per_hour - b.price_per_hour)
-    else if (sortBy === 'price-high') result.sort((a, b) => b.price_per_hour - a.price_per_hour)
+    if (sortBy === 'price-low') result.sort((a, b) => a.price_per_hour_offpeak - b.price_per_hour_offpeak)
+    else if (sortBy === 'price-high') result.sort((a, b) => b.price_per_hour_offpeak - a.price_per_hour_offpeak)
     else result.sort((a, b) => a.name.localeCompare(b.name))
 
     return result
@@ -224,7 +224,7 @@ export default function CourtsPage() {
                         {/* Price */}
                         <div className="flex items-baseline gap-1 mb-4">
                           <span className="text-[#1B5E20] font-bold text-xl">
-                            {formatPrice(court.price_per_hour)}
+                            {formatPrice(court.price_per_hour_offpeak)}
                           </span>
                           <span className="text-on-surface-variant text-xs">/hour</span>
                         </div>

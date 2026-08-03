@@ -216,7 +216,7 @@ export default function BookCourtPage() {
                     {court.location || 'Jakarta'}
                   </div>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-[#1B5E20] font-bold text-2xl">{formatPrice(court.price_per_hour)}</span>
+                    <span className="text-[#1B5E20] font-bold text-2xl">{formatPrice(court.price_per_hour_offpeak)}</span>
                     <span className="text-on-surface-variant text-sm">/hour</span>
                   </div>
                 </div>

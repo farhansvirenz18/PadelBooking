@@ -228,7 +228,7 @@ function LandingContent() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-[#1B5E20] font-bold text-sm">
-                          {formatPrice(court.price_per_hour)}
+                          {formatPrice(court.price_per_hour_offpeak)}
                           <span className="font-normal text-on-surface-variant">/hr</span>
                         </span>
                         <span className="text-xs font-semibold text-[#1B5E20] bg-[#1B5E20]/10 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">

@@ -7,6 +7,7 @@ import Image from 'next/image';
 import ThemeToggle from './ThemeToggle';
 import { toast } from 'sonner';
 import UserAvatar from './UserAvatar';
+import { userFetch } from '@/lib/userFetch';
 
 const NAV_LINKS = [
   { label: 'Courts', href: '/courts' },
@@ -27,7 +28,7 @@ export default function Navbar() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetch('/api/users/profile').then(r => r.json()).then(res => {
+        userFetch('/api/users/profile').then(r => r.json()).then(res => {
           if (res.data) setProfile(res.data);
         }).catch(() => {});
       } else {
@@ -37,7 +38,7 @@ export default function Navbar() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetch('/api/users/profile').then(r => r.json()).then(res => {
+        userFetch('/api/users/profile').then(r => r.json()).then(res => {
           if (res.data) setProfile(res.data);
         }).catch(() => {});
       }
