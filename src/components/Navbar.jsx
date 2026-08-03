@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabaseClient';
 import Image from 'next/image';
 import ThemeToggle from './ThemeToggle';
 import { toast } from 'sonner';
+import UserAvatar from './UserAvatar';
 
 const NAV_LINKS = [
   { label: 'Courts', href: '/courts' },
@@ -18,15 +19,28 @@ const NAV_LINKS = [
 export default function Navbar() {
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        fetch('/api/users/profile').then(r => r.json()).then(res => {
+          if (res.data) setProfile(res.data);
+        }).catch(() => {});
+      } else {
+        setProfile(null);
+      }
     });
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        fetch('/api/users/profile').then(r => r.json()).then(res => {
+          if (res.data) setProfile(res.data);
+        }).catch(() => {});
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -68,9 +82,14 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-on-primary text-sm font-bold hover:shadow-md transition-shadow"
+                className="hover:shadow-md transition-shadow"
               >
-                {user.email?.charAt(0).toUpperCase()}
+                <UserAvatar
+                  avatarUrl={profile?.avatar_url}
+                  firstName={profile?.first_name}
+                  lastName={profile?.last_name}
+                  size={36}
+                />
               </button>
               {dropdownOpen && (
                 <>

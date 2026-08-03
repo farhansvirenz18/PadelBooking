@@ -1,10 +1,11 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import UserAvatar from './UserAvatar';
 
 const NAV_SECTIONS = [
   {
@@ -44,6 +45,13 @@ export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/users/profile').then(r => r.json()).then(res => {
+      if (res.data) setProfile(res.data);
+    }).catch(() => {});
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -94,6 +102,20 @@ export default function AdminSidebar() {
       </nav>
 
       <div className="p-4 border-t border-outline-variant/30">
+        <div className="flex items-center gap-3 px-3 mb-3">
+          <UserAvatar
+            avatarUrl={profile?.avatar_url}
+            firstName={profile?.first_name}
+            lastName={profile?.last_name}
+            size={32}
+          />
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-on-surface truncate">
+              {profile?.first_name || profile?.email?.split('@')[0] || 'Admin'}
+            </p>
+            <p className="text-xs text-on-surface-variant truncate">{profile?.email}</p>
+          </div>
+        </div>
         <Link
           href="/"
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-on-surface-variant hover:bg-surface-container transition-colors mb-2"
