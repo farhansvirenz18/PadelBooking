@@ -1,7 +1,6 @@
 import { Bebas_Neue, Space_Grotesk, DM_Sans } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'sonner';
-import Script from 'next/script';
 
 const bebas = Bebas_Neue({ subsets: ['latin'], variable: '--font-brand', weight: '400', display: 'swap' });
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
@@ -28,13 +27,6 @@ export default function RootLayout({ children }) {
       <body className="antialiased">
         {children}
         <Toaster position="top-right" richColors closeButton className="z-[999]!" />
-        <Script
-          src={process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === 'true'
-            ? 'https://app.midtrans.com/snap/snap.js'
-            : 'https://app.sandbox.midtrans.com/snap/snap.js'}
-          data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || ''}
-          strategy="beforeInteractive"
-        />
       </body>
     </html>
   );

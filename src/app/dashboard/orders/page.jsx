@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
 import { userFetch } from '@/lib/userFetch'
-import { openSnapPopup, isPaymentExpired } from '@/lib/payment'
+import { isPaymentExpired } from '@/lib/payment'
 import { toast } from 'sonner'
 
 function formatPrice(price) {
@@ -91,20 +91,11 @@ export default function OrdersPage() {
         setResumingId(null)
         return
       }
-      if (payData.snap_token) {
+      if (payData.redirect_url) {
+        window.location.href = payData.redirect_url
+      } else {
+        toast.error('Payment URL not available')
         setResumingId(null)
-        await openSnapPopup(payData.snap_token, {
-          onSuccess: () => {
-            toast.success('Payment successful!')
-            fetchOrders()
-          },
-          onError: () => {
-            toast.error('Payment failed. Please try again.')
-          },
-          onClose: () => {
-            toast.info('Payment cancelled. You can resume from My Orders.')
-          },
-        })
       }
     } catch {
       toast.error('Failed to initiate payment')

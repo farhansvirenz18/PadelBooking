@@ -15,7 +15,7 @@ function toLocalISODate(d) {
   const day = String(d.getDate()).padStart(2, '0')
   return `${y}-${m}-${day}`
 }
-import { openSnapPopup, isPaymentExpired } from '@/lib/payment'
+import { isPaymentExpired } from '@/lib/payment'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
@@ -114,23 +114,11 @@ export default function BookingsPage() {
         setResumingId(null)
         return
       }
-      if (payData.snap_token) {
+      if (payData.redirect_url) {
+        window.location.href = payData.redirect_url
+      } else {
+        toast.error('Payment URL not available')
         setResumingId(null)
-        await openSnapPopup(payData.snap_token, {
-          onSelect: (data) => {
-            console.log('Payment method selected:', data)
-          },
-          onSuccess: () => {
-            toast.success('Payment successful!')
-            fetchBookings()
-          },
-          onError: () => {
-            toast.error('Payment failed. Please try again.')
-          },
-          onClose: () => {
-            toast.info('Payment cancelled. You can resume from My Bookings.')
-          },
-        })
       }
     } catch {
       toast.error('Failed to initiate payment')

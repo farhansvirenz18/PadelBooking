@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar'
 import { toast } from 'sonner'
 import Footer from '@/components/Footer'
 import { userFetch } from '@/lib/userFetch'
-import { openSnapPopup } from '@/lib/payment'
+
 
 const STOCK_BADGES = {
   in_stock: { label: 'In Stock', color: 'bg-[#1B5E20]/10 text-[#1B5E20]' },
@@ -74,22 +74,11 @@ export default function ProductDetailPage() {
         return
       }
 
-      if (payData.snap_token) {
+      if (payData.redirect_url) {
+        window.location.href = payData.redirect_url
+      } else {
+        toast.error('Payment URL not available')
         setOrdering(false)
-        await openSnapPopup(payData.snap_token, {
-          onSuccess: () => {
-            toast.success('Payment successful!')
-            router.push('/dashboard/orders')
-          },
-          onError: () => {
-            toast.error('Payment failed. Please try again.')
-            router.push('/dashboard/orders')
-          },
-          onClose: () => {
-            toast.info('Payment cancelled. You can resume from My Orders.')
-            router.push('/dashboard/orders')
-          },
-        })
       }
     } catch {
       toast.error('Failed to create order. Please try again.')

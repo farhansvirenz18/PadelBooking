@@ -59,12 +59,21 @@ function FinishContent() {
             )}
 
             <div className="flex flex-col gap-3">
-              <Link
-                href="/dashboard/bookings"
-                className="w-full py-3 rounded-full bg-[#1B5E20] text-white text-sm font-semibold hover:bg-[#1B5E20]/90 transition-colors"
-              >
-                View My Bookings
-              </Link>
+              {orderId?.startsWith('SO') ? (
+                <Link
+                  href="/dashboard/orders"
+                  className="w-full py-3 rounded-full bg-[#1B5E20] text-white text-sm font-semibold hover:bg-[#1B5E20]/90 transition-colors"
+                >
+                  View My Orders
+                </Link>
+              ) : (
+                <Link
+                  href="/dashboard/bookings"
+                  className="w-full py-3 rounded-full bg-[#1B5E20] text-white text-sm font-semibold hover:bg-[#1B5E20]/90 transition-colors"
+                >
+                  View My Bookings
+                </Link>
+              )}
               <Link
                 href="/"
                 className="w-full py-3 rounded-full border border-outline-variant/40 text-on-surface text-sm font-medium hover:bg-surface-container transition-colors"
