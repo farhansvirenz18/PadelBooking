@@ -156,7 +156,18 @@ export async function POST(request) {
     }
 
     if (record.midtrans_order_id) {
-      return NextResponse.json({ error: 'Payment already initiated' }, { status: 400 });
+      const createdAt = record.created_at;
+      const created = new Date(createdAt);
+      const now = new Date();
+      const diffHours = (now - created) / (1000 * 60 * 60);
+      if (diffHours <= 24) {
+        await supabaseServer
+          .from(table)
+          .update({ midtrans_order_id: null, midtrans_snap_token: null })
+          .eq('id', bookingId);
+      } else {
+        return NextResponse.json({ error: 'Payment expired. Please create a new booking.' }, { status: 400 });
+      }
     }
 
     if (auth.user.id !== record.user_id) {

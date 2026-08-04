@@ -6,6 +6,8 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { userFetch } from '@/lib/userFetch'
+import { openSnapPopup } from '@/lib/payment'
+import { toast } from 'sonner'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
@@ -127,8 +129,23 @@ export default function BookCourtPage() {
           return
         }
 
-        if (payData.redirect_url) {
-          window.location.href = payData.redirect_url
+        if (payData.snap_token) {
+          setBooking(false)
+          const result = await openSnapPopup(payData.snap_token, {
+            onSelect: (data) => {
+              console.log('Payment method selected:', data)
+            },
+            onSuccess: () => {
+              toast.success('Payment successful!')
+              router.push('/dashboard/bookings')
+            },
+            onError: () => {
+              toast.error('Payment failed. Please try again.')
+            },
+            onClose: () => {
+              toast.info('Payment cancelled. You can resume from My Bookings.')
+            },
+          })
           return
         }
       }

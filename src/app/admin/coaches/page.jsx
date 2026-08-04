@@ -401,7 +401,7 @@ import { toast } from "sonner";
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Hourly Rate ($) *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Hourly Rate (Rp) *</label>
                   <input
                     type="number"
                     value={form.hourly_rate}

@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
 import { userFetch } from '@/lib/userFetch'
+import { openSnapPopup, isPaymentExpired } from '@/lib/payment'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
@@ -38,6 +39,7 @@ export default function BookingsPage() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('upcoming')
   const [cancellingId, setCancellingId] = useState(null)
+  const [resumingId, setResumingId] = useState(null)
 
   function fetchBookings() {
     setLoading(true)
@@ -86,6 +88,47 @@ export default function BookingsPage() {
       toast.error('Failed to cancel booking')
     }
     setCancellingId(null)
+  }
+
+  async function handleResumePayment(booking) {
+    if (isPaymentExpired(booking.created_at)) {
+      toast.error('Payment expired. Please create a new booking.')
+      return
+    }
+    setResumingId(booking.id)
+    try {
+      const payRes = await userFetch('/api/payments', {
+        method: 'POST',
+        body: JSON.stringify({ bookingId: booking.id, type: 'booking' }),
+      })
+      const payData = await payRes.json()
+      if (!payData.success) {
+        toast.error(payData.error || 'Failed to initiate payment')
+        setResumingId(null)
+        return
+      }
+      if (payData.snap_token) {
+        setResumingId(null)
+        await openSnapPopup(payData.snap_token, {
+          onSelect: (data) => {
+            console.log('Payment method selected:', data)
+          },
+          onSuccess: () => {
+            toast.success('Payment successful!')
+            fetchBookings()
+          },
+          onError: () => {
+            toast.error('Payment failed. Please try again.')
+          },
+          onClose: () => {
+            toast.info('Payment cancelled. You can resume from My Bookings.')
+          },
+        })
+      }
+    } catch {
+      toast.error('Failed to initiate payment')
+      setResumingId(null)
+    }
   }
 
   return (
@@ -211,14 +254,29 @@ export default function BookingsPage() {
 
                     {/* Actions */}
                     {booking.status === 'pending' && (
-                      <div className="shrink-0">
-                        <button
-                          onClick={() => handleCancel(booking.id)}
-                          disabled={cancellingId === booking.id}
-                          className="px-4 py-2 rounded-full border border-red-300 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors disabled:opacity-50"
-                        >
-                          {cancellingId === booking.id ? 'Cancelling...' : 'Cancel'}
-                        </button>
+                      <div className="shrink-0 flex flex-col gap-2">
+                        {!isPaymentExpired(booking.created_at) ? (
+                          <>
+                            <button
+                              onClick={() => handleResumePayment(booking)}
+                              disabled={resumingId === booking.id}
+                              className="px-4 py-2 rounded-full bg-[#1B5E20] text-white text-sm font-medium hover:bg-[#2E7D32] transition-colors disabled:opacity-50"
+                            >
+                              {resumingId === booking.id ? 'Processing...' : 'Lanjutkan Pembayaran'}
+                            </button>
+                            <button
+                              onClick={() => handleCancel(booking.id)}
+                              disabled={cancellingId === booking.id}
+                              className="px-4 py-2 rounded-full border border-red-300 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors disabled:opacity-50"
+                            >
+                              {cancellingId === booking.id ? 'Cancelling...' : 'Cancel'}
+                            </button>
+                          </>
+                        ) : (
+                          <span className="px-4 py-2 rounded-full bg-gray-100 text-gray-500 text-sm font-medium text-center">
+                            Payment Expired
+                          </span>
+                        )}
                       </div>
                     )}
                   </div>
