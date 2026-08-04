@@ -11,7 +11,16 @@ function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
 }
 
-
+const PERK_OPTIONS = [
+  { value: 'free_racket_rental', label: 'Free Racket Rental' },
+  { value: 'priority_booking', label: 'Priority Booking' },
+  { value: 'guest_pass', label: 'Guest Pass' },
+  { value: 'discount_court', label: 'Court Discount' },
+  { value: 'free_guest_session', label: 'Free Guest Session' },
+  { value: 'exclusive_events', label: 'Exclusive Events' },
+  { value: 'priority_support', label: 'Priority Support' },
+  { value: 'locker_access', label: 'Locker Access' },
+];
 
 export default function MembershipPage() {
   const [tiers, setTiers] = useState([])
@@ -139,7 +148,7 @@ export default function MembershipPage() {
                     {/* Price */}
                     <div className="flex items-baseline gap-1 mb-1">
                       <span className={`text-3xl font-display font-bold ${tier.recommended ? 'text-[#1B5E20]' : 'text-on-surface'}`}>
-                        {formatPrice(tier.price)}
+                        {formatPrice(tier.monthly_price)}
                       </span>
                       <span className="text-on-surface-variant text-sm">/month</span>
                     </div>
@@ -170,7 +179,9 @@ export default function MembershipPage() {
                       {tier.perks.map((perk, i) => (
                         <li key={i} className="flex items-start gap-2.5">
                           <span className="material-symbols-outlined text-[16px] text-[#1B5E20] mt-0.5">check_circle</span>
-                          <span className="text-on-surface-variant text-sm">{perk}</span>
+                          <span className="text-on-surface-variant text-sm">
+                            {PERK_OPTIONS.find((p) => p.value === perk)?.label || perk}
+                          </span>
                         </li>
                       ))}
                     </ul>

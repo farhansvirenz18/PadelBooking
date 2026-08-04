@@ -105,6 +105,26 @@ export async function PUT(request) {
 
     if (error) throw error;
 
+    if (filtered.price_per_hour_offpeak !== undefined || filtered.price_per_hour_peak !== undefined) {
+      const today = new Date().toISOString().split('T')[0];
+      
+      await supabaseServer
+        .from('time_slots')
+        .update({ price: data.price_per_hour_offpeak })
+        .eq('court_id', id)
+        .eq('status', 'available')
+        .gte('date', today)
+        .eq('is_peak', false);
+        
+      await supabaseServer
+        .from('time_slots')
+        .update({ price: data.price_per_hour_peak })
+        .eq('court_id', id)
+        .eq('status', 'available')
+        .gte('date', today)
+        .eq('is_peak', true);
+    }
+
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Admin court update error:', error);
