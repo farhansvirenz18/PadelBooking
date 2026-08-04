@@ -54,7 +54,7 @@ export async function POST(request) {
     // Find record in DB
     const { data: record, error: lookupError } = await supabaseServer
       .from(table)
-      .select('id, payment_status, status')
+      .select('id, payment_status, status' + (table === 'user_memberships' ? ', user_id' : ''))
       .eq('midtrans_order_id', order_id)
       .single();
 
@@ -94,6 +94,17 @@ export async function POST(request) {
           .update({ status: 'processing' })
           .eq('id', record.id)
           .eq('status', 'pending');
+      }
+
+      // Handle user_memberships
+      if (table === 'user_memberships' && paymentStatus === 'paid') {
+        // Cancel other active memberships for this user
+        await supabaseServer
+          .from('user_memberships')
+          .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
+          .eq('user_id', record.user_id)
+          .eq('status', 'active')
+          .neq('id', record.id);
       }
     }
 

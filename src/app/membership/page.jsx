@@ -5,86 +5,58 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { toast } from 'sonner'
 import { userFetch } from '@/lib/userFetch'
+import { supabase } from '@/lib/supabaseClient'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
 }
 
-const DEFAULT_TIERS = [
-  {
-    id: 'basic',
-    name: 'Basic',
-    price: 99000,
-    discount_percent: 5,
-    priority_booking: false,
-    free_credits: 0,
-    perks: [
-      '5% discount on court bookings',
-      'Access to tournament registration',
-      'Basic member profile',
-      'Email support',
-    ],
-    recommended: false,
-  },
-  {
-    id: 'pro',
-    name: 'Pro',
-    price: 249000,
-    discount_percent: 15,
-    priority_booking: true,
-    free_credits: 2,
-    perks: [
-      '15% discount on court bookings',
-      'Priority booking (24h early access)',
-      '2 free court credits per month',
-      'Tournament seed advantage',
-      'Exclusive member events',
-      'Priority support',
-    ],
-    recommended: true,
-  },
-  {
-    id: 'elite',
-    name: 'Elite',
-    price: 499000,
-    discount_percent: 25,
-    priority_booking: true,
-    free_credits: 5,
-    perks: [
-      '25% discount on court bookings',
-      'Priority booking (48h early access)',
-      '5 free court credits per month',
-      'Free coach session monthly',
-      'VIP tournament entry',
-      'Exclusive member events',
-      'Dedicated account manager',
-      'Free merchandise quarterly',
-    ],
-    recommended: false,
-  },
-]
+
 
 export default function MembershipPage() {
   const [tiers, setTiers] = useState([])
   const [loading, setLoading] = useState(true)
   const [subscribing, setSubscribing] = useState(null)
+  const [activeMembership, setActiveMembership] = useState(null)
 
   useEffect(() => {
     fetch('/api/memberships')
       .then(r => r.json())
       .then(res => {
-        const data = res.data
-        if (data && data.length >= 3) {
-          setTiers(data)
-        } else {
-          setTiers(DEFAULT_TIERS)
+        if (res.data) {
+          setTiers(res.data)
         }
       })
-      .catch(() => setTiers(DEFAULT_TIERS))
+      .catch((err) => console.error('Failed to fetch tiers', err))
       .finally(() => setLoading(false))
+
+    // Fetch user's active membership
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        supabase
+          .from('user_memberships')
+          .select('*, membership_tiers(name)')
+          .eq('user_id', session.user.id)
+          .eq('status', 'active')
+          .single()
+          .then(({ data }) => {
+            if (data) setActiveMembership(data);
+          });
+      }
+    });
   }, [])
 
   const handleSubscribe = async (tier) => {
+    if (activeMembership && activeMembership.tier_id === tier.id) {
+      toast.error(`Anda sudah memiliki paket ${tier.name} yang sedang aktif.`);
+      return;
+    }
+
+    if (activeMembership) {
+      const confirm = window.confirm(`Peringatan: Anda masih memiliki paket ${activeMembership.membership_tiers?.name || 'lama'} aktif sampai ${new Date(activeMembership.end_date).toLocaleDateString('id-ID')}.\n\nJika Anda membeli paket baru, sisa waktu pada paket lama akan HANGUS dan otomatis tergantikan oleh paket baru.\n\nApakah Anda yakin ingin melanjutkan pembelian?`);
+      if (!confirm) return;
+    }
+
     setSubscribing(tier.id)
     try {
       const res = await userFetch('/api/memberships/subscribe', {
@@ -135,6 +107,12 @@ export default function MembershipPage() {
                   <div className="h-12 bg-surface-container rounded-full mt-8" />
                 </div>
               ))}
+            </div>
+          ) : tiers.length === 0 ? (
+            <div className="text-center py-20 bg-surface-container rounded-3xl border border-outline-variant/30">
+              <span className="material-symbols-outlined text-[48px] text-on-surface-variant mb-4">sentiment_dissatisfied</span>
+              <h2 className="text-xl font-display font-bold text-on-surface mb-2">Belum ada Membership</h2>
+              <p className="text-on-surface-variant text-sm">Saat ini belum ada paket membership yang tersedia. Silakan cek kembali nanti!</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
