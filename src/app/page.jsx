@@ -39,6 +39,9 @@ function formatPrice(price) {
 function LandingContent() {
   const searchParams = useSearchParams()
   const [courts, setCourts] = useState([])
+  const [coaches, setCoaches] = useState([])
+  const [tournaments, setTournaments] = useState([])
+  const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -49,10 +52,21 @@ function LandingContent() {
   }, [searchParams])
 
   useEffect(() => {
-    fetch('/api/courts')
-      .then(r => r.json())
-      .then(res => setCourts((res.data || []).slice(0, 4)))
-      .catch(() => {})
+    Promise.all([
+      fetch('/api/courts').then(r => r.json()),
+      fetch('/api/coaches').then(r => r.json()),
+      fetch('/api/tournaments?status=upcoming').then(r => r.json()),
+      fetch('/api/shop/products').then(r => r.json()),
+    ])
+      .then(([resCourts, resCoaches, resTournaments, resProducts]) => {
+        setCourts((resCourts.data || []).slice(0, 4))
+        setCoaches((resCoaches.data || []).slice(0, 4))
+        setTournaments((resTournaments.data || []).slice(0, 4))
+        setProducts((resProducts.data || []).slice(0, 4))
+      })
+      .catch(error => {
+        console.error('Error fetching homepage data:', error)
+      })
       .finally(() => setLoading(false))
   }, [])
 
@@ -247,6 +261,245 @@ function LandingContent() {
                 className="inline-flex items-center gap-1.5 text-[#1B5E20] text-sm font-semibold hover:underline"
               >
                 View All Courts
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Top Coaches */}
+        <section className="py-20 md:py-28 bg-[#1B5E20]/5">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-10">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <span className="text-[#1B5E20] text-sm font-semibold tracking-wide uppercase">Expert Guidance</span>
+                <h2 className="text-3xl md:text-4xl font-display font-bold text-on-surface mt-3">
+                  Top Coaches
+                </h2>
+              </div>
+              <Link
+                href="/coaches"
+                className="hidden sm:inline-flex items-center gap-1.5 text-[#1B5E20] text-sm font-semibold hover:underline"
+              >
+                View All
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
+
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="rounded-3xl bg-surface-container-lowest border border-outline-variant/15 overflow-hidden animate-pulse p-5">
+                    <div className="h-24 w-24 mx-auto bg-surface-container rounded-full mb-4" />
+                    <div className="h-5 bg-surface-container rounded-full w-3/4 mx-auto mb-2" />
+                    <div className="h-4 bg-surface-container rounded-full w-1/2 mx-auto" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {coaches.map((coach) => (
+                  <Link
+                    key={coach.id}
+                    href={`/coaches/${coach.id}`}
+                    className="group rounded-3xl bg-surface-container-lowest border border-outline-variant/15 p-6 text-center hover:shadow-xl hover:shadow-[#1B5E20]/8 transition-all duration-300"
+                  >
+                    <div className="relative w-24 h-24 mx-auto mb-4">
+                      <img
+                        src={coach.avatar_url || `https://ui-avatars.com/api/?name=${coach.first_name}+${coach.last_name}&background=1B5E20&color=fff`}
+                        alt={`${coach.first_name} ${coach.last_name}`}
+                        className="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-300 border-4 border-surface"
+                      />
+                    </div>
+                    <h3 className="font-display font-bold text-on-surface text-lg mb-1 group-hover:text-[#1B5E20] transition-colors">
+                      {coach.first_name} {coach.last_name}
+                    </h3>
+                    <p className="text-on-surface-variant text-sm mb-3">
+                      {coach.specialization || 'Padel Coach'}
+                    </p>
+                    <div className="inline-block px-4 py-1.5 rounded-full bg-[#1B5E20]/10 text-[#1B5E20] font-semibold text-sm">
+                      {formatPrice(coach.hourly_rate)} / hr
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            <div className="sm:hidden text-center mt-8">
+              <Link
+                href="/coaches"
+                className="inline-flex items-center gap-1.5 text-[#1B5E20] text-sm font-semibold hover:underline"
+              >
+                View All Coaches
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Upcoming Tournaments */}
+        <section className="py-20 md:py-28">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-10">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <span className="text-[#1B5E20] text-sm font-semibold tracking-wide uppercase">Compete & Win</span>
+                <h2 className="text-3xl md:text-4xl font-display font-bold text-on-surface mt-3">
+                  Upcoming Tournaments
+                </h2>
+              </div>
+              <Link
+                href="/tournaments"
+                className="hidden sm:inline-flex items-center gap-1.5 text-[#1B5E20] text-sm font-semibold hover:underline"
+              >
+                View All
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
+
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {[1, 2].map((i) => (
+                  <div key={i} className="rounded-3xl bg-surface-container-lowest border border-outline-variant/15 overflow-hidden animate-pulse">
+                    <div className="h-40 bg-surface-container" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-5 bg-surface-container rounded-full w-3/4" />
+                      <div className="h-4 bg-surface-container rounded-full w-1/2" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : tournaments.length === 0 ? (
+              <div className="text-center py-10 rounded-3xl border border-dashed border-outline-variant/40 text-on-surface-variant">
+                No upcoming tournaments at the moment. Stay tuned!
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {tournaments.map((tournament) => (
+                  <Link
+                    key={tournament.id}
+                    href={`/tournaments/${tournament.id}`}
+                    className="group rounded-3xl bg-surface-container-lowest border border-outline-variant/15 overflow-hidden hover:shadow-xl hover:shadow-[#1B5E20]/8 transition-all duration-300 flex flex-col sm:flex-row"
+                  >
+                    <div className="relative h-48 sm:h-auto sm:w-2/5 overflow-hidden">
+                      <img
+                        src={tournament.image_url || 'https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=600&q=75'}
+                        alt={tournament.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="p-6 flex flex-col justify-center sm:w-3/5">
+                      <h3 className="font-display font-bold text-on-surface text-xl mb-2 group-hover:text-[#1B5E20] transition-colors line-clamp-1">
+                        {tournament.name}
+                      </h3>
+                      <div className="space-y-2 mb-4">
+                        <div className="flex items-center gap-2 text-on-surface-variant text-sm">
+                          <span className="material-symbols-outlined text-[16px]">calendar_month</span>
+                          {new Date(tournament.tournament_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        </div>
+                        <div className="flex items-center gap-2 text-on-surface-variant text-sm">
+                          <span className="material-symbols-outlined text-[16px]">location_on</span>
+                          {tournament.location || 'Nexus Game Center'}
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between mt-auto">
+                        <div className="font-bold text-[#1B5E20]">
+                          {formatPrice(tournament.entry_fee)}
+                        </div>
+                        <span className="text-xs font-semibold text-white bg-[#1B5E20] px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                          Register
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            <div className="sm:hidden text-center mt-8">
+              <Link
+                href="/tournaments"
+                className="inline-flex items-center gap-1.5 text-[#1B5E20] text-sm font-semibold hover:underline"
+              >
+                View All Tournaments
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Pro Shop */}
+        <section className="py-20 md:py-28 bg-[#1B5E20]/5">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-10">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <span className="text-[#1B5E20] text-sm font-semibold tracking-wide uppercase">Gear Up</span>
+                <h2 className="text-3xl md:text-4xl font-display font-bold text-on-surface mt-3">
+                  Latest from the Shop
+                </h2>
+              </div>
+              <Link
+                href="/shop"
+                className="hidden sm:inline-flex items-center gap-1.5 text-[#1B5E20] text-sm font-semibold hover:underline"
+              >
+                Shop All
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
+
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="rounded-3xl bg-surface-container-lowest border border-outline-variant/15 overflow-hidden animate-pulse">
+                    <div className="h-48 bg-surface-container" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-5 bg-surface-container rounded-full w-3/4" />
+                      <div className="h-4 bg-surface-container rounded-full w-1/3" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {products.map((product) => (
+                  <Link
+                    key={product.id}
+                    href={`/shop/${product.id}`}
+                    className="group rounded-3xl bg-surface-container-lowest border border-outline-variant/15 overflow-hidden hover:shadow-xl hover:shadow-[#1B5E20]/8 transition-all duration-300 flex flex-col"
+                  >
+                    <div className="relative h-48 bg-surface-container-lowest p-4 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={product.image_url || 'https://via.placeholder.com/400x400?text=Product'}
+                        alt={product.name}
+                        className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
+                      />
+                    </div>
+                    <div className="p-5 border-t border-outline-variant/10 flex flex-col flex-1">
+                      <span className="text-[10px] font-bold tracking-wider text-on-surface-variant uppercase mb-1">
+                        {product.shop_categories?.name || 'Gear'}
+                      </span>
+                      <h3 className="font-display font-bold text-on-surface mb-2 group-hover:text-[#1B5E20] transition-colors line-clamp-2">
+                        {product.name}
+                      </h3>
+                      <div className="mt-auto pt-4 flex items-center justify-between">
+                        <span className="font-bold text-[#1B5E20]">
+                          {formatPrice(product.price)}
+                        </span>
+                        <div className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-[#1B5E20] group-hover:text-white transition-colors">
+                          <span className="material-symbols-outlined text-[18px]">shopping_bag</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            <div className="sm:hidden text-center mt-8">
+              <Link
+                href="/shop"
+                className="inline-flex items-center gap-1.5 text-[#1B5E20] text-sm font-semibold hover:underline"
+              >
+                Shop All Gear
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </Link>
             </div>
