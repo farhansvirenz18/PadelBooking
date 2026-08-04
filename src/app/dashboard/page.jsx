@@ -36,6 +36,7 @@ export default function DashboardPage() {
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
   const [bookings, setBookings] = useState([])
+  const [activeMembership, setActiveMembership] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -49,10 +50,17 @@ export default function DashboardPage() {
       Promise.all([
         userFetch('/api/users/profile').then(r => r.json()),
         userFetch('/api/bookings').then(r => r.json()),
+        supabase
+          .from('user_memberships')
+          .select('*, membership_tiers(*)')
+          .eq('user_id', session.user.id)
+          .eq('status', 'active')
+          .single()
       ])
-        .then(([profileRes, bookingsRes]) => {
+        .then(([profileRes, bookingsRes, membershipRes]) => {
           if (profileRes.data) setProfile(profileRes.data)
           if (bookingsRes.data) setBookings(bookingsRes.data)
+          if (membershipRes.data) setActiveMembership(membershipRes.data)
         })
         .catch(() => {})
         .finally(() => setLoading(false))
@@ -185,9 +193,36 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Recent Activity */}
-            <div className="p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/15">
-              <h2 className="text-lg font-display font-bold text-on-surface mb-6">Recent Activity</h2>
+            {/* Right Column */}
+            <div className="space-y-6">
+              
+              {/* My Membership */}
+              {activeMembership && (
+                <div className="p-6 rounded-3xl bg-gradient-to-br from-[#1B5E20] to-[#2E7D32] text-white shadow-lg shadow-[#1B5E20]/20">
+                  <div className="flex justify-between items-start mb-4">
+                    <h2 className="text-lg font-display font-bold">My Membership</h2>
+                    <span className="material-symbols-outlined text-[24px] opacity-80">workspace_premium</span>
+                  </div>
+                  <div className="mb-6">
+                    <p className="text-xs text-white/70 uppercase tracking-wider font-semibold mb-1">Current Tier</p>
+                    <p className="text-2xl font-bold font-display">{activeMembership.membership_tiers?.name || 'Active Plan'}</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-white/80 mb-6 bg-white/10 p-3 rounded-xl border border-white/10">
+                    <span className="material-symbols-outlined text-[18px]">event_available</span>
+                    Valid until: {formatDate(activeMembership.end_date)}
+                  </div>
+                  <Link
+                    href="/membership"
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white text-[#1B5E20] text-sm font-bold hover:bg-white/90 transition-colors"
+                  >
+                    Manage / Upgrade
+                  </Link>
+                </div>
+              )}
+
+              {/* Recent Activity */}
+              <div className="p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/15">
+                <h2 className="text-lg font-display font-bold text-on-surface mb-6">Recent Activity</h2>
               {bookings.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                   <div className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-4">
@@ -216,10 +251,10 @@ export default function DashboardPage() {
                   ))}
                 </div>
               )}
+              )}
             </div>
-
           </div>
-
+          
         </div>
       </main>
       <Footer />

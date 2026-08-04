@@ -7,6 +7,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { userFetch } from '@/lib/userFetch'
 
+import { supabase } from '@/lib/supabaseClient'
+
 import { toast } from 'sonner'
 
 function formatPrice(price) {
@@ -67,6 +69,7 @@ export default function BookCourtPage() {
   
   const [coaches, setCoaches] = useState([])
   const [selectedCoachId, setSelectedCoachId] = useState(null)
+  const [activeMembership, setActiveMembership] = useState(null)
 
   const [selectedSlots, setSelectedSlots] = useState([])
   const [booking, setBooking] = useState(false)
@@ -87,6 +90,21 @@ export default function BookCourtPage() {
       })
       .catch(() => setError('Failed to load data'))
       .finally(() => setLoadingCourt(false))
+
+    // Fetch active membership
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        supabase
+          .from('user_memberships')
+          .select('*, membership_tiers(*)')
+          .eq('user_id', session.user.id)
+          .eq('status', 'active')
+          .single()
+          .then(({ data }) => {
+            if (data) setActiveMembership(data)
+          })
+      }
+    })
   }, [courtId])
 
   // Fetch slots when date changes
@@ -115,9 +133,13 @@ export default function BookCourtPage() {
 
   const selectedCoach = coaches.find(c => c.id === selectedCoachId)
   
-  const courtPrice = selectedSlots.reduce((sum, s) => {
+  const courtBasePrice = selectedSlots.reduce((sum, s) => {
     return sum + parseFloat(s.price)
   }, 0)
+  
+  const discountPercent = activeMembership?.membership_tiers?.discount_percent || 0
+  const courtDiscount = (courtBasePrice * discountPercent) / 100
+  const courtPrice = courtBasePrice - courtDiscount
   
   const coachPrice = selectedCoach ? parseFloat(selectedCoach.hourly_rate) * selectedSlots.length : 0
   const totalPrice = courtPrice + coachPrice
@@ -511,8 +533,14 @@ export default function BookCourtPage() {
                     <div className="border-t border-outline-variant/15 pt-4 space-y-2">
                       <div className="flex justify-between text-xs text-on-surface-variant">
                         <span>Court Fee</span>
-                        <span>{formatPrice(courtPrice)}</span>
+                        <span className={courtDiscount > 0 ? 'line-through opacity-70' : ''}>{formatPrice(courtBasePrice)}</span>
                       </div>
+                      {courtDiscount > 0 && (
+                        <div className="flex justify-between text-xs text-[#1B5E20] font-semibold">
+                          <span>Membership Discount ({discountPercent}%)</span>
+                          <span>-{formatPrice(courtDiscount)}</span>
+                        </div>
+                      )}
                       {selectedCoach && (
                         <div className="flex justify-between text-xs text-on-surface-variant">
                           <span>Coach ({selectedCoach.name})</span>

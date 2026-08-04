@@ -56,8 +56,23 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Time slot is no longer available' }, { status: 400 });
     }
 
-    let totalPrice = parseFloat(slot.price) || 0;
-
+    let courtBasePrice = parseFloat(slot.price) || 0;
+    
+    // Check for active membership
+    const { data: activeMembership } = await supabaseServer
+      .from('user_memberships')
+      .select('*, membership_tiers(*)')
+      .eq('user_id', auth.user.id)
+      .eq('status', 'active')
+      .single();
+      
+    let discountPercent = 0;
+    if (activeMembership && activeMembership.membership_tiers) {
+      discountPercent = activeMembership.membership_tiers.discount_percent || 0;
+    }
+    
+    const courtDiscount = (courtBasePrice * discountPercent) / 100;
+    let totalPrice = courtBasePrice - courtDiscount;
     if (coachId) {
       const { data: coach } = await supabaseServer
         .from('coaches')
