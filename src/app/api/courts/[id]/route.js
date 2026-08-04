@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseServer';
 
+function toLocalISODate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 export async function GET(request, { params }) {
   try {
     const { id } = await params;
@@ -26,8 +33,8 @@ export async function GET(request, { params }) {
       .from('time_slots')
       .select('id, status, start_time, end_time, date, price')
       .eq('court_id', id)
-      .gte('date', startOfWeek.toISOString().split('T')[0])
-      .lte('date', endOfWeek.toISOString().split('T')[0])
+      .gte('date', toLocalISODate(startOfWeek))
+      .lte('date', toLocalISODate(endOfWeek))
       .order('date', { ascending: true })
       .order('start_time', { ascending: true });
 

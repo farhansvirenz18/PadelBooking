@@ -8,6 +8,13 @@ import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
 import { userFetch } from '@/lib/userFetch'
 
+function toLocalISODate(d) {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
 }
@@ -53,7 +60,7 @@ export default function DashboardPage() {
   }, [router])
 
   const upcomingBookings = bookings
-    .filter(b => b.status !== 'cancelled' && b.time_slots?.date >= new Date().toISOString().split('T')[0])
+    .filter(b => b.status !== 'cancelled' && b.time_slots?.date >= toLocalISODate(new Date()))
     .slice(0, 5)
 
   const totalSpent = bookings

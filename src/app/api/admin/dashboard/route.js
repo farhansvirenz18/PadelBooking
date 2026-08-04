@@ -2,6 +2,13 @@ import { NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseServer';
 import { verifyAdmin } from '@/lib/auth';
 
+function toLocalISODate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 export async function GET(request) {
   const auth = await verifyAdmin(request);
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
@@ -47,7 +54,7 @@ export async function GET(request) {
     for (let i = 29; i >= 0; i--) {
       const date = new Date(now);
       date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
+      const dateStr = toLocalISODate(date);
       revenueLast30Days.push({ date: dateStr, amount: 0 });
     }
 

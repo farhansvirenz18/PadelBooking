@@ -8,6 +8,13 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
 import { userFetch } from '@/lib/userFetch'
+
+function toLocalISODate(d) {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
 import { openSnapPopup, isPaymentExpired } from '@/lib/payment'
 
 function formatPrice(price) {
@@ -61,7 +68,7 @@ export default function BookingsPage() {
     })
   }, [router])
 
-  const today = new Date().toISOString().split('T')[0]
+  const today = toLocalISODate(new Date())
 
   const filteredBookings = bookings.filter(b => {
     if (activeTab === 'upcoming') return b.status !== 'cancelled' && b.time_slots?.date >= today

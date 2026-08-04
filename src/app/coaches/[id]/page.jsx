@@ -7,6 +7,13 @@ import { toast } from 'sonner'
 import Footer from '@/components/Footer'
 import { userFetch } from '@/lib/userFetch'
 
+function toLocalISODate(d) {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
 const LESSON_TYPES = [
   { value: 'private', label: 'Private', icon: 'person' },
   { value: 'semi_private', label: 'Semi-Private (2-3)', icon: 'group' },
@@ -249,7 +256,7 @@ export default function CoachProfilePage() {
                       type="date"
                       value={selectedDate}
                       onChange={(e) => setSelectedDate(e.target.value)}
-                      min={new Date().toISOString().split('T')[0]}
+                      min={toLocalISODate(new Date())}
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-surface-container text-sm text-on-surface border border-outline-variant/20 focus:outline-none focus:border-[#1B5E20] focus:ring-1 focus:ring-[#1B5E20]/30 transition-colors"
                     />
                   </div>

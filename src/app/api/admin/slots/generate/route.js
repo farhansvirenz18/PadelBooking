@@ -2,6 +2,13 @@ import { NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseServer';
 import { verifyAdmin } from '@/lib/auth';
 
+function toLocalISODate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 function isPeakHour(date, hour) {
   const day = date.getDay();
   const isWeekend = day === 0 || day === 6;
@@ -41,7 +48,7 @@ export async function POST(request) {
 
     const currentDate = new Date(start);
     while (currentDate <= end) {
-      const dateStr = currentDate.toISOString().split('T')[0];
+      const dateStr = toLocalISODate(currentDate);
       let hour = startHour;
 
       while (hour < endHour) {

@@ -4,12 +4,19 @@ import { adminFetch } from '@/lib/adminFetch';
 import ExportButton from '@/components/admin/ExportButton';
 import { toast } from 'sonner';
 
+function toLocalISODate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 function generateDateRange(start, end) {
   const dates = [];
   const current = new Date(start);
   const endDate = new Date(end);
   while (current <= endDate) {
-    dates.push(current.toISOString().split('T')[0]);
+    dates.push(toLocalISODate(current));
     current.setDate(current.getDate() + 1);
   }
   return dates;
@@ -47,8 +54,8 @@ function GenerateSlotsModal({ open, onClose, onGenerate, courts }) {
 
   useEffect(() => {
     if (open) {
-      const today = new Date().toISOString().split('T')[0];
-      const nextWeek = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
+      const today = toLocalISODate(new Date());
+      const nextWeek = toLocalISODate(new Date(Date.now() + 7 * 86400000));
       setForm({ courtId: '', startDate: today, endDate: nextWeek, startHour: 7, endHour: 22, slotDuration: 60 });
       setResult(null);
     }
@@ -195,7 +202,7 @@ export default function AdminSlots() {
   const [courts, setCourts] = useState([]);
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(toLocalISODate(new Date()));
   const [generateModal, setGenerateModal] = useState(false);
   const [blockModal, setBlockModal] = useState({ open: false, slot: null });
   const [blocking, setBlocking] = useState(false);
@@ -309,7 +316,7 @@ export default function AdminSlots() {
       {/* Date Picker */}
       <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-4">
         <div className="flex items-center gap-4">
-          <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() - 1); setSelectedDate(d.toISOString().split('T')[0]); }} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container transition-colors">
+          <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() - 1); setSelectedDate(toLocalISODate(d)); }} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container transition-colors">
             <span className="material-symbols-outlined text-[20px]">chevron_left</span>
           </button>
           <div className="flex-1 text-center">
@@ -318,7 +325,7 @@ export default function AdminSlots() {
               {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
           </div>
-          <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() + 1); setSelectedDate(d.toISOString().split('T')[0]); }} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container transition-colors">
+          <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() + 1); setSelectedDate(toLocalISODate(d)); }} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container transition-colors">
             <span className="material-symbols-outlined text-[20px]">chevron_right</span>
           </button>
         </div>

@@ -18,7 +18,25 @@ function formatDate(d) {
 }
 
 function toISODate(d) {
-  return d.toISOString().split('T')[0]
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
+function isToday(d) {
+  const now = new Date()
+  return toISODate(d) === toISODate(now)
+}
+
+function isSlotPast(slot, selectedDate) {
+  if (!isToday(selectedDate)) return false
+  const now = new Date()
+  const [sh, sm] = (slot.start_time || '').split(':').map(Number)
+  const [eh, em] = (slot.end_time || '').split(':').map(Number)
+  const slotEndMinutes = (eh || 0) * 60 + (em || 0)
+  const nowMinutes = now.getHours() * 60 + now.getMinutes()
+  return slotEndMinutes <= nowMinutes
 }
 
 function generateDays(count = 14) {
@@ -81,12 +99,13 @@ export default function BookCourtPage() {
 
   const toggleSlot = useCallback((slot) => {
     if (slot.status !== 'available') return
+    if (isSlotPast(slot, selectedDate)) return
     setSelectedSlots(prev => {
       const exists = prev.find(s => s.id === slot.id)
       if (exists) return prev.filter(s => s.id !== slot.id)
       return [...prev, slot].sort((a, b) => a.start_time.localeCompare(b.start_time))
     })
-  }, [])
+  }, [selectedDate])
 
   const totalPrice = selectedSlots.reduce((sum, s) => {
     return sum + parseFloat(s.price)
@@ -323,13 +342,19 @@ export default function BookCourtPage() {
                         const isAvailable = slot.status === 'available'
                         const isBooked = slot.status === 'booked'
                         const isBlocked = slot.status === 'blocked'
+                        const past = isSlotPast(slot, selectedDate)
 
                         let bg = 'bg-surface-container'
                         let text = 'text-on-surface-variant'
                         let border = 'border-outline-variant/20'
                         let cursor = 'cursor-not-allowed opacity-50'
 
-                        if (isAvailable && !isSelected) {
+                        if (past) {
+                          bg = 'bg-gray-100'
+                          text = 'text-gray-400'
+                          border = 'border-gray-200'
+                          cursor = 'cursor-not-allowed opacity-40'
+                        } else if (isAvailable && !isSelected) {
                           bg = 'bg-[#1B5E20]/10'
                           text = 'text-[#1B5E20]'
                           border = 'border-[#1B5E20]/30'
@@ -356,18 +381,23 @@ export default function BookCourtPage() {
                           <button
                             key={slot.id}
                             onClick={() => toggleSlot(slot)}
-                            disabled={!isAvailable}
+                            disabled={!isAvailable || past}
                             className={`flex flex-col items-center justify-center py-3 rounded-xl border ${bg} ${text} ${border} ${cursor} transition-all duration-150`}
                           >
                             <span className="text-sm font-bold">
                               {slot.start_time?.slice(0, 5)}
                             </span>
-                            {slot.is_peak && (
+                            {past && (
+                              <span className="text-[9px] font-semibold mt-0.5 text-gray-400">
+                                Expired
+                              </span>
+                            )}
+                            {!past && slot.is_peak && (
                               <span className={`text-[9px] font-semibold mt-0.5 ${isSelected ? 'text-white/80' : 'text-amber-500'}`}>
                                 PEAK
                               </span>
                             )}
-                            {isAvailable && (
+                            {isAvailable && !past && (
                               <span className={`text-[10px] mt-0.5 ${isSelected ? 'text-white/80' : 'text-[#1B5E20]/70'}`}>
                                 {formatPrice(slot.price)}
                               </span>
