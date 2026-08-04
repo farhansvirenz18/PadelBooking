@@ -254,32 +254,43 @@ export default function BookingsPage() {
                     </div>
 
                     {/* Actions */}
-                    {booking.status === 'pending' && (
-                      <div className="shrink-0 flex flex-col gap-2">
-                        {!isPaymentExpired(booking.created_at) ? (
-                          <>
-                            <button
-                              onClick={() => handleResumePayment(booking)}
-                              disabled={resumingId === booking.id}
-                              className="px-4 py-2 rounded-full bg-[#1B5E20] text-white text-sm font-medium hover:bg-[#2E7D32] transition-colors disabled:opacity-50"
-                            >
-                              {resumingId === booking.id ? 'Processing...' : 'Lanjutkan Pembayaran'}
-                            </button>
-                            <button
-                              onClick={() => handleCancel(booking.id)}
-                              disabled={cancellingId === booking.id}
-                              className="px-4 py-2 rounded-full border border-red-300 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors disabled:opacity-50"
-                            >
-                              {cancellingId === booking.id ? 'Cancelling...' : 'Cancel'}
-                            </button>
-                          </>
-                        ) : (
-                          <span className="px-4 py-2 rounded-full bg-gray-100 text-gray-500 text-sm font-medium text-center">
-                            Payment Expired
-                          </span>
-                        )}
-                      </div>
-                    )}
+                    <div className="shrink-0 flex flex-col gap-2">
+                      {(booking.status === 'completed' || (booking.status === 'confirmed' && booking.payment_status === 'paid')) && (
+                        <Link
+                          href={`/dashboard/bookings/${booking.id}`}
+                          className="px-4 py-2 rounded-full bg-[#1B5E20] text-white text-sm font-medium hover:bg-[#2E7D32] transition-colors text-center flex items-center justify-center gap-1.5"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">confirmation_number</span>
+                          Lihat Tiket
+                        </Link>
+                      )}
+                      {booking.status === 'pending' && (
+                        <>
+                          {!isPaymentExpired(booking.created_at) ? (
+                            <>
+                              <button
+                                onClick={() => handleResumePayment(booking)}
+                                disabled={resumingId === booking.id}
+                                className="px-4 py-2 rounded-full bg-[#1B5E20] text-white text-sm font-medium hover:bg-[#2E7D32] transition-colors disabled:opacity-50"
+                              >
+                                {resumingId === booking.id ? 'Processing...' : 'Lanjutkan Pembayaran'}
+                              </button>
+                              <button
+                                onClick={() => handleCancel(booking.id)}
+                                disabled={cancellingId === booking.id}
+                                className="px-4 py-2 rounded-full border border-red-300 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors disabled:opacity-50"
+                              >
+                                {cancellingId === booking.id ? 'Cancelling...' : 'Cancel'}
+                              </button>
+                            </>
+                          ) : (
+                            <span className="px-4 py-2 rounded-full bg-gray-100 text-gray-500 text-sm font-medium text-center">
+                              Payment Expired
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
