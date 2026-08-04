@@ -24,7 +24,7 @@ export async function GET(request, { params }) {
 
     const { data: slots } = await supabaseServer
       .from('time_slots')
-      .select('id, status, start_time, end_time, date, price, peak_price')
+      .select('id, status, start_time, end_time, date, price')
       .eq('court_id', id)
       .gte('date', startOfWeek.toISOString().split('T')[0])
       .lte('date', endOfWeek.toISOString().split('T')[0])

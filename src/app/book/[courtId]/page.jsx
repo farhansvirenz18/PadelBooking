@@ -87,7 +87,7 @@ export default function BookCourtPage() {
   }, [])
 
   const totalPrice = selectedSlots.reduce((sum, s) => {
-    return sum + (s.is_peak ? parseFloat(s.peak_price || s.price) : parseFloat(s.price))
+    return sum + parseFloat(s.price)
   }, 0)
 
   const totalMinutes = selectedSlots.length * 60
@@ -352,7 +352,7 @@ export default function BookCourtPage() {
                             )}
                             {isAvailable && (
                               <span className={`text-[10px] mt-0.5 ${isSelected ? 'text-white/80' : 'text-[#1B5E20]/70'}`}>
-                                {formatPrice(slot.is_peak ? slot.peak_price : slot.price)}
+                                {formatPrice(slot.price)}
                               </span>
                             )}
                             {isBooked && <span className="text-[10px] mt-0.5">Booked</span>}
@@ -408,7 +408,7 @@ export default function BookCourtPage() {
                         <p className="text-sm font-semibold text-on-surface">
                           {selectedSlots.length} slot{selectedSlots.length > 1 ? 's' : ''} · {totalMinutes} min
                         </p>
-                        <p className="text-xs text-on-surface-variant">{selectedSlots.length} × {formatPrice(selectedSlots[0]?.is_peak ? selectedSlots[0]?.peak_price : selectedSlots[0]?.price)}</p>
+                        <p className="text-xs text-on-surface-variant">{selectedSlots.length} × {formatPrice(selectedSlots[0]?.price)}</p>
                       </div>
                     </div>
 
@@ -417,7 +417,7 @@ export default function BookCourtPage() {
                       {selectedSlots.map((s, i) => (
                         <div key={s.id} className="flex justify-between text-xs text-on-surface-variant">
                           <span>{s.start_time?.slice(0, 5)} – {s.end_time?.slice(0, 5)}</span>
-                          <span>{formatPrice(s.is_peak ? s.peak_price : s.price)}</span>
+                          <span>{formatPrice(s.price)}</span>
                         </div>
                       ))}
                     </div>
