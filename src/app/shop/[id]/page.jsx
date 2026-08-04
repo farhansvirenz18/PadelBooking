@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar'
 import { toast } from 'sonner'
 import Footer from '@/components/Footer'
 import { userFetch } from '@/lib/userFetch'
+import { openSnapPopup } from '@/lib/payment'
 
 const STOCK_BADGES = {
   in_stock: { label: 'In Stock', color: 'bg-[#1B5E20]/10 text-[#1B5E20]' },
@@ -54,14 +55,44 @@ export default function ProductDetailPage() {
         }),
       })
       const data = await res.json()
-      if (data.payment_url) {
-        window.location.href = data.payment_url
-      } else {
-        toast.error(data.error || 'Order created! Check your email for payment details.')
+      if (!data.success) {
+        toast.error(data.error || 'Failed to create order')
+        setOrdering(false)
+        return
+      }
+
+      // Order created, now initiate payment
+      const payRes = await userFetch('/api/payments', {
+        method: 'POST',
+        body: JSON.stringify({ bookingId: data.data.id, type: 'shop_order' }),
+      })
+      const payData = await payRes.json()
+
+      if (!payData.success) {
+        toast.error(payData.error || 'Payment initiation failed')
+        setOrdering(false)
+        return
+      }
+
+      if (payData.snap_token) {
+        setOrdering(false)
+        await openSnapPopup(payData.snap_token, {
+          onSuccess: () => {
+            toast.success('Payment successful!')
+            router.push('/dashboard/orders')
+          },
+          onError: () => {
+            toast.error('Payment failed. Please try again.')
+            router.push('/dashboard/orders')
+          },
+          onClose: () => {
+            toast.info('Payment cancelled. You can resume from My Orders.')
+            router.push('/dashboard/orders')
+          },
+        })
       }
     } catch {
       toast.error('Failed to create order. Please try again.')
-    } finally {
       setOrdering(false)
     }
   }

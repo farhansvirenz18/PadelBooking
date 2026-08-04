@@ -6,12 +6,17 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const search = searchParams.get('search');
+    const id = searchParams.get('id');
 
     let query = supabaseServer
       .from('shop_products')
       .select('*, shop_categories(name, id)')
       .eq('is_active', true)
       .order('created_at', { ascending: false });
+
+    if (id) {
+      query = query.eq('id', id).single();
+    }
 
     if (category) {
       query = query.eq('category_id', category);

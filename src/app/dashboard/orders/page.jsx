@@ -7,6 +7,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
 import { userFetch } from '@/lib/userFetch'
+import { openSnapPopup, isPaymentExpired } from '@/lib/payment'
+import { toast } from 'sonner'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
@@ -30,6 +32,17 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [expandedId, setExpandedId] = useState(null)
+  const [resumingId, setResumingId] = useState(null)
+  const [cancellingId, setCancellingId] = useState(null)
+
+  function fetchOrders() {
+    setLoading(true)
+    userFetch('/api/shop/orders')
+      .then(r => r.json())
+      .then(res => setOrders(res.data || []))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -37,13 +50,67 @@ export default function OrdersPage() {
         router.push('/login')
         return
       }
-      userFetch('/api/shop/orders')
-        .then(r => r.json())
-        .then(res => setOrders(res.data || []))
-        .catch(() => {})
-        .finally(() => setLoading(false))
+      fetchOrders()
     })
   }, [router])
+
+  async function handleCancel(orderId) {
+    if (!confirm('Are you sure you want to cancel this order?')) return
+    setCancellingId(orderId)
+    try {
+      const res = await userFetch(`/api/shop/orders/${orderId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ action: 'cancel' }),
+      })
+      if (res.ok) {
+        setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: 'cancelled' } : o))
+        toast.success('Order cancelled successfully')
+      } else {
+        toast.error('Failed to cancel order')
+      }
+    } catch {
+      toast.error('Failed to cancel order')
+    }
+    setCancellingId(null)
+  }
+
+  async function handleResumePayment(order) {
+    if (isPaymentExpired(order.created_at)) {
+      toast.error('Payment expired. Please create a new order.')
+      return
+    }
+    setResumingId(order.id)
+    try {
+      const payRes = await userFetch('/api/payments', {
+        method: 'POST',
+        body: JSON.stringify({ bookingId: order.id, type: 'shop_order' }),
+      })
+      const payData = await payRes.json()
+      if (!payData.success) {
+        toast.error(payData.error || 'Failed to initiate payment')
+        setResumingId(null)
+        return
+      }
+      if (payData.snap_token) {
+        setResumingId(null)
+        await openSnapPopup(payData.snap_token, {
+          onSuccess: () => {
+            toast.success('Payment successful!')
+            fetchOrders()
+          },
+          onError: () => {
+            toast.error('Payment failed. Please try again.')
+          },
+          onClose: () => {
+            toast.info('Payment cancelled. You can resume from My Orders.')
+          },
+        })
+      }
+    } catch {
+      toast.error('Failed to initiate payment')
+      setResumingId(null)
+    }
+  }
 
   function toggleExpand(id) {
     setExpandedId(prev => prev === id ? null : id)
@@ -121,7 +188,7 @@ export default function OrdersPage() {
                           <span className="text-sm text-on-surface-variant">{items.length} item{items.length !== 1 ? 's' : ''}</span>
                         </div>
                         <div className="col-span-2">
-                          <span className="text-sm font-semibold text-on-surface">{formatPrice(order.total_amount)}</span>
+                          <span className="text-sm font-semibold text-on-surface">{formatPrice(order.total_price)}</span>
                         </div>
                         <div className="col-span-2">
                           <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${status.bg} ${status.text}`}>
@@ -145,7 +212,7 @@ export default function OrdersPage() {
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-on-surface-variant">{formatDate(order.created_at)}</span>
-                          <span className="text-sm font-semibold text-on-surface">{formatPrice(order.total_amount)}</span>
+                          <span className="text-sm font-semibold text-on-surface">{formatPrice(order.total_price)}</span>
                         </div>
                       </div>
                     </button>
@@ -174,11 +241,11 @@ export default function OrdersPage() {
                                   {item.shop_products?.name || 'Product'}
                                 </p>
                                 <p className="text-xs text-on-surface-variant">
-                                  Qty: {item.quantity} &middot; {formatPrice(item.price)}
+                                  Qty: {item.quantity} &middot; {formatPrice(item.unit_price)}
                                 </p>
                               </div>
                               <span className="text-sm font-semibold text-on-surface">
-                                {formatPrice(item.price * item.quantity)}
+                                {formatPrice(item.unit_price * item.quantity)}
                               </span>
                             </div>
                           ))}
@@ -194,6 +261,25 @@ export default function OrdersPage() {
                             <div className="p-3 rounded-2xl bg-surface-container">
                               <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Notes</p>
                               <p className="text-sm text-on-surface">{order.notes}</p>
+                            </div>
+                          )}
+                          
+                          {/* Actions */}
+                          {order.status === 'pending' && (
+                            <div className="pt-4 border-t border-outline-variant/10 flex flex-wrap gap-3">
+                              {!isPaymentExpired(order.created_at) ? (
+                                <button
+                                  onClick={() => handleResumePayment(order)}
+                                  disabled={resumingId === order.id}
+                                  className="px-6 py-2.5 rounded-full bg-[#1B5E20] text-white text-sm font-medium hover:bg-[#2E7D32] transition-colors disabled:opacity-50"
+                                >
+                                  {resumingId === order.id ? 'Processing...' : 'Lanjutkan Pembayaran'}
+                                </button>
+                              ) : (
+                                <span className="px-6 py-2.5 rounded-full bg-gray-100 text-gray-500 text-sm font-medium">
+                                  Payment Expired
+                                </span>
+                              )}
                             </div>
                           )}
                         </div>
