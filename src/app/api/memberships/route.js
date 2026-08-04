@@ -7,7 +7,7 @@ export async function GET() {
       .from('membership_tiers')
       .select('*')
       .eq('is_active', true)
-      .order('price', { ascending: true });
+      .order('monthly_price', { ascending: true });
 
     if (error) throw error;
 
