@@ -74,7 +74,7 @@ export async function POST(request) {
         phone: userProfile?.phone || auth.user.user_metadata?.phone || '',
       },
       callbacks: {
-        finish: `${process.env.NEXT_PUBLIC_APP_URL}/payment/finish`,
+        finish: `${process.env.NEXT_PUBLIC_SITE_URL}/payment/finish`,
       },
     };
 
