@@ -22,7 +22,7 @@ export async function GET(request) {
 
     if (status) query = query.eq('status', status);
     if (paymentStatus) query = query.eq('payment_status', paymentStatus);
-    if (date) query = query.eq('date', date);
+    if (date) query = query.eq('booking_date', date);
 
     const { data, error, count } = await query;
     if (error) throw error;
