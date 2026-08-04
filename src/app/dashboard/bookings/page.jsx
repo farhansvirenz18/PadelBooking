@@ -240,6 +240,12 @@ export default function BookingsPage() {
                           <span className="material-symbols-outlined text-[16px]">schedule</span>
                           {booking.time_slots?.start_time} - {booking.time_slots?.end_time}
                         </div>
+                        {booking.coaches && (
+                          <div className="flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-[16px]">sports</span>
+                            Coach {booking.coaches.first_name}
+                          </div>
+                        )}
                         <div className="flex items-center gap-1.5">
                           <span className="material-symbols-outlined text-[16px]">payments</span>
                           {formatPrice(booking.total_price)}

@@ -39,7 +39,6 @@ function formatPrice(price) {
 function LandingContent() {
   const searchParams = useSearchParams()
   const [courts, setCourts] = useState([])
-  const [coaches, setCoaches] = useState([])
   const [tournaments, setTournaments] = useState([])
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -54,13 +53,11 @@ function LandingContent() {
   useEffect(() => {
     Promise.all([
       fetch('/api/courts').then(r => r.json()),
-      fetch('/api/coaches').then(r => r.json()),
       fetch('/api/tournaments?status=upcoming').then(r => r.json()),
       fetch('/api/shop/products').then(r => r.json()),
     ])
-      .then(([resCourts, resCoaches, resTournaments, resProducts]) => {
+      .then(([resCourts, resTournaments, resProducts]) => {
         setCourts((resCourts.data || []).slice(0, 4))
-        setCoaches((resCoaches.data || []).slice(0, 4))
         setTournaments((resTournaments.data || []).slice(0, 4))
         setProducts((resProducts.data || []).slice(0, 4))
       })
@@ -267,75 +264,7 @@ function LandingContent() {
           </div>
         </section>
 
-        {/* Top Coaches */}
-        <section className="py-20 md:py-28 bg-[#1B5E20]/5">
-          <div className="max-w-[1280px] mx-auto px-4 md:px-10">
-            <div className="flex items-end justify-between mb-12">
-              <div>
-                <span className="text-[#1B5E20] text-sm font-semibold tracking-wide uppercase">Expert Guidance</span>
-                <h2 className="text-3xl md:text-4xl font-display font-bold text-on-surface mt-3">
-                  Top Coaches
-                </h2>
-              </div>
-              <Link
-                href="/coaches"
-                className="hidden sm:inline-flex items-center gap-1.5 text-[#1B5E20] text-sm font-semibold hover:underline"
-              >
-                View All
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </Link>
-            </div>
 
-            {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="rounded-3xl bg-surface-container-lowest border border-outline-variant/15 overflow-hidden animate-pulse p-5">
-                    <div className="h-24 w-24 mx-auto bg-surface-container rounded-full mb-4" />
-                    <div className="h-5 bg-surface-container rounded-full w-3/4 mx-auto mb-2" />
-                    <div className="h-4 bg-surface-container rounded-full w-1/2 mx-auto" />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {coaches.map((coach) => (
-                  <Link
-                    key={coach.id}
-                    href={`/coaches/${coach.id}`}
-                    className="group rounded-3xl bg-surface-container-lowest border border-outline-variant/15 p-6 text-center hover:shadow-xl hover:shadow-[#1B5E20]/8 transition-all duration-300"
-                  >
-                    <div className="relative w-24 h-24 mx-auto mb-4">
-                      <img
-                        src={coach.avatar_url || `https://ui-avatars.com/api/?name=${coach.first_name}+${coach.last_name}&background=1B5E20&color=fff`}
-                        alt={`${coach.first_name} ${coach.last_name}`}
-                        className="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-300 border-4 border-surface"
-                      />
-                    </div>
-                    <h3 className="font-display font-bold text-on-surface text-lg mb-1 group-hover:text-[#1B5E20] transition-colors">
-                      {coach.first_name} {coach.last_name}
-                    </h3>
-                    <p className="text-on-surface-variant text-sm mb-3">
-                      {coach.specialization || 'Padel Coach'}
-                    </p>
-                    <div className="inline-block px-4 py-1.5 rounded-full bg-[#1B5E20]/10 text-[#1B5E20] font-semibold text-sm">
-                      {formatPrice(coach.hourly_rate)} / hr
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-
-            <div className="sm:hidden text-center mt-8">
-              <Link
-                href="/coaches"
-                className="inline-flex items-center gap-1.5 text-[#1B5E20] text-sm font-semibold hover:underline"
-              >
-                View All Coaches
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </Link>
-            </div>
-          </div>
-        </section>
 
         {/* Upcoming Tournaments */}
         <section className="py-20 md:py-28">

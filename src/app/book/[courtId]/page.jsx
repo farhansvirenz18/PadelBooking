@@ -64,21 +64,28 @@ export default function BookCourtPage() {
 
   const [slots, setSlots] = useState([])
   const [loadingSlots, setLoadingSlots] = useState(false)
+  
+  const [coaches, setCoaches] = useState([])
+  const [selectedCoachId, setSelectedCoachId] = useState(null)
 
   const [selectedSlots, setSelectedSlots] = useState([])
   const [booking, setBooking] = useState(false)
   const [error, setError] = useState('')
 
-  // Fetch court
+  // Fetch court and coaches
   useEffect(() => {
     setLoadingCourt(true)
-    fetch(`/api/courts/${courtId}`)
-      .then(r => r.json())
-      .then(res => {
-        if (res.success) setCourt(res.data)
+    Promise.all([
+      fetch(`/api/courts/${courtId}`).then(r => r.json()),
+      fetch('/api/coaches').then(r => r.json())
+    ])
+      .then(([courtRes, coachesRes]) => {
+        if (courtRes.success) setCourt(courtRes.data)
         else setError('Court not found')
+        
+        if (coachesRes.success) setCoaches(coachesRes.data)
       })
-      .catch(() => setError('Failed to load court'))
+      .catch(() => setError('Failed to load data'))
       .finally(() => setLoadingCourt(false))
   }, [courtId])
 
@@ -106,9 +113,14 @@ export default function BookCourtPage() {
     })
   }, [selectedDate])
 
-  const totalPrice = selectedSlots.reduce((sum, s) => {
+  const selectedCoach = coaches.find(c => c.id === selectedCoachId)
+  
+  const courtPrice = selectedSlots.reduce((sum, s) => {
     return sum + parseFloat(s.price)
   }, 0)
+  
+  const coachPrice = selectedCoach ? parseFloat(selectedCoach.hourly_rate) * selectedSlots.length : 0
+  const totalPrice = courtPrice + coachPrice
 
   const totalMinutes = selectedSlots.length * 60
 
@@ -125,7 +137,12 @@ export default function BookCourtPage() {
       for (const slot of selectedSlots) {
         const bookRes = await userFetch('/api/bookings', {
           method: 'POST',
-          body: JSON.stringify({ courtId, timeSlotId: slot.id, date: toISODate(selectedDate) }),
+          body: JSON.stringify({ 
+            courtId, 
+            timeSlotId: slot.id, 
+            date: toISODate(selectedDate),
+            coachId: selectedCoachId // Include optional coach
+          }),
         })
         const bookData = await bookRes.json()
 
@@ -395,6 +412,53 @@ export default function BookCourtPage() {
                   </>
                 )}
               </section>
+
+              {/* Optional Coach Selection */}
+              {coaches.length > 0 && selectedSlots.length > 0 && (
+                <section>
+                  <h2 className="text-lg font-display font-bold text-on-surface mb-4 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[#1B5E20] text-[22px]">sports</span>
+                    Optional: Add a Coach
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <button
+                      onClick={() => setSelectedCoachId(null)}
+                      className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all duration-200 ${
+                        selectedCoachId === null
+                          ? 'bg-[#1B5E20]/10 border-[#1B5E20] text-[#1B5E20] ring-2 ring-[#1B5E20]/40'
+                          : 'bg-surface-container-lowest border-outline-variant/30 text-on-surface-variant hover:border-[#1B5E20]/50'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-[32px] mb-2 opacity-50">person_off</span>
+                      <span className="font-semibold text-sm">No Coach</span>
+                      <span className="text-xs mt-1">Court only</span>
+                    </button>
+                    
+                    {coaches.map(coach => (
+                      <button
+                        key={coach.id}
+                        onClick={() => setSelectedCoachId(coach.id)}
+                        className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all duration-200 ${
+                          selectedCoachId === coach.id
+                            ? 'bg-[#1B5E20]/10 border-[#1B5E20] text-[#1B5E20] ring-2 ring-[#1B5E20]/40'
+                            : 'bg-surface-container-lowest border-outline-variant/30 text-on-surface hover:border-[#1B5E20]/50'
+                        }`}
+                      >
+                        <div className="w-12 h-12 rounded-full overflow-hidden mb-2">
+                          <img
+                            src={coach.avatar_url || `https://ui-avatars.com/api/?name=${coach.first_name}+${coach.last_name}&background=1B5E20&color=fff`}
+                            alt={`${coach.first_name} ${coach.last_name}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <span className="font-semibold text-sm line-clamp-1">{coach.first_name} {coach.last_name}</span>
+                        <span className="text-[10px] text-on-surface-variant line-clamp-1 mb-1">{coach.specialization || 'Padel Coach'}</span>
+                        <span className="text-xs font-bold text-[#1B5E20]">+{formatPrice(coach.hourly_rate)}/hr</span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              )}
             </div>
 
             {/* Right: Order Summary */}
@@ -445,12 +509,16 @@ export default function BookCourtPage() {
 
                     {/* Breakdown */}
                     <div className="border-t border-outline-variant/15 pt-4 space-y-2">
-                      {selectedSlots.map((s, i) => (
-                        <div key={s.id} className="flex justify-between text-xs text-on-surface-variant">
-                          <span>{s.start_time?.slice(0, 5)} – {s.end_time?.slice(0, 5)}</span>
-                          <span>{formatPrice(s.price)}</span>
+                      <div className="flex justify-between text-xs text-on-surface-variant">
+                        <span>Court Fee</span>
+                        <span>{formatPrice(courtPrice)}</span>
+                      </div>
+                      {selectedCoach && (
+                        <div className="flex justify-between text-xs text-on-surface-variant">
+                          <span>Coach ({selectedCoach.first_name})</span>
+                          <span>{formatPrice(coachPrice)}</span>
                         </div>
-                      ))}
+                      )}
                     </div>
 
                     {/* Total */}

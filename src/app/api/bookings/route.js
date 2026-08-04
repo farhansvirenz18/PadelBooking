@@ -9,7 +9,7 @@ export async function GET(request) {
   try {
     const { data, error } = await supabaseServer
       .from('bookings')
-      .select('*, courts(name, type), time_slots(start_time, end_time, date, price)')
+      .select('*, courts(name, type), time_slots(start_time, end_time, date, price), coaches(first_name, last_name)')
       .eq('user_id', auth.user.id)
       .order('created_at', { ascending: false });
 
@@ -27,7 +27,7 @@ export async function POST(request) {
   if (auth.error) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const { courtId, timeSlotId } = await request.json();
+    const { courtId, timeSlotId, coachId } = await request.json();
 
     if (!courtId || !timeSlotId) {
       return NextResponse.json({ error: 'courtId and timeSlotId are required' }, { status: 400 });
@@ -56,13 +56,26 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Time slot is no longer available' }, { status: 400 });
     }
 
-    const totalPrice = parseFloat(slot.price) || 0;
+    let totalPrice = parseFloat(slot.price) || 0;
+
+    if (coachId) {
+      const { data: coach } = await supabaseServer
+        .from('coaches')
+        .select('hourly_rate')
+        .eq('id', coachId)
+        .single();
+      
+      if (coach && coach.hourly_rate) {
+        totalPrice += parseFloat(coach.hourly_rate);
+      }
+    }
 
     const { data: booking, error: bookingError } = await supabaseServer
       .from('bookings')
       .insert({
         user_id: auth.user.id,
         court_id: courtId,
+        coach_id: coachId || null,
         time_slot_id: timeSlotId,
         booking_date: slot.date,
         start_time: slot.start_time,

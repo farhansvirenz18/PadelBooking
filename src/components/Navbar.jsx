@@ -11,7 +11,6 @@ import { userFetch } from '@/lib/userFetch';
 
 const NAV_LINKS = [
   { label: 'Courts', href: '/courts' },
-  { label: 'Coaches', href: '/coaches' },
   { label: 'Tournaments', href: '/tournaments' },
   { label: 'Shop', href: '/shop' },
   { label: 'Membership', href: '/membership' },
