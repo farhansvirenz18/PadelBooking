@@ -126,6 +126,10 @@ import { toast } from "sonner";
         is_active: form.is_active,
       };
 
+      if (editingCoach) {
+        payload.id = editingCoach.id;
+      }
+
       const url = editingCoach
         ? `/api/admin/coaches?id=${editingCoach.id}`
         : "/api/admin/coaches";

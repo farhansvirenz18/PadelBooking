@@ -50,7 +50,7 @@ export async function POST(request) {
     const { type, ...payload } = body;
 
     if (type === 'category') {
-      const { name, slug, description, icon, sort_order } = payload;
+      const { name, slug, icon, sort_order } = payload;
       if (!name) {
         return NextResponse.json({ error: 'name is required' }, { status: 400 });
       }
@@ -60,10 +60,8 @@ export async function POST(request) {
         .insert({
           name,
           slug: slug || null,
-          description: description || null,
           icon: icon || null,
           sort_order: sort_order || 0,
-          is_active: true,
         })
         .select()
         .single();
@@ -72,7 +70,7 @@ export async function POST(request) {
       return NextResponse.json({ success: true, data }, { status: 201 });
     }
 
-    const { name, description, price, stock, category_id, image_url, sku, brand, discount_price, is_active } = payload;
+    const { name, description, price, stock, category_id, image_url, brand, discount_price, is_active } = payload;
     if (!name || !price) {
       return NextResponse.json({ error: 'name and price are required' }, { status: 400 });
     }
@@ -86,7 +84,6 @@ export async function POST(request) {
         stock: stock || 0,
         category_id: category_id || null,
         image_url: image_url || null,
-        sku: sku || null,
         brand: brand || null,
         discount_price: discount_price || null,
         is_active: is_active !== undefined ? is_active : true,
@@ -115,7 +112,7 @@ export async function PUT(request) {
     }
 
     if (type === 'category') {
-      const allowedFields = ['name', 'slug', 'description', 'icon', 'sort_order', 'is_active'];
+      const allowedFields = ['name', 'slug', 'icon', 'sort_order'];
       const filtered = {};
       for (const key of allowedFields) {
         if (updateFields[key] !== undefined) filtered[key] = updateFields[key];
@@ -123,7 +120,6 @@ export async function PUT(request) {
       if (Object.keys(filtered).length === 0) {
         return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
       }
-      filtered.updated_at = new Date().toISOString();
 
       const { data, error } = await supabaseServer
         .from('shop_categories')
@@ -136,7 +132,7 @@ export async function PUT(request) {
       return NextResponse.json({ success: true, data });
     }
 
-    const allowedFields = ['name', 'description', 'price', 'stock', 'category_id', 'image_url', 'sku', 'brand', 'discount_price', 'is_active'];
+    const allowedFields = ['name', 'description', 'price', 'stock', 'category_id', 'image_url', 'brand', 'discount_price', 'is_active'];
     const filtered = {};
     for (const key of allowedFields) {
       if (updateFields[key] !== undefined) filtered[key] = updateFields[key];
@@ -184,7 +180,7 @@ export async function DELETE(request) {
     if (type === 'category') {
       const { error } = await supabaseServer
         .from('shop_categories')
-        .update({ is_active: false, updated_at: new Date().toISOString() })
+        .delete()
         .eq('id', id);
       if (error) throw error;
     } else {
