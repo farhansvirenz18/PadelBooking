@@ -75,7 +75,7 @@ export default function DashboardPage() {
     .filter(b => b.payment_status === 'paid')
     .reduce((sum, b) => sum + parseFloat(b.total_price || 0), 0)
 
-  const hasMembership = profile?.membership_status === 'active'
+  const hasMembership = !!activeMembership
 
   if (loading) {
     return (
@@ -211,12 +211,20 @@ export default function DashboardPage() {
                     <span className="material-symbols-outlined text-[18px]">event_available</span>
                     Valid until: {formatDate(activeMembership.end_date)}
                   </div>
-                  <Link
-                    href="/membership"
-                    className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white text-[#1B5E20] text-sm font-bold hover:bg-white/90 transition-colors"
-                  >
-                    Manage / Upgrade
-                  </Link>
+                  <div className="flex gap-2">
+                    <Link
+                      href="/dashboard/memberships"
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full bg-white text-[#1B5E20] text-sm font-bold hover:bg-white/90 transition-colors"
+                    >
+                      View Details
+                    </Link>
+                    <Link
+                      href="/membership"
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full bg-white/15 text-white text-sm font-bold hover:bg-white/25 transition-colors border border-white/20"
+                    >
+                      Upgrade
+                    </Link>
+                  </div>
                 </div>
               )}
 
