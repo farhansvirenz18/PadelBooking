@@ -84,6 +84,8 @@ export async function POST(request) {
         totalPrice += parseFloat(coach.hourly_rate);
       }
     }
+    
+    totalPrice = Math.round(totalPrice);
 
     const { data: booking, error: bookingError } = await supabaseServer
       .from('bookings')

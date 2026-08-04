@@ -108,7 +108,7 @@ async function buildPayload(type, record) {
   return {
     transaction_details: {
       order_id: generateOrderId(type, record.id),
-      gross_amount: amount,
+      gross_amount: Math.round(amount),
     },
     credit_card: {
       secure: true,
@@ -123,7 +123,7 @@ async function buildPayload(type, record) {
       {
         id: record.id,
         name: itemName,
-        price: amount,
+        price: Math.round(amount),
         quantity: 1,
       },
     ],
