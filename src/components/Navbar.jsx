@@ -22,26 +22,34 @@ export default function Navbar() {
   const [profile, setProfile] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const fetchProfile = (session) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        userFetch('/api/users/profile').then(r => r.json()).then(res => {
-          if (res.data) setProfile(res.data);
-        }).catch(() => {});
+        setIsLoadingProfile(true);
+        userFetch('/api/users/profile')
+          .then(r => r.json())
+          .then(res => {
+            if (res.data) setProfile(res.data);
+          })
+          .catch(() => {})
+          .finally(() => setIsLoadingProfile(false));
       } else {
         setProfile(null);
+        setIsLoadingProfile(false);
       }
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      fetchProfile(session);
     });
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        userFetch('/api/users/profile').then(r => r.json()).then(res => {
-          if (res.data) setProfile(res.data);
-        }).catch(() => {});
-      }
+      fetchProfile(session);
     });
+
     return () => subscription.unsubscribe();
   }, []);
 
@@ -89,6 +97,7 @@ export default function Navbar() {
                   firstName={profile?.first_name}
                   lastName={profile?.last_name}
                   size={36}
+                  isLoading={isLoadingProfile}
                 />
               </button>
               {dropdownOpen && (

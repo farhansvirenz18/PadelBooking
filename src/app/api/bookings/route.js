@@ -9,7 +9,7 @@ export async function GET(request) {
   try {
     const { data, error } = await supabaseServer
       .from('bookings')
-      .select('*, courts(name, type), time_slots(start_time, end_time, date, price), coaches(first_name, last_name)')
+      .select('*, courts(name, type), time_slots(start_time, end_time, date, price), coaches(name)')
       .eq('user_id', auth.user.id)
       .order('created_at', { ascending: false });
 

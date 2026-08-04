@@ -243,7 +243,7 @@ export default function BookingsPage() {
                         {booking.coaches && (
                           <div className="flex items-center gap-1.5">
                             <span className="material-symbols-outlined text-[16px]">sports</span>
-                            Coach {booking.coaches.first_name}
+                            Coach {booking.coaches.name}
                           </div>
                         )}
                         <div className="flex items-center gap-1.5">

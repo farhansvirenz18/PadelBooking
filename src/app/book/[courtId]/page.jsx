@@ -446,13 +446,13 @@ export default function BookCourtPage() {
                       >
                         <div className="w-12 h-12 rounded-full overflow-hidden mb-2">
                           <img
-                            src={coach.avatar_url || `https://ui-avatars.com/api/?name=${coach.first_name}+${coach.last_name}&background=1B5E20&color=fff`}
-                            alt={`${coach.first_name} ${coach.last_name}`}
+                            src={coach.image_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(coach.name || 'Coach')}&background=1B5E20&color=fff`}
+                            alt={coach.name}
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <span className="font-semibold text-sm line-clamp-1">{coach.first_name} {coach.last_name}</span>
-                        <span className="text-[10px] text-on-surface-variant line-clamp-1 mb-1">{coach.specialization || 'Padel Coach'}</span>
+                        <span className="font-semibold text-sm line-clamp-1">{coach.name}</span>
+                        <span className="text-[10px] text-on-surface-variant line-clamp-1 mb-1">{coach.specialties?.[0] || 'Padel Coach'}</span>
                         <span className="text-xs font-bold text-[#1B5E20]">+{formatPrice(coach.hourly_rate)}/hr</span>
                       </button>
                     ))}
@@ -515,7 +515,7 @@ export default function BookCourtPage() {
                       </div>
                       {selectedCoach && (
                         <div className="flex justify-between text-xs text-on-surface-variant">
-                          <span>Coach ({selectedCoach.first_name})</span>
+                          <span>Coach ({selectedCoach.name})</span>
                           <span>{formatPrice(coachPrice)}</span>
                         </div>
                       )}
