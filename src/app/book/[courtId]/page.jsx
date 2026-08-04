@@ -33,10 +33,9 @@ function isSlotPast(slot, selectedDate) {
   if (!isToday(selectedDate)) return false
   const now = new Date()
   const [sh, sm] = (slot.start_time || '').split(':').map(Number)
-  const [eh, em] = (slot.end_time || '').split(':').map(Number)
-  const slotEndMinutes = (eh || 0) * 60 + (em || 0)
+  const slotStartMinutes = (sh || 0) * 60 + (sm || 0)
   const nowMinutes = now.getHours() * 60 + now.getMinutes()
-  return slotEndMinutes <= nowMinutes
+  return slotStartMinutes <= nowMinutes
 }
 
 function generateDays(count = 14) {
